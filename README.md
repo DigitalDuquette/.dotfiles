@@ -1,28 +1,6 @@
-# .dotfiles
+# .dotfiles in Source Control
 
-Used to source key dot files to source control. Files must be added to be tracked.
-
-## Setting up
-
-```shell
-cd ~/
-mkdir .dotfiles
-git init --bare $HOME/.dotfiles
-cd .dotfiles/
-git config --local status.showUntrackedFiles no
-```
-
-## Adding to a new machine
-
-```bash
-# Clone bare repo
-git clone --bare https://github.com/DigitalDuquette/.dotfiles.git $HOME/.dotfiles
-# Create alias for easy management
-alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-dotfiles checkout
-```
-
-
+Used to source key dot files to source control. Files must be added to be tracked. Idea sourced from [https://www.anand-iyer.com/blog/2018/a-simpler-way-to-manage-your-dotfiles/](https://www.anand-iyer.com/blog/2018/a-simpler-way-to-manage-your-dotfiles/)
 
 ## Dotfiles - Configuration Management
 
