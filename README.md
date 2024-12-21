@@ -48,23 +48,23 @@ Follow these steps to set up your dotfiles on a new machine.
 
 1. Add the File to Git:
 
-```sh
-dotfiles add ~/.zshrc
-```
+    ```sh
+    dotfiles add ~/.zshrc
+    ```
 
 (Replace .zshrc with the file you wish to track.)
 
 2. Commit the Changes:
 
-```sh
-dotfiles commit -m "Track zshrc"
-```
+    ```sh
+    dotfiles commit -m "Track zshrc"
+    ```
 
 3. Push to GitHub:
 
-```
-dotfiles push
-```
+    ```
+    dotfiles push
+    ```
 
 ## Adding a README or Project Files
 
@@ -72,18 +72,18 @@ To add files to the .dotfiles repository directory (not $HOME):
 
 1. Navigate to .dotfiles:
 
-```sh
-cd $HOME/.dotfiles
-```
+    ```sh
+    cd $HOME/.dotfiles
+    ```
 
 2. Add and commit files normally:
 
-```sh
-touch README.md
-git add README.md
-git commit -m "Add README.md"
-git push
-```
+    ```sh
+    touch README.md
+    git add README.md
+    git commit -m "Add README.md"
+    git push
+    ```
 
 ### Useful Commands
 
