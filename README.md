@@ -52,7 +52,7 @@ Follow these steps to set up your dotfiles on a new machine.
     dotfiles add ~/.zshrc
     ```
 
-(Replace .zshrc with the file you wish to track.)
+    (Replace .zshrc with the file you wish to track.)
 
 2. Commit the Changes:
 
@@ -62,7 +62,7 @@ Follow these steps to set up your dotfiles on a new machine.
 
 3. Push to GitHub:
 
-    ```
+    ```sh
     dotfiles push
     ```
 
