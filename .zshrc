@@ -18,7 +18,7 @@ fi
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
-# Pyenv
+# Pyenv for python version management
 export PATH="$HOME/.pyenv/bin:$PATH"
 eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
@@ -39,10 +39,6 @@ export NVM_DIR="$HOME/.nvm"
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
-#######################################################################################################
-# Load Oh My Zsh
-#######################################################################################################
-source $ZSH/oh-my-zsh.sh
 
 #######################################################################################################
 # ALIAS
@@ -63,5 +59,10 @@ alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 #######################################################################################################
 # Plugins: Oh My ZSH
 #######################################################################################################
-
 plugins=(git fast-syntax-highlighting)
+
+#######################################################################################################
+# Load sources
+#######################################################################################################
+source $ZSH/oh-my-zsh.sh
+source $ZSH_CUSTOM/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
