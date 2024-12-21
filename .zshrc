@@ -122,10 +122,15 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
 [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
-# Plugins (ensure this includes zsh-syntax-highlighting)
-plugins=(git zsh-syntax-highlighting)
+
+#######################################################################################################
+# Plugins
+#######################################################################################################
+
+plugins=(git fast-syntax-highlighting)
+
+#######################################################################################################
+# Source
+#######################################################################################################
 
 source $ZSH/oh-my-zsh.sh
-
-# Source zsh-syntax-highlighting last
-source $ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
