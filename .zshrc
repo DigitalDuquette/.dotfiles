@@ -2,6 +2,7 @@ eval "$(starship init zsh)"
 
 # Map colorls to cls
 alias cls="colorls"
+alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 # pyenv initialization
 export PYENV_ROOT="$HOME/.pyenv"
