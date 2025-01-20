@@ -1,26 +1,32 @@
+"$schema" = 'https://starship.rs/config-schema.json'
 # Create a new line after each prompt, for visual spacing
 # add_newline = true
 
 # Places directory on left, then pushes everything else to the right with a fill command
 # The prompt is on a new line
 format = """
-$directory[   ](cyan)$fill[   ](cyan)$all
+$directory[   ]\
+(cyan)$fill[   ]\
+(cyan)$all\
 $character
 """
+
+# Additional padding between newlines
+add_newline = true
 
 # Command timeout in milliseconds
 command_timeout = 1000
 
 [fill]
 symbol = "   "   # Unicode solid line
-style = "cyan"
 
 [character]
 vicmd_symbol = "[N] >>>"
 success_symbol = '[➜](bold green)'
 
 [git_branch]
-format =  '[$symbol$branch(:$remote_branch)]($style) '
+symbol = ""
+format =  '[$symbol $branch(:$remote_branch)]($style) '
 
 [python]
 format = '[ 🐍 $version]($style) [$virtualenv]($style) ' # Customize the format
