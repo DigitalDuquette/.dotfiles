@@ -99,3 +99,15 @@ To back up conflicting files during a checkout:
 mkdir -p .dotfiles-backup
 dotfiles checkout 2>&1 | grep -E "^\s+" | awk '{print $1}' | xargs -I{} mv {} .dotfiles-backup/{}
 ```
+
+## Bootstrap
+
+Bootstrap scripts for setting up a fresh macOS environment are located in `~/.bootstrap/*`.
+
+To run all bootstrap steps in sequence:
+
+```sh
+chmod +x ~/.bootstrap/bootstrap.sh
+```
+
+This will execute 00_homebrew.sh, 10_defaults.sh, 20_symlinks.sh, and 90_finish.sh in order, skipping any missing scripts.
