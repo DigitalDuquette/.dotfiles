@@ -29,6 +29,8 @@ brew "starship"
 brew "stress-ng"
 # ODBC 3 connectivity for UNIX
 brew "unixodbc"
+# Feature-rich command-line audio/video downloader
+brew "yt-dlp"
 # Fish-like fast/unobtrusive autosuggestions for zsh
 brew "zsh-autosuggestions"
 # Additional completion definitions for zsh
@@ -37,6 +39,8 @@ brew "zsh-completions"
 brew "zsh-fast-syntax-highlighting"
 # ODBC Driver for Microsoft(R) SQL Server(R)
 brew "microsoft/mssql-release/msodbcsql17"
+# ODBC Driver for Microsoft(R) SQL Server(R)
+brew "microsoft/mssql-release/msodbcsql18"
 # Sqlcmd and Bcp for Microsoft(R) SQL Server(R)
 brew "microsoft/mssql-release/mssql-tools"
 # Password manager that keeps all passwords secure behind one password
@@ -67,6 +71,8 @@ cask "iina"
 cask "iterm2"
 # JetBrains tools manager
 cask "jetbrains-toolbox"
+# Automatically ejects external drives
+cask "jettison"
 # Menu bar manager
 cask "jordanbaird-ice"
 # Blocks all Keyboard and TouchBar input
@@ -146,4 +152,3 @@ vscode "tamasfe.even-better-toml"
 vscode "taoklerks.poor-mans-t-sql-formatter-vscode"
 vscode "vsls-contrib.gistfs"
 vscode "yzane.markdown-pdf"
-brew "yt-dlp"
