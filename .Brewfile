@@ -45,6 +45,8 @@ brew "microsoft/mssql-release/msodbcsql18"
 brew "microsoft/mssql-release/mssql-tools"
 # Sqlcmd and Bcp for Microsoft(R) SQL Server(R)
 brew "microsoft/mssql-release/mssql-tools18"
+# Powerful, clean, object-oriented scripting language
+brew "ruby"
 # Password manager that keeps all passwords secure behind one password
 cask "1password"
 # Command-line interface for 1Password
@@ -70,7 +72,8 @@ cask "google-chrome"
 # Free and open-source media player
 cask "iina"
 # Terminal emulator as alternative to Apple's Terminal app
-cask "iterm2"
+cask "iterm2"               # Terminal
+cask "font-jetbrains-mono-nerd-font"  # Font for iTerm2 + VS Code
 # JetBrains tools manager
 cask "jetbrains-toolbox"
 # Automatically ejects external drives
