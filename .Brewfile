@@ -91,6 +91,8 @@ cask "microsoft-edge"
 cask "obsidian"
 # Scriptable JSON formatter and editor
 cask "ok-json"
+# Desktop virtualization software
+cask "parallels"
 # Collaboration platform for API development
 cask "postman"
 # Command-line shell and scripting language
