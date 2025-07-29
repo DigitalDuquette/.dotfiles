@@ -15,4 +15,19 @@ brew update
 brew doctor
 brew bundle --global
 
+
+echo "[BOOTSTRAP] Schedule automatic updates..."
+# Cleanup old versions
+brew cleanup
+
+# Ensure brew autoupdate is running
+if ! brew autoupdate status 2>&1 | grep -q "running"; then
+    echo "[BOOTSTRAP] Starting brew autoupdate..."
+    brew autoupdate start --upgrade --cleanup --immediate
+else
+    echo "[BOOTSTRAP] brew autoupdate already running."
+fi
+
 echo "[BOOTSTRAP] Homebrew + Brewfile complete."
+
+
