@@ -24,12 +24,15 @@ defaults -currentHost write -globalDomain NSStatusItemSelectionPadding -int 4
 echo "[BOOTSTRAP] Setting SYSTEM PREF for Dock..."
 
 # only running applications in dock
-defaults write com.apple.dock static-only -bool TRUE; killall Dock
+defaults write com.apple.dock static-only -bool TRUE
 # move dock to left of screen
-defaults write com.apple.dock orientation -string left && killall Dock
+defaults write com.apple.dock orientation -string left
 # change the size of the dock
-defaults write com.apple.dock tilesize -int 36 && killall Dock
+defaults write com.apple.dock tilesize -int 36
 # to auto hide the dock
-defaults write com.apple.dock autohide -bool true && killall Dock
+defaults write com.apple.dock autohide -bool true
+
+# restart dock once after all settings
+killall Dock || true
 
 echo "[BOOTSTRAP] macOS & file defaults configured."
