@@ -5,7 +5,6 @@ set -euo pipefail
 echo "[BOOTSTRAP] Setting app defaults with duti..."
 
 duti -s com.colliderli.iina public.mp3 all
-duti -s com.colliderli.iina public.wav all
 duti -s com.colliderli.iina com.apple.m4a-audio all
 duti -s com.colliderli.iina public.aiff-audio all
 duti -s com.colliderli.iina public.mpeg-4-audio all
