@@ -43,10 +43,6 @@ brew "microsoft/mssql-release/mssql-tools"
 cask "1password"
 # Command-line interface for 1Password
 cask "1password-cli"
-# Chromium based browser
-cask "arc"
-# Data management tool that enables working with SQL Server
-cask "azure-data-studio"
 # Display management tool
 cask "betterdisplay"
 # Scriptable scratchpad for developers
@@ -57,8 +53,6 @@ cask "chatgpt"
 cask "claude"
 # Disk space visualiser
 cask "daisydisk"
-# Universal database tool and SQL client
-cask "dbeaver-community"
 # Database version management tool
 cask "dbngin"
 # Web browser
