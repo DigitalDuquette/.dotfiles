@@ -1,6 +1,6 @@
 # .dotfiles in Source Control
 
-Used to source key dot files to source control. Files must be added to be tracked. Idea sourced from [deadlink](https://www.anand-iyer.com/blog/2018/a-simpler-way-to-manage-your-dotfiles/)
+Used to source key dot files to source control. Files must be added to be tracked. Idea sourced from [Anand Iyer's blog](https://www.anand-iyer.com/blog/2018/a-simpler-way-to-manage-your-dotfiles/).
 
 ## Dotfiles - Configuration Management
 
