@@ -3,6 +3,8 @@ tap "microsoft/mssql-release"
 brew "duti"
 # Like neofetch, but much faster because written mostly in C
 brew "fastfetch"
+# Ambitious Vim-fork focused on extensibility and agility
+brew "neovim"
 # GitHub command-line tool
 brew "gh"
 # Distributed revision control system
