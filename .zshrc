@@ -1,9 +1,10 @@
 eval "$(starship init zsh)"
 
-# Map colorls to ls
+# Aliases
 alias ls="colorls --group-directories-first --sort=time --reverse"
 alias lslegacy="ls"
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias externalip="curl checkip.amazonaws.com"
 
 # pyenv initialization
 export PYENV_ROOT="$HOME/.pyenv"
