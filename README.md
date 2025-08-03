@@ -1,6 +1,13 @@
 # .dotfiles in Source Control
 
-Used to source key dot files to source control. Files must be added to be tracked. Idea sourced from [Anand Iyer's blog](https://www.anand-iyer.com/blog/2018/a-simpler-way-to-manage-your-dotfiles/).
+Stop the pain jumping to a new dev machine: track core `.files` in source control. While there are [many dotfile repos](https://github.com/webpro/awesome-dotfiles?tab=readme-ov-file), this one is mine. Uses a headless git repo in `~/.dotfiles/` - while this isn't the most simplisitic of storage options, it has two key advantages:
+
+1. No symlinks are required. Files are exactly where they need to be.
+2. GitHub desktop does not work with headless git repos - this forces me to use git commands so I'm not googling on remote machines.
+
+NOTE: Files must be added to be tracked. Hardest muscel memory to learn. Have a new file you wanna add to this repo? Better `dotfiles add file_name.sh`.
+
+Original inspo from [Anand Iyer's blog](https://www.anand-iyer.com/blog/2018/a-simpler-way-to-manage-your-dotfiles/).
 
 ## Dotfiles - Configuration Management
 
