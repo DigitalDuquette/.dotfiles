@@ -116,5 +116,3 @@ To run all bootstrap steps in sequence:
 ```sh
 chmod +x ~/.bootstrap/bootstrap.sh
 ```
-
-This will execute 00_homebrew.sh, 10_defaults.sh, 20_symlinks.sh, and 90_finish.sh in order, skipping any missing scripts.
