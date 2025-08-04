@@ -11,12 +11,10 @@ fi
 
 # Install Homebrew if missing
 if ! command -v brew &> /dev/null; then
-  echo "[BOOTSTRAP] Homebrew is not installed. Installing..."
+  echo "[BOOTSTRAP] Homebrew is not installed. Installing..."  
   
-  # Ensure a safe, minimal PATH for installer
-  export PATH="/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
-  
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  # Pipe directly to bin/bash
+  curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | /bin/bash
   
   # Load Homebrew into current session
   eval "$(/opt/homebrew/bin/brew shellenv)"
