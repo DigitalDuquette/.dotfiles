@@ -15,13 +15,19 @@ This repository manages and tracks dotfiles across different machines using a ba
 
 ## Setup on a New Computer
 
-Run this single command to set up your dotfiles:
+1. Run the setup script to install dotfiles:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/DigitalDuquette/.dotfiles/main/dotfiles_setup.sh | zsh
 ```
 
-This script will install Xcode Command Line Tools, clone the repository, configure everything, and run the complete bootstrap sequence.
+2. Open a new terminal, then run the bootstrap sequence:
+
+```sh
+chmod +x ~/.bootstrap/bootstrap.sh && ~/.bootstrap/bootstrap.sh
+```
+
+The setup script installs Xcode Command Line Tools and clones your dotfiles. The bootstrap script handles application installation and system configuration.
 
 ## Adding New Files
 
