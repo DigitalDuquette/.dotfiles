@@ -55,11 +55,11 @@ fi
 
 echo "[SETUP] Dotfiles checked out successfully!"
 
-# Run bootstrap if it exists
+# Run bootstrap if it exists (source to avoid nested shells)
 if [ -f "$HOME/.bootstrap/bootstrap.sh" ]; then
-  echo "[SETUP] Running bootstrap sequence..."
+  echo "[SETUP] Running bootstrap sequence in current shell..."
   chmod +x "$HOME/.bootstrap/bootstrap.sh"
-  /bin/zsh "$HOME/.bootstrap/bootstrap.sh"
+  source "$HOME/.bootstrap/bootstrap.sh"
 else
   echo "[SETUP] No bootstrap script found. Setup complete."
 fi
