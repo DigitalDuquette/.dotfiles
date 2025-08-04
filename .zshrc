@@ -1,3 +1,6 @@
+# Homebrew PATH (must be before pyenv so brew-installed Python takes priority)
+export PATH="/opt/homebrew/bin:$PATH"
+
 eval "$(starship init zsh)"
 
 # Aliases
