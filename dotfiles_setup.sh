@@ -23,6 +23,8 @@ if [ -d "$HOME/.dotfiles" ]; then
 else
   echo "[SETUP] Cloning dotfiles repository..."
   git clone --bare https://github.com/DigitalDuquette/.dotfiles.git $HOME/.dotfiles
+  /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME symbolic-ref HEAD refs/heads/main
+  /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME branch --set-upstream-to=origin/main main
 fi
 
 # Create dotfiles alias function
