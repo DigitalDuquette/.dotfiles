@@ -17,14 +17,21 @@ fi
 # Check if dotfiles repo already exists
 if [ -d "$HOME/.dotfiles" ]; then
   echo "[SETUP] Updating existing dotfiles repo (force overwrite)..."
-  mkdir -p "$HOME/.dotfiles-backup"
-  /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME fetch --all
+
+  # Ensure we're in sync with remote
+  /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME fetch origin main
+
+  # Create main branch if it doesn't exist locally
+  /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME checkout -B main origin/main
+
+  # Force reset to match remote (overwrites everything)
   /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME reset --hard origin/main
+
 else
   echo "[SETUP] Cloning dotfiles repository..."
   git clone --bare https://github.com/DigitalDuquette/.dotfiles.git $HOME/.dotfiles
-  /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME symbolic-ref HEAD refs/heads/main
-  /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME branch --set-upstream-to=origin/main main
+  /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME config --local status.showUntrackedFiles no
+  /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME checkout -f
 fi
 
 # Create dotfiles alias function
