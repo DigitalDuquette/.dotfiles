@@ -59,7 +59,7 @@ echo "[SETUP] Dotfiles checked out successfully!"
 if [ -f "$HOME/.bootstrap/bootstrap.sh" ]; then
   echo "[SETUP] Running bootstrap sequence in current shell..."
   chmod +x "$HOME/.bootstrap/bootstrap.sh"
-  source "$HOME/.bootstrap/bootstrap.sh"
+  "$HOME/.bootstrap/bootstrap.sh"
 else
   echo "[SETUP] No bootstrap script found. Setup complete."
 fi
