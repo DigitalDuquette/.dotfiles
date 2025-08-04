@@ -13,8 +13,8 @@ fi
 if ! command -v brew &> /dev/null; then
   echo "[BOOTSTRAP] Homebrew is not installed. Installing..."  
   
-  # Pipe directly to bin/bash
-  curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | /bin/bash
+  # Install homebrew command from https://brew.sh/
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   
   # Load Homebrew into current session
   eval "$(/opt/homebrew/bin/brew shellenv)"
