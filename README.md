@@ -15,41 +15,13 @@ This repository manages and tracks dotfiles across different machines using a ba
 
 ## Setup on a New Computer
 
-Follow these steps to set up your dotfiles on a new machine.
+Run this single command to set up your dotfiles:
 
-1. Clone the Bare Repository
+```sh
+curl -fsSL https://raw.githubusercontent.com/DigitalDuquette/.dotfiles/main/dotfiles_setup.sh | zsh
+```
 
-    ```sh
-    git clone --bare https://github.com/DigitalDuquette/.dotfiles.git $HOME/.dotfiles
-    ```
-
-2. Create an Alias for Easy Management
-
-    ```sh
-    alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-    ```
-
-    This alias allows you to interact with the bare repo as if it were a regular Git repository.
-
-3. Prevent Untracked Files from Showing Up
-
-    ```sh
-    dotfiles config --local status.showUntrackedFiles no
-    ```
-
-4. Checkout the Tracked Files
-
-    ```sh
-    dotfiles checkout
-    ```
-
-    Note: If you encounter errors due to existing files, back them up or remove them:
-
-    ```sh
-    mkdir -p .dotfiles-backup
-    dotfiles checkout 2>&1 | grep -E "^\s+" | awk '{print $1}' | xargs -I{} mv {} .dotfiles-backup/{}
-    dotfiles checkout
-    ```
+This script will install Xcode Command Line Tools, clone the repository, configure everything, and run the complete bootstrap sequence.
 
 ## Adding New Files
 
