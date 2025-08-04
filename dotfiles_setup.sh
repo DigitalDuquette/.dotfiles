@@ -16,8 +16,10 @@ fi
 
 # Check if dotfiles repo already exists
 if [ -d "$HOME/.dotfiles" ]; then
-  echo "[SETUP] Dotfiles repo already exists at ~/.dotfiles"
-  echo "[SETUP] Skipping clone step."
+  echo "[SETUP] Updating existing dotfiles repo (force overwrite)..."
+  mkdir -p "$HOME/.dotfiles-backup"
+  /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME fetch --all
+  /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME reset --hard origin/main
 else
   echo "[SETUP] Cloning dotfiles repository..."
   git clone --bare https://github.com/DigitalDuquette/.dotfiles.git $HOME/.dotfiles
