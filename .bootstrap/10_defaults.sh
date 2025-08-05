@@ -51,8 +51,12 @@ osascript -e 'tell application "System Preferences" to quit'
 # Show Finder path bar:
 defaults write com.apple.finder ShowPathbar -bool true
 
-# Show hidden files in Finder (Same as Shift Cmd .)
-defaults write com.apple.finder AppleShowAllFiles -bool true
+# Show hidden files in Finder (Not the same as Shift Cmd .)
+# defaults write com.apple.finder AppleShowAllFiles -bool true
+# Removed for now. I like the visual indication of hidden files.
+
+# Show full POSIX path in Finder window title
+defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
 
 # Show file extensions in Finder:
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
