@@ -9,6 +9,8 @@ brew "neovim"
 brew "gh"
 # Distributed revision control system
 brew "git"
+# Post-modern modal text editor
+brew "helix"
 # Improved top (interactive process viewer)
 brew "htop"
 # Apple Silicon Monitor Top written in Golang
