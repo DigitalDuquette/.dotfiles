@@ -4,7 +4,7 @@ export PATH="/opt/homebrew/bin:$PATH"
 eval "$(starship init zsh)"
 
 # Aliases
-alias ls="colorls --group-directories-first --sort=time --reverse"
+alias ls="colorls --group-directories-first --sort=none"
 alias lslegacy="ls"
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias externalip="curl checkip.amazonaws.com"
