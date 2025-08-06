@@ -11,6 +11,8 @@ brew "gh"
 brew "git"
 # Post-modern modal text editor
 brew "helix"
+# Blazing fast terminal file manager written in Rust, based on async I/O
+brew "yazi"
 # Improved top (interactive process viewer)
 brew "htop"
 # Apple Silicon Monitor Top written in Golang
