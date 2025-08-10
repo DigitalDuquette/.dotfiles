@@ -51,6 +51,8 @@ brew "microsoft/mssql-release/msodbcsql18"
 brew "microsoft/mssql-release/mssql-tools"
 # Sqlcmd and Bcp for Microsoft(R) SQL Server(R)
 brew "microsoft/mssql-release/mssql-tools18"
+# DuckDB local file database
+brew "duckdb"
 # Powerful, clean, object-oriented scripting language
 brew "ruby"
 # Password manager that keeps all passwords secure behind one password
