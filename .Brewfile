@@ -55,6 +55,8 @@ brew "microsoft/mssql-release/mssql-tools18"
 brew "duckdb"
 # Powerful, clean, object-oriented scripting language
 brew "ruby"
+# LM Studio
+cask "lm-studio"
 # Password manager that keeps all passwords secure behind one password
 cask "1password"
 # Command-line interface for 1Password
