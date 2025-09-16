@@ -57,6 +57,8 @@ brew "duckdb"
 brew "ruby"
 # LM Studio
 cask "lm-studio"
+# Codex
+cask "codex"
 # Password manager that keeps all passwords secure behind one password
 cask "1password"
 # Command-line interface for 1Password
