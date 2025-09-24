@@ -1,4 +1,3 @@
-tap "microsoft/mssql-release"
 # Select default apps for documents and URL schemes on macOS
 brew "duti"
 # Like neofetch, but much faster because written mostly in C
@@ -43,22 +42,10 @@ brew "zsh-autosuggestions"
 brew "zsh-completions"
 # Feature-rich syntax highlighting for Zsh
 brew "zsh-fast-syntax-highlighting"
-# ODBC Driver for Microsoft(R) SQL Server(R)
-brew "microsoft/mssql-release/msodbcsql17"
-# ODBC Driver for Microsoft(R) SQL Server(R)
-brew "microsoft/mssql-release/msodbcsql18"
-# Sqlcmd and Bcp for Microsoft(R) SQL Server(R)
-brew "microsoft/mssql-release/mssql-tools"
-# Sqlcmd and Bcp for Microsoft(R) SQL Server(R)
-brew "microsoft/mssql-release/mssql-tools18"
 # DuckDB local file database
 brew "duckdb"
 # Powerful, clean, object-oriented scripting language
 brew "ruby"
-# LM Studio
-cask "lm-studio"
-# Codex
-cask "codex"
 # Password manager that keeps all passwords secure behind one password
 cask "1password"
 # Command-line interface for 1Password
@@ -74,8 +61,6 @@ cask "claude"
 cask "claude-code"
 # Disk space visualiser
 cask "daisydisk"
-# Database version management tool
-cask "dbngin"
 # Web browser
 cask "firefox"
 # Desktop client for GitHub repositories
