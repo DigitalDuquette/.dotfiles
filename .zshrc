@@ -5,6 +5,7 @@ export PATH="/opt/homebrew/opt/ruby/bin:/usr/local/opt/ruby/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 
 eval "$(starship init zsh)"
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # Aliases
 alias ls="colorls --group-directories-first --sort=none"
@@ -28,6 +29,6 @@ if type brew &>/dev/null; then
     compinit
 fi
 # Auto suggestions
-source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 # Syntax highlighting
-source $HOMEBREW_PREFIX/opt/zsh-fast-syntax-highlighting/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+source "$(brew --prefix)/opt/zsh-fast-syntax-highlighting/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
