@@ -1,5 +1,7 @@
 # Homebrew PATH (must be before pyenv so brew-installed Python takes priority)
 export PATH="/opt/homebrew/bin:$PATH"
+# Prefer Homebrew Ruby over macOS system Ruby
+export PATH="/opt/homebrew/opt/ruby/bin:/usr/local/opt/ruby/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 
 eval "$(starship init zsh)"

@@ -1,4 +1,6 @@
 #!/bin/zsh
+# Force Homebrew Ruby for non-interactive bootstrap
+export PATH="/opt/homebrew/opt/ruby/bin:/usr/local/opt/ruby/bin:$PATH"
 set -euo pipefail
 
 echo "[BOOTSTRAP] Installing Ruby gems..."

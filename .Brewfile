@@ -56,7 +56,7 @@ cask "betterdisplay"
 cask "boop"
 # OpenAI's official ChatGPT desktop app
 cask "chatgpt"
-# Anthropic's official Claude AI desktop app
+# Anthropic's official Claude AI desktop app 
 cask "claude"
 cask "claude-code"
 # Disk space visualiser
