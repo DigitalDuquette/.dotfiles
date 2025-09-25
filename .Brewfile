@@ -96,8 +96,6 @@ cask "ok-json"
 cask "parallels"
 # Collaboration platform for API development
 cask "postman"
-# Command-line shell and scripting language
-cask "powershell"
 # Control your tools with a few keystrokes
 cask "raycast"
 # Team communication and collaboration software
