@@ -1,6 +1,8 @@
 #!/bin/zsh
 # Force Homebrew Ruby for non-interactive bootstrap
 export PATH="/opt/homebrew/opt/ruby/bin:/usr/local/opt/ruby/bin:$PATH"
+# Ensure gem executables are resolvable in non-interactive runs
+export PATH="$(ruby -r rubygems -e 'puts Gem.bindir'):$PATH"
 set -euo pipefail
 
 echo "[BOOTSTRAP] Installing Ruby gems..."

@@ -3,6 +3,7 @@ export PATH="/opt/homebrew/bin:$PATH"
 # Prefer Homebrew Ruby over macOS system Ruby
 export PATH="/opt/homebrew/opt/ruby/bin:/usr/local/opt/ruby/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
+export PATH="$(ruby -r rubygems -e 'puts Gem.bindir'):$PATH"
 
 eval "$(starship init zsh)"
 eval "$(/opt/homebrew/bin/brew shellenv)"
