@@ -17,12 +17,4 @@ else
   echo "[BOOTSTRAP] Ruby not found — ensure Brewfile includes it before running this script."
 fi
 
-# npm global CLI installs
-if command -v npm >/dev/null 2>&1; then
-  echo "[BOOTSTRAP] Installing Claude Code CLI..."
-  npm install -g @anthropic-ai/claude-code
-else
-  echo "[BOOTSTRAP] npm not found — ensure Node is installed via Brewfile."
-fi
-
 echo "[BOOTSTRAP] Ruby gems install complete."
