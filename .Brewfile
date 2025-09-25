@@ -58,7 +58,6 @@ cask "boop"
 cask "chatgpt"
 # Anthropic's official Claude AI desktop app 
 cask "claude"
-cask "claude-code"
 # Disk space visualiser
 cask "daisydisk"
 # Web browser
