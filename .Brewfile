@@ -104,12 +104,8 @@ cask "slack"
 cask "visual-studio-code"
 # Connect to Windows
 cask "windows-app"
-mas "1Blocker", id: 1365531024
-mas "1Password for Safari", id: 1569813296
 mas "Amphetamine", id: 937984704
-mas "Bandwidth+", id: 490461369
 mas "Gifski", id: 1351639930
 mas "Mela", id: 1568924476
 mas "Perplexity", id: 6714467650
 mas "Presentify", id: 1507246666
-mas "Xcode", id: 497799835
