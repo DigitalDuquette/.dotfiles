@@ -14,9 +14,15 @@
 # @raycast.authorURL https://raycast.com/DigitalDuquette
 
 #!/bin/bash
+
 osascript <<'EOF'
 tell application "Microsoft Outlook"
-	set newMessage to make new outgoing message with properties {subject:"", content:"@freshservice \"group\":\"Management\", \"agent\":\"Jared Duquette\" @freshservice"}
+	set freshLine to "@freshservice \"group\":\"Management\", \"agent\":\"Jared Duquette\" @freshservice"
+	set htmlBody to "<br><br><br><br>" & freshLine
+
+	set newMessage to make new outgoing message with properties {subject:"", content:htmlBody}
+	make new recipient at newMessage with properties {email address:{address:"information.solutions@padnos.com"}}
+
 	open newMessage
 	activate
 end tell
