@@ -94,7 +94,7 @@ No issues found. Checked for bugs and CLAUDE.md compliance.
 
 ## Output Location
 
-Write the review to: `~/obsidian-vaults/padnos/2-areas/software/pr-review/{pr-number}/review_{number}.md`
+Write the review to: `~/obsidian-vaults/padnos/2-areas/software/pr-review/{repo-name}/{pr-number}/review_{number}.md`
 
 Use this structure:
 
