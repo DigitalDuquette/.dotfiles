@@ -17,15 +17,17 @@ To do this, follow these steps precisely:
 
    If any condition is true, stop and do not proceed.
 
-Note: Still review Claude generated PR's.
+    Note: Still review Claude generated PR's.
 
-2. Launch a haiku agent to return a list of file paths (not their contents) for all relevant CLAUDE.md files including:
+2. Launch a haiku agent to check if the team template is followed, follow section below (Pre-Review: Check Template Compliance) for details
+
+3. Launch a haiku agent to return a list of file paths (not their contents) for all relevant CLAUDE.md files including:
    - The root CLAUDE.md file, if it exists
    - Any CLAUDE.md files in directories containing files modified by the pull request
 
-3. Launch a sonnet agent to view the pull request and return a summary of the changes
+4. Launch a sonnet agent to view the pull request and return a summary of the changes
 
-4. Launch 4 agents in parallel to independently review the changes. Each agent should return the list of issues, where each issue includes a description and the reason it was flagged (e.g. "CLAUDE.md adherence", "bug"). The agents should do the following:
+5. Launch 4 agents in parallel to independently review the changes. Each agent should return the list of issues, where each issue includes a description and the reason it was flagged (e.g. "CLAUDE.md adherence", "bug"). The agents should do the following:
 
    Agents 1 + 2: CLAUDE.md compliance sonnet agents
    Audit changes for CLAUDE.md compliance in parallel. Note: When evaluating CLAUDE.md compliance for a file, you should only consider CLAUDE.md files that share a file path with the file or parents.
@@ -50,16 +52,16 @@ Note: Still review Claude generated PR's.
 
    In addition to the above, each subagent should be told the PR title and description. This will help provide context regarding the author's intent.
 
-5. For each issue found in the previous step by agents 3 and 4, launch parallel subagents to validate the issue. These subagents should get the PR title and description along with a description of the issue. The agent's job is to review the issue to validate that the stated issue is truly an issue with high confidence. For example, if an issue such as "variable is not defined" was flagged, the subagent's job would be to validate that is actually true in the code. Another example would be CLAUDE.md issues. The agent should validate that the CLAUDE.md rule that was violated is scoped for this file and is actually violated. Use Opus subagents for bugs and logic issues, and sonnet agents for CLAUDE.md violations.
+6. For each issue found in the previous step by agents 3 and 4, launch parallel subagents to validate the issue. These subagents should get the PR title and description along with a description of the issue. The agent's job is to review the issue to validate that the stated issue is truly an issue with high confidence. For example, if an issue such as "variable is not defined" was flagged, the subagent's job would be to validate that is actually true in the code. Another example would be CLAUDE.md issues. The agent should validate that the CLAUDE.md rule that was violated is scoped for this file and is actually violated. Use Opus subagents for bugs and logic issues, and sonnet agents for CLAUDE.md violations.
 
-6. Filter out any issues that were not validated in step 5. This step will give us our list of high signal issues for our review.
+7. Filter out any issues that were not validated in step 5. This step will give us our list of high signal issues for our review.
 
-7. If issues were found, skip to step 8 to post inline comments directly.
+8. If issues were found, skip to step 8 to post inline comments directly.
 
    If NO issues were found, post a summary comment using `gh pr comment` (if `--comment` argument is provided):
    "No issues found. Checked for bugs and CLAUDE.md compliance."
 
-8. Post inline comments for each issue using `mcp__github_inline_comment__create_inline_comment`. For each comment:
+9. Post inline comments for each issue using `mcp__github_inline_comment__create_inline_comment`. For each comment:
    - Provide a brief description of the issue
    - For small, self-contained fixes, include a committable suggestion block
    - For larger fixes (6+ lines, structural changes, or changes spanning multiple locations), describe the issue and suggested fix without a suggestion block
@@ -95,11 +97,48 @@ No issues found. Checked for bugs and CLAUDE.md compliance.
 Write the review to: `/Users/jjduqu/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/2-areas/software/pr-review/{pr-number}/review_{number}.md`
 
 Use this structure:
+
 - PR title and link
 - Summary of changes
 - [Your existing template sections]
 
 **Do not post to GitHub.** Write to filesystem only.
+
+---
+
+## Pre-Review: Check Template Compliance
+
+**This step must complete BEFORE any code review begins.**
+
+1. Fetch the canonical PR template from BI-Dev-Guidelines:
+
+    ```bash
+    gh api repos/PADNOS/BI-Dev-Guidelines/contents/templates/PULL-REQUEST-example.md \
+        --jq '.content' | base64 -d
+    ```
+
+2. Get the current PR description:
+
+    ```bash
+    gh pr view {pr-number} --json body --jq '.body'
+    ```
+
+3. Compare PR body against template structure:
+
+   - Are all main sections present? (Context, Changes, Testing, etc.)
+   - Are placeholder instructions removed?
+   - Is there actual content or just template boilerplate?
+
+4. If template compliance fails:
+
+   - Print warning to CLI: "⚠️ PR does not follow the required template from BI-Dev-Guidelines. Please update PR with template."
+   - Include link to template: https://github.com/PADNOS/BI-Dev-Guidelines/blob/main/templates/PULL-REQUEST-example.md
+   - **STOP. Do not proceed with code review.**
+
+5. If template compliance passes:
+
+   - Note this in the review output
+   - Proceed with remaining steps
 
 ---
 
