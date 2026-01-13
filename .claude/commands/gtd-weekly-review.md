@@ -13,6 +13,7 @@ This skill automates the GTD weekly review process by consolidating daily notes 
 ## What This Skill Does
 
 The weekly review creates a file in `2-areas/reviews/weekly/` that serves three purposes:
+
 1. **Team Update** - Public communication of accomplishments and status
 2. **Private Notes** - Sensitive items not for team sharing
 3. **Action Items** - Tasks to move into Fresh/task management
@@ -35,13 +36,15 @@ Create the review file as `2-areas/reviews/weekly/YYYY-WW.md` (e.g., `2026-W02.m
 ### 2. Gather Daily Notes
 
 Find all daily notes for the target week from `0-inbox/daily-notes/`:
+
 - Daily notes use format: `YYYY-MM-DD.md`
-- Read all notes from Monday through Sunday of the target week
+- Read all notes in the folder, regardless of date.
 - If a daily note doesn't exist for a day, skip it
 
 ### 3. Process Daily Notes
 
 For each daily note, extract relevant content:
+
 - Meeting notes and decisions
 - Code review notes
 - Action items and todos
@@ -54,6 +57,7 @@ For each daily note, extract relevant content:
 Create a file using the template below with these sections:
 
 **Team Update**
+
 - Format as a post ready to share with the team
 - Include: accomplishments, key decisions, blockers, upcoming focus
 - Keep it concise and action-oriented
@@ -61,18 +65,21 @@ Create a file using the template below with these sections:
 - Write in first person ("We shipped...", "I reviewed...")
 
 **Private Notes**
+
 - Personnel matters
 - Sensitive technical decisions
 - Items requiring discretion
 - Context the user needs but team doesn't
 
 **Action Items for Fresh**
+
 - Extract uncompleted tasks from daily notes
 - New todos identified during review
 - Follow-ups and commitments
 - Format as checkboxes: `- [ ] Task description`
 
 **Daily Note Review**
+
 - Organize content by day (Monday through Sunday)
 - Preserve important context and Obsidian links
 - Keep this section detailed—it becomes searchable archive
@@ -99,6 +106,7 @@ This clears the inbox after processing, following GTD principles.
 ### 6. Guide the User
 
 After creating the review and archiving notes:
+
 1. Show the user the file location
 2. Report which daily notes were archived
 3. Suggest they review the "Team Update" section before sharing
@@ -109,6 +117,7 @@ After creating the review and archiving notes:
 ## GTD Principles
 
 This skill implements the GTD weekly review:
+
 - **Collect** - Gather from daily notes
 - **Process** - Categorize into team/private/action
 - **Organize** - Structure for communication and action
