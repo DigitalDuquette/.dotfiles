@@ -1,7 +1,4 @@
 {
-  "enabledPlugins": {
-    "code-review@claude-plugins-official": true
-  },
   "permissions": {
     "allowedTools": [
       "Bash(ls:*)",
@@ -10,7 +7,13 @@
       "Bash(grep:*)",
       "Bash(find:*)",
       "Bash(git log:*)",
-      "Bash(git diff:*)"
+      "Bash(git diff:*)",
+      "Bash(gh pr *)", 
+      "Bash(gh issue *)"
     ]
+  },
+  "enabledPlugins": {
+    "code-review@claude-plugins-official": true,
+    "github@claude-plugins-official": true
   }
 }
