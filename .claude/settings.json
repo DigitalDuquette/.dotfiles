@@ -8,8 +8,8 @@
       "Bash(find:*)",
       "Bash(git log:*)",
       "Bash(git diff:*)",
-      "Bash(gh pr *)",
-      "Bash(gh issue *)",
+      "Bash(gh pr:*)",
+      "Bash(gh issue:*)",
       "Read(~/obsidian-vaults/**)",
       "Edit(~/obsidian-vaults/**)"
     ],
