@@ -32,6 +32,37 @@ To do this, follow these steps precisely:
    Agents 1 + 2: CLAUDE.md compliance sonnet agents
    Audit changes for CLAUDE.md compliance in parallel. Note: When evaluating CLAUDE.md compliance for a file, you should only consider CLAUDE.md files that share a file path with the file or parents.
 
+   **CRITICAL architectural patterns to check:**
+
+   **For Python code:**
+
+   1. **Dependency Injection Violations:**
+      - Flag utility modules (e.g., `ftp_tools.py`, `db_tools.py`) loading `.env` or `config.yaml` at module level
+      - Flag module-level initialization of credentials/configuration (e.g., `env = dotenv_values('.env')` at module level)
+      - Should see: Configuration loaded in main pipeline script, passed as function parameters to modules
+
+   2. **Logging Architecture Violations:**
+      - Flag utility modules accepting `log` or `logger` parameters in function signatures
+      - Flag utility modules configuring their own loggers (e.g., `logging.basicConfig()`, `logger = logging.getLogger(__name__)`)
+      - Should see: PADpy decorators (`@log_execution`) on main pipeline functions, modules raise exceptions only
+
+   Reference CLAUDE.md sections: "Configuration and Dependency Injection" and "Logging Architecture"
+
+   **For SQL DDL scripts:**
+
+   1. **Unnecessary Session Settings:**
+      - Flag `SET ANSI_NULLS ON` (it's the default)
+      - Flag `SET QUOTED_IDENTIFIER ON` (it's the default)
+      - Should see: Clean DDL without session settings unless explicitly required
+
+   2. **Index Option Bloat:**
+      - Flag index options that are all defaults: `FILLFACTOR = 100`, `PAD_INDEX = ON`, `STATISTICS_NORECOMPUTE = OFF`, `IGNORE_DUP_KEY = OFF`, `ALLOW_ROW_LOCKS = ON`, `ALLOW_PAGE_LOCKS = ON`, `OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF`
+      - Flag `FILLFACTOR = 100` (it's the default, only set if you have a specific performance reason and document why)
+      - Should see: Minimal index definitions without WITH clause unless changing defaults
+      - Example: `PRIMARY KEY CLUSTERED (ID ASC)` not `PRIMARY KEY CLUSTERED (ID ASC) WITH (PAD_INDEX = ON, FILLFACTOR = 100, ...)`
+
+   **Rationale:** This is SSMS "Generate Scripts" bloat that people copy-paste without thinking. Keep DDL clean and minimal.
+
    Agent 3: Opus bug agent (parallel subagent with agent 4)
    Scan for obvious bugs. Focus only on the diff itself without reading extra context. Flag only significant bugs; ignore nitpicks and likely false positives. Do not flag issues that you cannot validate without looking at context outside of the git diff.
 
@@ -52,14 +83,14 @@ To do this, follow these steps precisely:
 
    In addition to the above, each subagent should be told the PR title and description. This will help provide context regarding the author's intent.
 
-6. For each issue found in the previous step by agents 3 and 4, launch parallel subagents to validate the issue. These subagents should get the PR title and description along with a description of the issue. The agent's job is to review the issue to validate that the stated issue is truly an issue with high confidence. For example, if an issue such as "variable is not defined" was flagged, the subagent's job would be to validate that is actually true in the code. Another example would be CLAUDE.md issues. The agent should validate that the CLAUDE.md rule that was violated is scoped for this file and is actually violated. Use Opus subagents for bugs and logic issues, and sonnet agents for CLAUDE.md violations.
+6. For each issue found in the previous step by agents 1, 2, 3, and 4, launch parallel subagents to validate the issue. These subagents should get the PR title and description along with a description of the issue. The agent's job is to review the issue to validate that the stated issue is truly an issue with high confidence. For example, if an issue such as "variable is not defined" was flagged, the subagent's job would be to validate that is actually true in the code. Another example would be CLAUDE.md issues (including architectural violations like dependency injection or logging patterns). The agent should validate that the CLAUDE.md rule that was violated is scoped for this file and is actually violated. Use Opus subagents for bugs and logic issues, and sonnet agents for CLAUDE.md violations.
 
 7. Filter out any issues that were not validated in step 5. This step will give us our list of high signal issues for our review.
 
 8. If issues were found, skip to step 8 to post inline comments directly.
 
    If NO issues were found, post a summary comment using `gh pr comment` (if `--comment` argument is provided):
-   "No issues found. Checked for bugs and CLAUDE.md compliance."
+   "No issues found. Checked for bugs, CLAUDE.md compliance, dependency injection patterns, and logging architecture."
 
 9. Post inline comments for each issue using `mcp__github_inline_comment__create_inline_comment`. For each comment:
    - Provide a brief description of the issue
@@ -77,6 +108,8 @@ Use this list when evaluating issues in Steps 4 and 5 (these are false positives
 - General code quality concerns (e.g., lack of test coverage, general security issues) unless explicitly required in CLAUDE.md
 - Issues mentioned in CLAUDE.md but explicitly silenced in the code (e.g., via a lint ignore comment)
 
+**Note:** Architectural violations that ARE documented in CLAUDE.md (dependency injection, logging architecture, etc.) SHOULD be flagged.
+
 Notes:
 
 - Use gh CLI to interact with GitHub (e.g., fetch pull requests, create comments). Do not use web fetch.
@@ -88,7 +121,7 @@ Notes:
 
 ## Code review
 
-No issues found. Checked for bugs and CLAUDE.md compliance.
+No issues found. Checked for bugs, CLAUDE.md compliance, dependency injection patterns, and logging architecture.
 
 ---
 
