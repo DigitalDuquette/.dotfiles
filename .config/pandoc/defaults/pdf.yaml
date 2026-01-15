@@ -1,0 +1,5 @@
+pdf-engine: pdflatex
+variables:
+  geometry: margin=0.25in
+  fontsize: 11pt
+  mainfont: Helvetica
