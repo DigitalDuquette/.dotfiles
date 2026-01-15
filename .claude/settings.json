@@ -1,6 +1,6 @@
 {
   "permissions": {
-    "allowedTools": [
+    "allow": [
       "Bash(ls:*)",
       "Bash(pwd:*)",
       "Bash(cat:*)",
@@ -8,8 +8,14 @@
       "Bash(find:*)",
       "Bash(git log:*)",
       "Bash(git diff:*)",
-      "Bash(gh pr *)", 
-      "Bash(gh issue *)"
+      "Bash(gh pr *)",
+      "Bash(gh issue *)",
+      "Read(~/obsidian-vaults/**)",
+      "Edit(~/obsidian-vaults/**)"
+    ],
+    "deny": [
+      "Read(~/obsidian-vaults/.obsidian/**)",
+      "Edit(~/obsidian-vaults/.obsidian/**)"
     ]
   },
   "enabledPlugins": {
