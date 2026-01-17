@@ -27,6 +27,7 @@ When invoked, follow this workflow:
 ### 1. Determine the Week
 
 Calculate the current ISO week number using:
+
 ```bash
 date +%Y-W%V
 ```
@@ -51,6 +52,7 @@ For each daily note, extract relevant content:
 - Project planning notes
 - Links to other Obsidian notes
 - Important context
+- Reference materials
 
 ### 4. Populate the Weekly Review
 
@@ -63,6 +65,18 @@ Create a file using the template below with these sections:
 - Keep it concise and action-oriented
 - Remove sensitive or non-essential details
 - Write in first person ("We shipped...", "I reviewed...")
+- Keep items in bullet list with no preamble
+
+**DO NOT include in Team Update:**
+
+- Recruiting issues or candidate information which should be for managers only, sharing that recruiting is happened is acceptable.
+- Performance management discussions
+- Personnel matters or interventions
+- Salary, compensation, or HR topics
+- Individual performance issues
+- Confidential business decisions
+
+These items belong exclusively in Private Notes.
 
 **Private Notes**
 
@@ -91,10 +105,12 @@ After successfully creating the weekly review, move the processed daily notes to
 
 1. Ensure the archive directory exists: `4-archive/daily-notes/`
 2. Move all daily notes from `0-inbox/daily-notes/` that were included in the weekly review to `4-archive/daily-notes/`
+    - confirm the file name doesn't already exist in the archive folder, if it does, append the latest datetime stamp to the file
 3. Use `mv` command to preserve file metadata
 4. Confirm the moves completed successfully
 
 Example:
+
 ```bash
 mkdir -p 4-archive/daily-notes
 mv 0-inbox/daily-notes/2026-01-06.md 4-archive/daily-notes/
@@ -128,37 +144,6 @@ This skill implements the GTD weekly review:
 
 ---
 
-## Weekly Review Template
-
-Use this structure for the generated file:
-
-```markdown
-# Week [WW], [YYYY]
-
-## Team Update
-
-[Write team update here - format as post ready to share]
-
-[Include: accomplishments, key decisions, blockers, upcoming focus]
-
----
-
-## Private Notes
-
-[Items not appropriate for team sharing]
-
----
-
-## Action Items for Fresh
-
-- [ ]
-- [ ]
-- [ ]
-
-```
-
----
-
 ## Notes
 
 - Line length: 120 characters maximum
@@ -166,3 +151,70 @@ Use this structure for the generated file:
 - Maintain all Obsidian wiki-links: `[[note-name]]`
 - Use horizontal rules `---` between major sections
 - Focus on clean git diffs
+
+---
+
+## Example
+
+This example demonstrates the structure and tone. Adapt the content and length based on your actual daily notes.
+
+```md
+# Week 03, 2026
+
+## Team Update
+
+This week was focused on infrastructure improvements and project planning.
+
+Key accomplishments:
+
+- Fixed the contact center grouping transformation that powers multiple dashboards. Working with Jeff G on the rename
+  pattern, we established a sustainable process where future additions won't break dashboards.
+- Made significant progress on Auto Pricing Calculator with user stories and project planning revisions.
+- Reviewed AISC work and built out January scorecard, including sprint planning for January and February.
+
+Upcoming focus: Connor out next week with new baby. Completed knowledge transfer sessions on flow toggles.
+
+Blockers:
+- Still no communication from Salesforce as of Jan 16, risking our ability to negotiate a good deal.
+
+---
+
+## Private Notes
+
+Recruiting: Processed large batch of resumes through LinkedIn. Created separate email workflow for Devon to handle phone
+screens. Several top candidates already replied.
+
+Performance management: Created capture log for Arnaud following TG example. Enough of a trend for structured
+intervention.
+
+Technical frustrations: 2 hours lost trying to get scorecard to print - waiting on Tony for Mac drivers and Jim for MG1.
+
+---
+
+## Action Items for Fresh
+
+- [ ] Jared to convert ticket 111239 or check if already converted
+- [ ] Review DBA scripts repo structure following BI dev guidelines
+- [ ] Turn on flow on Monday and communicate with auto team
+- [ ] Follow up on Salesforce communication/negotiation
+
+---
+
+## Daily Note Review
+
+### Thursday, January 9
+
+Discovered Claude Code internal tool simplification process. Worth reviewing source and testing for code review
+workflows.
+
+### Friday, January 10
+
+Researched conferences to book review dates. Notes on agents and skills architecture.
+
+### Sunday, January 12
+
+**Sprint Planning:** Discussed outbound inspection in RIMAS with Jeff. Scoping decisions on VIN title issues (111040).
+
+**Technical Frustrations:** Nearly 2 hours trying to get scorecard to print.
+
+```
