@@ -86,6 +86,8 @@ cask "launchcontrol"
 cask "loom"
 # Clipboard manager
 cask "maccy"
+# Speech-to-text transcription application
+cask "macwhisper"
 # Multi-platform web browser
 cask "microsoft-edge"
 # Knowledge base that works on top of a local folder of plain text Markdown files
