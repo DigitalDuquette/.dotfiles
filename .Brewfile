@@ -102,6 +102,8 @@ cask "postman"
 cask "raycast"
 # Team communication and collaboration software
 cask "slack"
+# File transfer application
+cask "transmit"
 # Open-source code editor
 cask "visual-studio-code"
 # Connect to Windows
