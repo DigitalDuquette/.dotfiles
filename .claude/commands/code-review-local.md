@@ -50,6 +50,10 @@ I was given: $ARGUMENTS
    - If file already exists: append new review after `---` separator
    - Count existing reviews to determine review number (first review has no number, subsequent are "Review 2", "Review 3", etc.)
    - Include date in review header for appended reviews
+   - **IMPORTANT:** For appended reviews, nest all content under the "Review {N}" heading:
+     - Use `## Review {N}` as the top-level heading
+     - Use `### Findings` and `### Notes` (nested under Review)
+     - Use `#### Bugs`, `#### DRY Violations`, etc. (nested under Findings)
 
 **What NOT to flag (false positives):**
 - Pre-existing issues not introduced by this PR
@@ -137,11 +141,17 @@ If the file already exists, **append** the following after the existing content 
 
 **Status:** ✅ LOOKS GOOD | ⚠️ ISSUES FOUND
 
-## Findings
+### Findings
 
-{Same format as above - list any new issues found in the updated PR}
+{Same format as above but with one extra # - use #### for subsections like Bugs, DRY Violations, etc.}
 
-## Notes
+#### Bugs
+- `file.py:123` - Brief description
+
+#### DRY Violations
+- `file.py:100-150` - Duplicated logic
+
+### Notes
 
 {Optional notes about what changed or what was re-reviewed}
 ```
