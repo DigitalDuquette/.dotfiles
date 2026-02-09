@@ -1,5 +1,5 @@
 ---
-allowed-tools: Bash(gh issue view:*), Bash(gh search:*), Bash(gh issue list:*), Bash(gh pr diff:*), Bash(gh pr view:*), Bash(gh pr list:*), Bash(gh repo view:*), Read(~/obsidian-vaults/padnos/**), Write(~/obsidian-vaults/padnos/**), Glob(~/obsidian-vaults/padnos/**), Grep(~/obsidian-vaults/padnos/**), Read(/Users/jjduqu/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/**), Write(/Users/jjduqu/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/**), Glob(/Users/jjduqu/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/**), Grep(/Users/jjduqu/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/**)
+allowed-tools: Bash(gh issue view:*), Bash(gh search:*), Bash(gh issue list:*), Bash(gh pr diff:*), Bash(gh pr view:*), Bash(gh pr list:*), Bash(gh repo view:*), Bash(gh api:*), Read(~/obsidian-vaults/padnos/**), Write(~/obsidian-vaults/padnos/**), Glob(~/obsidian-vaults/padnos/**), Grep(~/obsidian-vaults/padnos/**), Read(/Users/jjduqu/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/**), Write(/Users/jjduqu/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/**), Glob(/Users/jjduqu/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/**), Grep(/Users/jjduqu/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/**)
 description: Code review a pull request
 argument-hint: "[REPO] <PR_NUMBER>"
 ---
@@ -17,11 +17,22 @@ I was given: $ARGUMENTS
 
 1. Determine REPO and PR_NUMBER using the logic above (check if $1 is empty or not)
 
-2. Read relevant CLAUDE.md files (root + any in directories with modified files)
+2. Get PR metadata:
+   - PR title, URL: `gh pr view -R <REPO> <PR_NUMBER> --json title,url`
+   - Head branch ref: `gh pr view -R <REPO> <PR_NUMBER> --json headRefName -q .headRefName`
+   - Changed files: `gh pr view -R <REPO> <PR_NUMBER> --json files -q '.files[].path'`
 
-3. Get the PR diff using the repo and PR number: `gh pr diff -R <REPO> <PR_NUMBER>`
+3. Read relevant CLAUDE.md files from Obsidian vault (root + any in directories matching modified files)
 
-4. Review the code looking for:
+4. Get the PR diff: `gh pr diff -R <REPO> <PR_NUMBER>`
+
+5. Get file contents from GitHub (NOT local filesystem):
+   - For any file you need to review in detail, use:
+     `gh api repos/<REPO>/contents/<FILE_PATH>?ref=<HEAD_REF> --jq '.content' | base64 -d`
+   - This ensures you're always reviewing the actual PR code, not stale local files
+   - Only fetch files when you need to see full context beyond the diff
+
+6. Review the code looking for:
    - **Bugs:** Syntax errors, logic errors, will-break issues only (not style/nitpicks)
    - **DRY violations:** Repeated code that should be extracted
    - **SOLID violations:** Especially Single Responsibility violations
@@ -35,7 +46,7 @@ I was given: $ARGUMENTS
        logging.basicConfig)
      - SQL DDL: Unnecessary defaults (SET ANSI_NULLS ON, FILLFACTOR = 100, etc.)
 
-5. Write the review file (see Output Format below)
+7. Write the review file (see Output Format below)
    - If file already exists: append new review after `---` separator
    - Count existing reviews to determine review number (first review has no number, subsequent are "Review 2", "Review 3", etc.)
    - Include date in review header for appended reviews
@@ -151,5 +162,5 @@ If the file already exists, **append** the following after the existing content 
 - Brief descriptions (1 sentence max)
 - User will check the code and add GitHub review comments themselves
 - Do NOT post to GitHub - filesystem only
-- Use GitHub CLI `gh` to access PR details
-- Use local file system for current version of the files in the PR.
+- Use GitHub CLI `gh` exclusively for ALL PR data (diff, files, metadata)
+- NEVER read code files from local filesystem - always use `gh api` to get file contents from GitHub
