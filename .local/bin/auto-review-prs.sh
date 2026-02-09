@@ -22,21 +22,18 @@ touch "$STATE_FILE"
 
 cd "$VAULT_DIR" || exit 1
 
-# Pull latest changes before starting
-git pull --rebase --quiet || {
-  echo "$(date): ERROR: git pull failed" >> "$LOG_FILE"
-  exit 1
-}
-
-# Find all open PRs in PADNOS org where I'm involved
-# This includes: assigned, mentioned, review requested, or authored
+# Find all open PRs in PADNOS org where I'm requested as reviewer
 prs=$(gh search prs \
   --owner PADNOS \
   --state open \
-  --involves @me \
+  --review-requested @me \
   --json repository,number \
   --jq ".[] | \"\(.repository.name):\(.number)\"" \
   2>> "$LOG_FILE")
+
+# Count and log how many PRs were found
+pr_count=$(echo "$prs" | grep -c ":" || echo "0")
+echo "$(date): Found $pr_count PRs to check" >> "$LOG_FILE"
 
 [[ -z "$prs" ]] && exit 0
 
@@ -45,10 +42,14 @@ while IFS=: read -r repo_name pr_num; do
   review_file="2-areas/software/pr-review/${repo_name}/PR-${pr_num}.md"
   state_key="${repo}:${pr_num}"
 
+  echo "$(date): Checking $state_key..." >> "$LOG_FILE"
+
   # Check if PR has been updated since last review
   should_review=false
 
   if [[ -f "$review_file" ]]; then
+    echo "$(date):   Review file exists, checking if PR was updated..." >> "$LOG_FILE"
+
     # Get PR last updated timestamp
     pr_updated=$(gh pr view -R "$repo" "$pr_num" --json updatedAt -q .updatedAt 2>> "$LOG_FILE")
 
@@ -60,12 +61,15 @@ while IFS=: read -r repo_name pr_num; do
       # If PR updated after review file, regenerate
       if [[ $pr_mtime -gt $file_mtime ]]; then
         should_review=true
-        echo "$(date): PR updated, regenerating review for $state_key..." >> "$LOG_FILE"
+        echo "$(date):   PR updated after review file, will regenerate" >> "$LOG_FILE"
+      else
+        echo "$(date):   Review file is up to date, skipping" >> "$LOG_FILE"
       fi
     fi
   else
     # No review file exists, need to review
     should_review=true
+    echo "$(date):   No review file exists, will generate" >> "$LOG_FILE"
   fi
 
   # Skip if no review needed
@@ -75,36 +79,27 @@ while IFS=: read -r repo_name pr_num; do
     continue
   fi
 
-  echo "$(date): Processing $repo PR #$pr_num..." >> "$LOG_FILE"
+  {
+    echo "$(date): Processing $repo PR #$pr_num..."
 
-  # Create review directory if needed
-  mkdir -p "2-areas/software/pr-review/${repo_name}"
+    # Create review directory if needed
+    mkdir -p "2-areas/software/pr-review/${repo_name}"
 
-  # Generate review (token cost here)
-  # Pass full repo name (PADNOS/repo-name) and PR number
-  if claude /code-review-local "$repo" "$pr_num" --headless 2>> "$LOG_FILE"; then
-    # Mark as reviewed on success
-    echo "$state_key" >> "$STATE_FILE"
-
-    # Commit and push
-    if [[ -f "$review_file" ]]; then
-      git add "$review_file"
-      # Check if this is an update (file was already tracked)
-      if git ls-files --error-unmatch "$review_file" >/dev/null 2>&1; then
-        commit_msg="Update review: PR-${pr_num} from ${repo_name}"
+    # Generate review (token cost here)
+    # Pass full repo name (PADNOS/repo-name) and PR number
+    # Use -p flag for non-interactive mode
+    if claude -p "/code-review-local $repo $pr_num" 2>&1 | grep -v "^$"; then
+      # Verify review file was created
+      if [[ -f "$review_file" ]]; then
+        echo "$(date): ✓ Completed review for $state_key"
+        # Mark as reviewed on success
+        echo "$state_key" >> "$STATE_FILE"
       else
-        commit_msg="Auto-review: PR-${pr_num} from ${repo_name}"
+        echo "$(date): WARNING: Review file not created for $state_key"
       fi
-      git commit -m "$commit_msg" --quiet
-      git push --quiet || {
-        echo "$(date): WARNING: git push failed for $state_key" >> "$LOG_FILE"
-      }
-      echo "$(date): ✓ Completed review for $state_key" >> "$LOG_FILE"
     else
-      echo "$(date): WARNING: Review file not created for $state_key" >> "$LOG_FILE"
+      echo "$(date): ERROR: Claude failed for $state_key"
     fi
-  else
-    echo "$(date): ERROR: Claude failed for $state_key" >> "$LOG_FILE"
-  fi
+  } >> "$LOG_FILE" 2>&1
 
 done <<< "$prs"

@@ -1,25 +1,21 @@
 ---
-allowed-tools: Bash(gh issue view:*), Bash(gh search:*), Bash(gh issue list:*), Bash(gh pr diff:*), Bash(gh pr view:*), Bash(gh pr list:*), Read(~/obsidian-vaults/padnos/**), Write(~/obsidian-vaults/padnos/**), Glob(~/obsidian-vaults/padnos/**), Grep(~/obsidian-vaults/padnos/**), Read(/Users/jjduqu/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/**), Write(/Users/jjduqu/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/**), Glob(/Users/jjduqu/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/**), Grep(/Users/jjduqu/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/**)
+allowed-tools: Bash(gh issue view:*), Bash(gh search:*), Bash(gh issue list:*), Bash(gh pr diff:*), Bash(gh pr view:*), Bash(gh pr list:*), Bash(gh repo view:*), Read(~/obsidian-vaults/padnos/**), Write(~/obsidian-vaults/padnos/**), Glob(~/obsidian-vaults/padnos/**), Grep(~/obsidian-vaults/padnos/**), Read(/Users/jjduqu/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/**), Write(/Users/jjduqu/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/**), Glob(/Users/jjduqu/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/**), Grep(/Users/jjduqu/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/**)
 description: Code review a pull request
+argument-hint: "[REPO] <PR_NUMBER>"
 ---
 
-Provide a straightforward code review for the given pull request.
+Provide a straightforward code review for pull request: $ARGUMENTS
 
-**Usage:**
-```
-claude /code-review-local <PR_NUMBER>              # Uses current working directory repo
-claude /code-review-local <REPO> <PR_NUMBER>       # Explicitly specify repo (e.g., PADNOS/RIMAS-extensibility)
-```
+**Argument parsing:**
 
-**Arguments:**
-- `REPO` (optional): Full repo name (owner/repo). If not provided, infers from current directory's git remote.
-- `PR_NUMBER` (required): The pull request number to review.
+I was given: $ARGUMENTS
+
+- If two arguments (format: REPO PR_NUMBER): Use REPO=$0 and PR_NUMBER=$1
+- If one argument (format: PR_NUMBER): Use PR_NUMBER=$0 and get REPO from `gh repo view --json nameWithOwner -q .nameWithOwner`
 
 **Steps:**
 
-1. Parse arguments:
-   - If 2 args: first is repo, second is PR number
-   - If 1 arg: it's PR number, infer repo from current directory (`git remote get-url origin`)
+1. Determine REPO and PR_NUMBER using the logic above (check if $1 is empty or not)
 
 2. Read relevant CLAUDE.md files (root + any in directories with modified files)
 
