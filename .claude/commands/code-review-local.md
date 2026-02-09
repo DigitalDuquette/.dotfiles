@@ -1,17 +1,31 @@
 ---
-allowed-tools: Bash(gh issue view:*), Bash(gh search:*), Bash(gh issue list:*), Bash(gh pr diff:*), Bash(gh pr view:*), Bash(gh pr list:*)
+allowed-tools: Bash(gh issue view:*), Bash(gh search:*), Bash(gh issue list:*), Bash(gh pr diff:*), Bash(gh pr view:*), Bash(gh pr list:*), Read(~/obsidian-vaults/padnos/**), Write(~/obsidian-vaults/padnos/**), Glob(~/obsidian-vaults/padnos/**), Grep(~/obsidian-vaults/padnos/**), Read(/Users/jjduqu/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/**), Write(/Users/jjduqu/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/**), Glob(/Users/jjduqu/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/**), Grep(/Users/jjduqu/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/**)
 description: Code review a pull request
 ---
 
 Provide a straightforward code review for the given pull request.
 
+**Usage:**
+```
+claude /code-review-local <PR_NUMBER>              # Uses current working directory repo
+claude /code-review-local <REPO> <PR_NUMBER>       # Explicitly specify repo (e.g., PADNOS/RIMAS-extensibility)
+```
+
+**Arguments:**
+- `REPO` (optional): Full repo name (owner/repo). If not provided, infers from current directory's git remote.
+- `PR_NUMBER` (required): The pull request number to review.
+
 **Steps:**
 
-1. Read relevant CLAUDE.md files (root + any in directories with modified files)
+1. Parse arguments:
+   - If 2 args: first is repo, second is PR number
+   - If 1 arg: it's PR number, infer repo from current directory (`git remote get-url origin`)
 
-2. Get the PR diff and understand what changed
+2. Read relevant CLAUDE.md files (root + any in directories with modified files)
 
-3. Review the code looking for:
+3. Get the PR diff using the repo and PR number: `gh pr diff -R <REPO> <PR_NUMBER>`
+
+4. Review the code looking for:
    - **Bugs:** Syntax errors, logic errors, will-break issues only (not style/nitpicks)
    - **DRY violations:** Repeated code that should be extracted
    - **SOLID violations:** Especially Single Responsibility violations
@@ -25,7 +39,10 @@ Provide a straightforward code review for the given pull request.
        logging.basicConfig)
      - SQL DDL: Unnecessary defaults (SET ANSI_NULLS ON, FILLFACTOR = 100, etc.)
 
-4. Write the review file (see Output Format below)
+5. Write the review file (see Output Format below)
+   - If file already exists: append new review after `---` separator
+   - Count existing reviews to determine review number (first review has no number, subsequent are "Review 2", "Review 3", etc.)
+   - Include date in review header for appended reviews
 
 **What NOT to flag (false positives):**
 - Pre-existing issues not introduced by this PR
@@ -48,7 +65,7 @@ section, not as a finding.**
 
 Write the review to: `~/obsidian-vaults/padnos/2-areas/software/pr-review/{repo-name}/PR-{pr-number}.md`
 
-**KISS format - just the findings:**
+### For NEW review file (first review):
 
 ```markdown
 # PR-{number}: {title}
@@ -86,6 +103,37 @@ Write the review to: `~/obsidian-vaults/padnos/2-areas/software/pr-review/{repo-
 
 {Optional: Questions, uncertainties, or observations that don't rise to "finding" level}
 ```
+
+### For APPENDING to existing review file:
+
+If the file already exists, **append** the following after the existing content (after a `---` separator):
+
+```markdown
+---
+
+## Review {N} - {YYYY-MM-DD}
+
+**Status:** ✅ LOOKS GOOD | ⚠️ ISSUES FOUND
+
+## Findings
+
+{Same format as above - list any new issues found in the updated PR}
+
+## Notes
+
+{Optional notes about what changed or what was re-reviewed}
+```
+
+**Review numbering:**
+- First review: No number (just the main sections)
+- Second review: "Review 2"
+- Third review: "Review 3"
+- etc.
+
+**How to determine review number:**
+- Count existing "## Review" headings in the file
+- If none exist, this is Review 2 (first append)
+- If "## Review 2" exists but not "## Review 3", this is Review 3
 
 **Key principles:**
 - One line per issue: `file:line - description`
