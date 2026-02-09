@@ -47,6 +47,21 @@ I was given: $ARGUMENTS
 - Anything a linter would catch
 - Nitpicks a senior engineer would ignore
 
+**Common false positives to avoid:**
+- **Module-level config loading**: Standard practice for application entry points (files with `if __name__ == '__main__'`). Only flag if it's a library module meant to be imported.
+- **API client classes**: A class that wraps an API (setup, call API, parse response) is ONE responsibility, not a SOLID violation. Don't confuse "multiple steps" with "multiple responsibilities."
+- **Cohesive workflows**: Database operations that are part of one logical workflow (e.g., initialize_queue running 6 setup queries) are NOT DRY violations. That's just how workflows work.
+- **SQL file organization**: Separating SQL into .sql files with descriptive names is GOOD organization, not a maintainability problem. Don't flag this as "separated from usage."
+- **Contextual constants**: Simple limits like `[:10]` for claim keys or `[:150]` for note truncation aren't "magic numbers" worth flagging if the context is clear.
+- **Defensive error handling**: Edge case error handling for stable APIs (bounds checking, type validation) is nice-to-have, not critical. Only flag actual bugs that will break in normal operation.
+- **Line numbers**: Always verify line numbers are from the actual file, not the diff output. Check file length before citing line numbers.
+
+**Critical thinking checklist:**
+- Does this pattern exist for a good reason? (Don't flag patterns without understanding WHY)
+- Would this actually break in production? (Theoretical edge cases ≠ critical bugs)
+- Is this how senior engineers typically write this type of code? (Don't be overly dogmatic)
+- Can I defend this finding if challenged? (Be ready to explain or retract)
+
 **If uncertain whether something is a bug, frame it as a question in the Notes
 section, not as a finding.**
 
