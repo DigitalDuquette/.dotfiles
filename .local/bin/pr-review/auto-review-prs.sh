@@ -1,12 +1,15 @@
 #!/bin/bash
 # Auto-generate PR reviews when new PRs are created
 
+# Ensure Homebrew binaries are in PATH
+export PATH="/opt/homebrew/bin:$PATH"
+
 # Configuration
+SCRIPT_DIR="$HOME/.local/bin/pr-review"
 VAULT_DIR=~/obsidian-vaults/padnos
-STATE_FILE=~/.claude/reviewed-prs.txt
-LOCK_FILE=~/.claude/auto-review.lock
-LOG_DIR=~/.claude/logs
-LOG_FILE="$LOG_DIR/auto-review-prs.log"
+STATE_FILE="$SCRIPT_DIR/reviewed-prs.txt"
+LOCK_FILE="$SCRIPT_DIR/auto-review.lock"
+LOG_FILE="$SCRIPT_DIR/auto-review-prs.log"
 
 # Prevent concurrent runs
 if [[ -f "$LOCK_FILE" ]]; then
@@ -17,7 +20,7 @@ trap "rm -f $LOCK_FILE" EXIT
 touch "$LOCK_FILE"
 
 # Initialize state file
-mkdir -p ~/.claude "$LOG_DIR"
+mkdir -p "$SCRIPT_DIR"
 touch "$STATE_FILE"
 
 cd "$VAULT_DIR" || exit 1
@@ -44,38 +47,43 @@ while IFS=: read -r repo_name pr_num; do
 
   echo "$(date): Checking $state_key..." >> "$LOG_FILE"
 
-  # Check if PR has been updated since last review
+  # Get current PR updated timestamp
+  pr_updated=$(gh pr view -R "$repo" "$pr_num" --json updatedAt -q .updatedAt 2>> "$LOG_FILE")
+
+  if [[ -z "$pr_updated" ]]; then
+    echo "$(date):   ERROR: Could not fetch PR data, skipping" >> "$LOG_FILE"
+    continue
+  fi
+
+  pr_timestamp=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" "$pr_updated" +%s 2>/dev/null || echo "0")
+
+  # Check if we've reviewed this PR before
+  state_entry=$(grep "^${state_key}:" "$STATE_FILE" 2>/dev/null || echo "")
   should_review=false
 
-  if [[ -f "$review_file" ]]; then
-    echo "$(date):   Review file exists, checking if PR was updated..." >> "$LOG_FILE"
+  if [[ -n "$state_entry" ]]; then
+    # Extract the stored timestamp (when we last reviewed it)
+    stored_timestamp=$(echo "$state_entry" | cut -d: -f3)
 
-    # Get PR last updated timestamp
-    pr_updated=$(gh pr view -R "$repo" "$pr_num" --json updatedAt -q .updatedAt 2>> "$LOG_FILE")
-
-    if [[ -n "$pr_updated" ]]; then
-      # Get review file modification time
-      file_mtime=$(stat -f %m "$review_file" 2>/dev/null || echo "0")
-      pr_mtime=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" "$pr_updated" +%s 2>/dev/null || echo "0")
-
-      # If PR updated after review file, regenerate
-      if [[ $pr_mtime -gt $file_mtime ]]; then
-        should_review=true
-        echo "$(date):   PR updated after review file, will regenerate" >> "$LOG_FILE"
-      else
-        echo "$(date):   Review file is up to date, skipping" >> "$LOG_FILE"
-      fi
+    # If no timestamp (old format), review it to update to new format
+    if [[ -z "$stored_timestamp" || "$stored_timestamp" == "" ]]; then
+      should_review=true
+      echo "$(date):   Old state format detected, will review and update" >> "$LOG_FILE"
+    # Compare PR's current updatedAt with our stored timestamp
+    elif [[ $pr_timestamp -gt $stored_timestamp ]]; then
+      should_review=true
+      echo "$(date):   PR updated since last review (PR: $pr_updated, Last: $(date -r $stored_timestamp)), will regenerate" >> "$LOG_FILE"
+    else
+      echo "$(date):   Already reviewed at this version, skipping" >> "$LOG_FILE"
     fi
   else
-    # No review file exists, need to review
+    # Not reviewed before
     should_review=true
-    echo "$(date):   No review file exists, will generate" >> "$LOG_FILE"
+    echo "$(date):   Not reviewed before, will generate" >> "$LOG_FILE"
   fi
 
   # Skip if no review needed
   if [[ "$should_review" != "true" ]]; then
-    # Mark as processed if not already
-    grep -qF "$state_key" "$STATE_FILE" || echo "$state_key" >> "$STATE_FILE"
     continue
   fi
 
@@ -92,8 +100,10 @@ while IFS=: read -r repo_name pr_num; do
       # Verify review file was created
       if [[ -f "$review_file" ]]; then
         echo "$(date): ✓ Completed review for $state_key"
-        # Mark as reviewed on success
-        echo "$state_key" >> "$STATE_FILE"
+        # Mark as reviewed on success with PR's updatedAt timestamp
+        # Remove old entry first, then add new one
+        sed -i '' "/^${state_key}:/d" "$STATE_FILE" 2>/dev/null
+        echo "${state_key}:${pr_timestamp}" >> "$STATE_FILE"
       else
         echo "$(date): WARNING: Review file not created for $state_key"
       fi
