@@ -32,21 +32,29 @@ I was given: $ARGUMENTS
    - This ensures you're always reviewing the actual PR code, not stale local files
    - Only fetch files when you need to see full context beyond the diff
 
-6. Review the code looking for:
+6. **Understand what the PR does FIRST:**
+   - What problem is this PR solving?
+   - Is this a new feature, bug fix, refactor, or hotfix?
+   - What's the context (new code vs. fixing existing trash)?
+   - Read the PR description and linked issues to understand intent
+
+7. **Explain the code changes:**
+   - What technical changes are being made?
+   - What patterns/libraries/approaches are being used?
+   - How does this implementation solve the problem?
+
+8. **Review for problems with the changes:**
    - **Bugs:** Syntax errors, logic errors, will-break issues only (not style/nitpicks)
    - **DRY violations:** Repeated code that should be extracted
-   - **SOLID violations:** Especially Single Responsibility violations
-   - **Readability/maintainability:** Is the code clear and easy to maintain?
-   - **Pattern violations:** Does it follow appropriate patterns (e.g., DAG-like for
-     pipelines)?
+   - **SOLID violations:** Especially Single Responsibility violations (new god classes, making existing ones worse)
+   - **Pattern violations:** Does it follow appropriate patterns (e.g., DAG-like for pipelines)?
    - **CLAUDE.md architectural violations:**
-     - Python: Dependency injection violations (module-level .env loading, module-level
-       credential init)
-     - Python: Logging architecture violations (utility modules with logger params or
-       logging.basicConfig)
+     - Python: Dependency injection violations (module-level .env loading, module-level credential init)
+     - Python: Logging architecture violations (utility modules with logger params or logging.basicConfig)
      - SQL DDL: Unnecessary defaults (SET ANSI_NULLS ON, FILLFACTOR = 100, etc.)
+   - **Context-appropriate severity:** Performance nitpicks and code cleanliness don't block hotfixes on known-bad code
 
-7. Write the review file (see Output Format below)
+9. Write the review file (see Output Format below)
    - If file already exists: append new review after `---` separator
    - Count existing reviews to determine review number (first review has no number, subsequent are "Review 2", "Review 3", etc.)
    - Include date in review header for appended reviews
@@ -102,9 +110,9 @@ Write the review to: `~/obsidian-vaults/padnos/2-areas/software/pr-review/{repo-
 
 ## Findings
 
-{If no issues: "No issues found."}
+{If no issues: "No DRY or SOLID violations found."}
 
-{If issues found, list them simply:}
+{If issues found, list them by category:}
 
 ### Bugs
 - `file.py:123` - Brief description (1 sentence)
@@ -116,9 +124,6 @@ Write the review to: `~/obsidian-vaults/padnos/2-areas/software/pr-review/{repo-
 ### SOLID Violations
 - `class.py:50` - Class doing too many things (SRP violation)
 
-### Readability/Maintainability
-- `complex.py:200` - Complex nested logic, hard to follow
-
 ### Pattern Violations
 - `pipeline.py:75` - Not following DAG pattern, has circular dependency
 
@@ -127,7 +132,18 @@ Write the review to: `~/obsidian-vaults/padnos/2-areas/software/pr-review/{repo-
 
 ## Notes
 
-{Optional: Questions, uncertainties, or observations that don't rise to "finding" level}
+**What this PR does:**
+- Brief explanation of the problem being solved
+- Context (new feature, bug fix, hotfix, etc.)
+
+**Code changes:**
+- Technical explanation of what's changing
+- Patterns/libraries/approaches being used
+- How the implementation solves the problem
+
+**Minor observations (not blocking):**
+- Performance concerns, code cleanliness, theoretical edge cases
+- Only include if worth mentioning, but don't block on these for hotfixes
 ```
 
 ### For APPENDING to existing review file:
@@ -151,9 +167,19 @@ If the file already exists, **append** the following after the existing content 
 #### DRY Violations
 - `file.py:100-150` - Duplicated logic
 
+#### SOLID Violations
+- `class.py:50` - Making god class worse
+
 ### Notes
 
-{Optional notes about what changed or what was re-reviewed}
+**What changed in this review:**
+- Note what was updated or re-reviewed
+
+**What this PR does:** (if not already documented)
+- Brief problem/solution explanation
+
+**Code changes:** (if not already documented)
+- Technical changes being made
 ```
 
 **Review numbering:**
