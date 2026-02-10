@@ -57,27 +57,20 @@ while IFS=: read -r repo_name pr_num; do
 
   pr_timestamp=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" "$pr_updated" +%s 2>/dev/null || echo "0")
 
-  # Check if we've reviewed this PR before
-  state_entry=$(grep "^${state_key}:" "$STATE_FILE" 2>/dev/null || echo "")
+  # Check if we've reviewed this PR before (get most recent timestamp from log)
+  stored_timestamp=$(grep "^${state_key}:" "$STATE_FILE" 2>/dev/null | tail -1 | cut -d: -f3 || echo "")
   should_review=false
 
-  if [[ -n "$state_entry" ]]; then
-    # Extract the stored timestamp (when we last reviewed it)
-    stored_timestamp=$(echo "$state_entry" | cut -d: -f3)
-
-    # If no timestamp (old format), review it to update to new format
-    if [[ -z "$stored_timestamp" || "$stored_timestamp" == "" ]]; then
-      should_review=true
-      echo "$(date):   Old state format detected, will review and update" >> "$LOG_FILE"
-    # Compare PR's current updatedAt with our stored timestamp
-    elif [[ $pr_timestamp -gt $stored_timestamp ]]; then
+  if [[ -n "$stored_timestamp" ]]; then
+    # We have a stored timestamp, compare it with the PR's current updatedAt
+    if [[ $pr_timestamp -gt $stored_timestamp ]]; then
       should_review=true
       echo "$(date):   PR updated since last review (PR: $pr_updated, Last: $(date -r $stored_timestamp)), will regenerate" >> "$LOG_FILE"
     else
       echo "$(date):   Already reviewed at this version, skipping" >> "$LOG_FILE"
     fi
   else
-    # Not reviewed before
+    # Not reviewed before (no timestamp in log)
     should_review=true
     echo "$(date):   Not reviewed before, will generate" >> "$LOG_FILE"
   fi
@@ -100,9 +93,7 @@ while IFS=: read -r repo_name pr_num; do
       # Verify review file was created
       if [[ -f "$review_file" ]]; then
         echo "$(date): ✓ Completed review for $state_key"
-        # Mark as reviewed on success with PR's updatedAt timestamp
-        # Remove old entry first, then add new one
-        sed -i '' "/^${state_key}:/d" "$STATE_FILE" 2>/dev/null
+        # Append to log (never delete old entries - this is an audit log)
         echo "${state_key}:${pr_timestamp}" >> "$STATE_FILE"
       else
         echo "$(date): WARNING: Review file not created for $state_key"
