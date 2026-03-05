@@ -46,6 +46,8 @@ brew "zsh-fast-syntax-highlighting"
 brew "duckdb"
 # Powerful, clean, object-oriented scripting language
 brew "ruby"
+# macOS notification from the command line
+brew "terminal-notifier"
 # Password manager that keeps all passwords secure behind one password
 cask "1password"
 # Command-line interface for 1Password
@@ -69,13 +71,9 @@ cask "github"
 cask "google-chrome"
 # Free and open-source media player
 cask "iina"
-# Terminal emulator as alternative to Apple's Terminal app
-cask "iterm2"               # Terminal
-cask "font-jetbrains-mono-nerd-font"  # Font for iTerm2 + VS Code
+cask "font-jetbrains-mono-nerd-font"  # Font for VS Code + terminals
 # JetBrains tools manager
 cask "jetbrains-toolbox"
-# Automatically ejects external drives
-cask "jettison"
 # Menu bar manager
 cask "jordanbaird-ice"
 # Blocks all Keyboard and TouchBar input

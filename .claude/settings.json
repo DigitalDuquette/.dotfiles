@@ -24,10 +24,6 @@
       "Edit(~/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/.obsidian/**)"
     ]
   },
-  "enabledPlugins": {
-    "code-review@claude-plugins-official": true,
-    "github@claude-plugins-official": true
-  },
   "hooks": {
     "Notification": [
       {
@@ -49,5 +45,9 @@
         ]
       }
     ]
+  },
+  "enabledPlugins": {
+    "code-review@claude-plugins-official": true,
+    "github@claude-plugins-official": true
   }
 }
