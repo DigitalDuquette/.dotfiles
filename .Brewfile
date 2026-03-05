@@ -71,6 +71,8 @@ cask "github"
 cask "google-chrome"
 # Free and open-source media player
 cask "iina"
+# Terminal emulator — zero config, embeds JetBrains Mono Nerd Font
+cask "ghostty"
 cask "font-jetbrains-mono-nerd-font"  # Font for VS Code + terminals
 # JetBrains tools manager
 cask "jetbrains-toolbox"
