@@ -1,11 +1,18 @@
 #!/usr/bin/env bash
 set -e
 
-echo "Updating packages..."
-sudo apt update -y
-
-echo "Installing dependencies..."
-sudo apt install -y ruby ruby-dev build-essential libncurses-dev wget unzip
+echo "Detecting distro..."
+if command -v apt &>/dev/null; then
+  echo "Debian/Ubuntu detected..."
+  sudo apt update -y
+  sudo apt install -y ruby ruby-dev build-essential libncurses-dev wget unzip
+elif command -v dnf &>/dev/null; then
+  echo "RHEL/Fedora detected..."
+  sudo dnf install -y ruby ruby-devel gcc gcc-c++ make ncurses-devel wget unzip
+else
+  echo "Unsupported package manager. Install ruby, gcc, make, wget, unzip manually."
+  exit 1
+fi
 
 echo "Installing Nerd Font..."
 FONT_DIR="$HOME/.local/share/fonts"
