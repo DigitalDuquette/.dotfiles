@@ -31,8 +31,25 @@ Installs `ble.sh` — bash-native as-you-type syntax highlighting.
 No shell switch required, stays on bash.
 
 - Downloads release tarball from GitHub
-- Installs to `~/.local/share/ble.sh/`
+- Installs to `~/.local/share/blesh/`
 - Adds source line to `~/.bashrc`
+
+### bootstrap_gh.sh
+
+Installs the GitHub CLI (`gh`).
+
+- Detects distro (RHEL/Fedora via `dnf`, Debian/Ubuntu via `apt`)
+- Adds the official GitHub CLI repo before installing
+
+After install, authenticate:
+
+```sh
+gh auth login
+```
+
+> On a headless server with no browser, choose **token** auth when prompted.
+> Generate a token at GitHub → Settings → Developer settings →
+> Personal access tokens. Scope needed: `repo`, `read:org`.
 
 ---
 
