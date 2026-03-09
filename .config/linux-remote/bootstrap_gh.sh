@@ -3,10 +3,11 @@ set -e
 
 echo "Installing GitHub CLI..."
 
-if command -v dnf &>/dev/null; then
-  sudo dnf install -y dnf5-plugins
-  sudo dnf config-manager addrepo --from-repofile=https://cli.github.com/packages/rpm/gh-cli.repo
-  sudo dnf install -y gh --repo gh-cli
+if command -v gh &>/dev/null; then
+  echo "gh already installed — skipping"
+elif command -v dnf &>/dev/null; then
+  sudo dnf config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repo
+  sudo dnf install -y gh
 elif command -v apt &>/dev/null; then
   sudo mkdir -p /etc/apt/keyrings
   curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
