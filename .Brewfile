@@ -44,6 +44,8 @@ brew "zsh-completions"
 brew "zsh-fast-syntax-highlighting"
 # DuckDB local file database
 brew "duckdb"
+# SQL Server CLI written in GO
+brew "sqlcmd"
 # Powerful, clean, object-oriented scripting language
 brew "ruby"
 # macOS notification from the command line
