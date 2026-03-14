@@ -24,6 +24,7 @@
       "Edit(~/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/.obsidian/**)"
     ]
   },
+  "model": "opus[1m]",
   "hooks": {
     "Notification": [
       {
@@ -45,6 +46,10 @@
         ]
       }
     ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash /Users/jjduqu/.claude/statusline-command.sh"
   },
   "enabledPlugins": {
     "code-review@claude-plugins-official": true,
