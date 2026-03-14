@@ -26,8 +26,8 @@ fi
 echo "Installing Nerd Font..."
 FONT_DIR="$HOME/.local/share/fonts"
 mkdir -p "$FONT_DIR"
-wget -q https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FiraCode.zip -O /tmp/FiraCode.zip
-unzip -q /tmp/FiraCode.zip -d "$FONT_DIR"
+wget -q https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FiraCode.zip -O /tmp/FiraCode-$USER.zip
+unzip -q /tmp/FiraCode-$USER.zip -d "$FONT_DIR"
 fc-cache -fv > /dev/null
 
 echo "Installing colorls..."
