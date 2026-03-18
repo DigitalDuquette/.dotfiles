@@ -9,13 +9,17 @@
   to discussing first.
 - Do NOT generate speculative or made-up content to fill out documents. Only
   use information the user has provided.
+- Do NOT create git commits. The user reviews changes in logical development
+  blocks in their JetBrains IDE and crafts commit messages themselves to follow
+  their development process. This applies to new code only.
 
 ---
 
 ## Markdown Formatting Rules
 
 When writing markdown files, wrap line at 80 character wide to follow markdown
-standards.
+standards. Exception: GitHub contexts (pull requests, issues, comments) are
+exempt from the 80 character rule.
 
 - Do not rely on soft line breaks for structure.
 - All multi-line fields should be represented as nested lists.
