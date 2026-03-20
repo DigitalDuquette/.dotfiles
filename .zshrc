@@ -10,7 +10,7 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # Aliases
 alias ls="colorls --group-directories-first"
-alias lslegacy="ls"
+alias lslegacy="/bin/ls"
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias externalip="curl checkip.amazonaws.com"
 alias ff="fastfetch"
