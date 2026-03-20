@@ -42,6 +42,8 @@ brew "zsh-autosuggestions"
 brew "zsh-completions"
 # Feature-rich syntax highlighting for Zsh
 brew "zsh-fast-syntax-highlighting"
+# tmux
+brew "tmux"
 # DuckDB local file database
 brew "duckdb"
 # SQL Server CLI written in GO
