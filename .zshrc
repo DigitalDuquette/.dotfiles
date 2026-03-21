@@ -1,18 +1,19 @@
 # Homebrew PATH (must be before pyenv so brew-installed Python takes priority)
-export PATH="/opt/homebrew/bin:$PATH"
+# export PATH="/opt/homebrew/bin:$PATH"
+eval "$(/opt/homebrew/bin/brew shellenv)"
 # Prefer Homebrew Ruby over macOS system Ruby
 export PATH="/opt/homebrew/opt/ruby/bin:/usr/local/opt/ruby/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$(ruby -r rubygems -e 'puts Gem.bindir'):$PATH"
 
 eval "$(starship init zsh)"
-eval "$(/opt/homebrew/bin/brew shellenv)"
+
 
 # Aliases
 alias ls="colorls --group-directories-first"
-alias lslegacy="/bin/ls"
+alias lls="/bin/ls"
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-alias externalip="curl checkip.amazonaws.com"
+alias external-ip="curl checkip.amazonaws.com"
 alias ff="fastfetch"
 
 # pyenv initialization
