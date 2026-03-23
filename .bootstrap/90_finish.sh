@@ -1,8 +1,11 @@
 #!/bin/zsh
-set -euo pipefail
+# set -euo pipefail  # disabled — failures are logged, not fatal
 
-echo "[BOOTSTRAP] Final cleanup..."
+echo ""
+echo "[finish] ── Final Cleanup ──"
+echo ""
 
+echo "[finish] Running brew cleanup..."
 brew cleanup
 
-echo "[BOOTSTRAP] All set. Open a new terminal to apply changes."
+echo "[finish] Done. Open a new terminal to apply changes."

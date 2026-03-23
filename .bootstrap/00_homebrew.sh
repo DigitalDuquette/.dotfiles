@@ -1,32 +1,40 @@
 #!/bin/zsh
-set -euo pipefail
+# set -euo pipefail  # disabled — failures are logged, not fatal
 
-echo "[BOOTSTRAP] Installing Homebrew + Brewfile..."
+echo ""
+echo "[homebrew] ── Homebrew + Brewfile ──"
+echo ""
 
 # Ensure bash is available
+echo "[homebrew] Checking for /bin/bash..."
 if [ ! -x "/bin/bash" ]; then
-  echo "[BOOTSTRAP] Bash not found. Installing Xcode Command Line Tools..."
+  echo "[homebrew] Bash not found. Installing Xcode Command Line Tools..."
   xcode-select --install || true
+else
+  echo "[homebrew] /bin/bash found."
 fi
 
 # Install Homebrew if missing
+echo "[homebrew] Checking for Homebrew..."
 if ! command -v brew &> /dev/null; then
-  echo "[BOOTSTRAP] Homebrew is not installed. Installing..."  
-  
-  # Install homebrew command from https://brew.sh/
+  echo "[homebrew] Homebrew is not installed. Installing..."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  
-  # Load Homebrew into current session
+  echo "[homebrew] Loading Homebrew into current session..."
   eval "$(/opt/homebrew/bin/brew shellenv)"
+else
+  echo "[homebrew] Homebrew already installed at $(which brew)."
 fi
 
-# Update and install from Brewfile
-echo "[BOOTSTRAP] Updating Homebrew..."
+echo "[homebrew] Running brew update..."
 brew update
+
+echo "[homebrew] Running brew doctor..."
 brew doctor
+
+echo "[homebrew] Running brew bundle --global (Brewfile)..."
 brew bundle --global
 
-echo "[BOOTSTRAP] Cleaning up..."
+echo "[homebrew] Running brew cleanup..."
 brew cleanup
 
-echo "[BOOTSTRAP] Homebrew + Brewfile complete."
+echo "[homebrew] Done."

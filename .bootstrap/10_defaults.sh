@@ -1,19 +1,24 @@
 #!/bin/zsh
-set -euo pipefail
+# set -euo pipefail  # disabled — failures are logged, not fatal
+
+echo ""
+echo "[defaults] ── macOS Defaults ──"
+echo ""
 
 # ====== DEFAULTS =====
 
-echo "[BOOTSTRAP] Setting app defaults with duti..."
-
+echo "[defaults] Setting file-type defaults with duti..."
 duti -s com.colliderli.iina public.mp3 all
 duti -s com.colliderli.iina com.apple.m4a-audio all
 duti -s com.colliderli.iina public.aiff-audio all
 duti -s com.colliderli.iina public.mpeg-4-audio all
 duti -s com.colliderli.iina com.microsoft.waveform-audio all
 duti -s com.colliderli.iina public.m3u-playlist all
-
+echo "[defaults] duti assignments done."
 
 # ====== TRACKPAD =====
+
+echo "[defaults] Configuring trackpad (three-finger drag)..."
 # Enable __three finger drag___ for built-in and Bluetooth trackpads
 defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag -bool true
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerDrag -bool true
@@ -23,30 +28,31 @@ defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerHorizSwipeGe
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerHorizSwipeGesture -int 0
 
 # NOTE this may not be safe. However, without this final execution I'm not able to use CLI to apply trackpage changes
+echo "[defaults] Activating trackpad settings..."
 /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
 # leaving it enabled but beware: https://apple.stackexchange.com/questions/456623/macos-command-line-for-track-pad-settings
 
-# Apply changes
+echo "[defaults] Restarting cfprefsd to apply trackpad changes..."
 killall cfprefsd
 
 # ===== MENU BAR =====
 
-echo "[BOOTSTRAP] Setting defaults for menu bar spacing..."
-
+echo "[defaults] Setting menu bar spacing..."
 defaults -currentHost write -globalDomain NSStatusItemSpacing -int 6
 defaults -currentHost write -globalDomain NSStatusItemSelectionPadding -int 4
-# Set back to default values: 
+# Set back to default values:
 # defaults -currentHost delete -globalDomain NSStatusItemSelectionPadding
 # defaults -currentHost delete -globalDomain NSStatusItemSpacing
+echo "[defaults] Menu bar spacing set."
 
-
-echo "[BOOTSTRAP] Configuring macOS..."
+echo "[defaults] Quitting System Preferences before writing defaults..."
 # The best resource of finding new settings for other users is:
 # https://www.defaults-write.com
-
 osascript -e 'tell application "System Preferences" to quit'
 
 # ====== FINDER ======
+
+echo "[defaults] Configuring Finder..."
 
 # Show Finder path bar:
 defaults write com.apple.finder ShowPathbar -bool true
@@ -68,11 +74,12 @@ defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 
-# restart finder to apply all settings
-killall finder || true 
-
+echo "[defaults] Restarting Finder..."
+killall finder || true
 
 # ===== DOCK ======
+
+echo "[defaults] Configuring Dock..."
 
 # only running applications in dock
 defaults write com.apple.dock static-only -bool TRUE
@@ -83,7 +90,7 @@ defaults write com.apple.dock tilesize -int 36
 # to auto hide the dock
 defaults write com.apple.dock autohide -bool true
 
-# restart dock once after all settings
+echo "[defaults] Restarting Dock..."
 killall Dock || true
 
-echo "[BOOTSTRAP] macOS & file defaults configured."
+echo "[defaults] Done."
