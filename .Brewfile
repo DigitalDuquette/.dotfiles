@@ -92,6 +92,8 @@ cask "loom"
 cask "maccy"
 # Speech-to-text transcription application
 cask "macwhisper"
+# Background Audio Removal
+cask "krisp"
 # Multi-platform web browser
 cask "microsoft-edge"
 # Knowledge base that works on top of a local folder of plain text Markdown files
