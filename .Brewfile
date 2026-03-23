@@ -27,7 +27,7 @@ brew "pyenv"
 # Pyenv plugin to manage virtualenv
 brew "pyenv-virtualenv"
 # Command-line interface for https://speedtest.net bandwidth tests
-brew "speedtest-cli"
+brew "speedtest"
 # Cross-shell prompt for astronauts
 brew "starship"
 # Stress test a computer system in various selectable ways
