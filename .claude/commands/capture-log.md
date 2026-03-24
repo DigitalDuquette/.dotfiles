@@ -20,8 +20,8 @@ with today's date as the heading.
    - Positive: Value delivered, milestone reached
 
 3. **Read context files:**
-   - Read the capture log: `~/obsidian-vaults/padnos/2-areas/management/team/{name}/capture-log.md`
-   - Read folder CLAUDE.md if exists: `~/obsidian-vaults/padnos/2-areas/management/team/{name}/CLAUDE.md`
+   - Read the capture log: `~/obsidian-vault/padnos/2-areas/management/team/{name}/capture-log.md`
+   - Read folder CLAUDE.md if exists: `~/obsidian-vault/padnos/2-areas/management/team/{name}/CLAUDE.md`
    - Match existing tone/style exactly
 
 4. **Generate draft entry** following scope rules below

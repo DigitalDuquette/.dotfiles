@@ -10,16 +10,16 @@
       "Bash(git diff:*)",
       "Bash(gh pr:*)",
       "Bash(gh issue:*)",
-      "Read(~/obsidian-vaults/**)",
-      "Edit(~/obsidian-vaults/**)",
-      "Write(~/obsidian-vaults/**)",
+      "Read(~/obsidian-vault/**)",
+      "Edit(~/obsidian-vault/**)",
+      "Write(~/obsidian-vault/**)",
       "Read(~/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/**)",
       "Edit(~/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/**)",
       "Write(~/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/**)"
     ],
     "deny": [
-      "Read(~/obsidian-vaults/.obsidian/**)",
-      "Edit(~/obsidian-vaults/.obsidian/**)",
+      "Read(~/obsidian-vault/.obsidian/**)",
+      "Edit(~/obsidian-vault/.obsidian/**)",
       "Read(~/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/.obsidian/**)",
       "Edit(~/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/.obsidian/**)"
     ]

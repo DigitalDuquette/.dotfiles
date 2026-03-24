@@ -1,5 +1,5 @@
 ---
-allowed-tools: Bash(gh issue view:*), Bash(gh search:*), Bash(gh issue list:*), Bash(gh pr diff:*), Bash(gh pr view:*), Bash(gh pr list:*), Bash(gh repo view:*), Bash(gh api:*), Read(~/obsidian-vaults/padnos/**), Write(~/obsidian-vaults/padnos/**), Glob(~/obsidian-vaults/padnos/**), Grep(~/obsidian-vaults/padnos/**), Read(/Users/jjduqu/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/**), Write(/Users/jjduqu/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/**), Glob(/Users/jjduqu/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/**), Grep(/Users/jjduqu/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/**)
+allowed-tools: Bash(gh issue view:*), Bash(gh search:*), Bash(gh issue list:*), Bash(gh pr diff:*), Bash(gh pr view:*), Bash(gh pr list:*), Bash(gh repo view:*), Bash(gh api:*), Read(~/obsidian-vault/padnos/**), Write(~/obsidian-vault/padnos/**), Glob(~/obsidian-vault/padnos/**), Grep(~/obsidian-vault/padnos/**), Read(/Users/jjduqu/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/**), Write(/Users/jjduqu/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/**), Glob(/Users/jjduqu/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/**), Grep(/Users/jjduqu/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/**)
 description: Code review a pull request
 argument-hint: "[REPO] <PR_NUMBER>"
 ---
@@ -97,7 +97,7 @@ section, not as a finding.**
 
 ## Output Format
 
-Write the review to: `~/obsidian-vaults/padnos/2-areas/software/pr-review/{repo-name}/PR-{pr-number}.md`
+Write the review to: `~/obsidian-vault/padnos/2-areas/software/pr-review/{repo-name}/PR-{pr-number}.md`
 
 ### For NEW review file (first review):
 
