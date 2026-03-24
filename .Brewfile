@@ -116,6 +116,8 @@ cask "transmit"
 cask "visual-studio-code"
 # Connect to Windows
 cask "windows-app"
+# markdown to quicklook
+cask "qlmarkdown"
 mas "Amphetamine", id: 937984704
 mas "Gifski", id: 1351639930
 mas "Mela", id: 1568924476
