@@ -45,7 +45,7 @@ brew "zsh-fast-syntax-highlighting"
 # tmux
 brew "tmux"
 # Tailscale
-brew "tailscale"
+brew "tailscale-app"
 # DuckDB local file database
 brew "duckdb"
 # SQL Server CLI written in GO
