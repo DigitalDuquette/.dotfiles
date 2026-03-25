@@ -32,6 +32,8 @@ brew "speedtest"
 brew "starship"
 # Stress test a computer system in various selectable ways
 brew "stress-ng"
+# Monitoring
+brew "macmon"
 # ODBC 3 connectivity for UNIX
 brew "unixodbc"
 # Feature-rich command-line audio/video downloader
