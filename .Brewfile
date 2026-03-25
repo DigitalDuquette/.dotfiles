@@ -70,6 +70,8 @@ cask "codex"
 # Anthropic's official Claude AI desktop app
 cask "claude"
 cask "claude-code"
+# Gemini CLI
+cask "gemini-cli"
 # Disk space visualiser
 cask "daisydisk"
 # Web browser
