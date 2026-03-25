@@ -64,8 +64,9 @@ cask "1password-cli"
 cask "betterdisplay"
 # Scriptable scratchpad for developers
 cask "boop"
-# OpenAI's official ChatGPT desktop app
+# OpenAI's official ChatGPT desktop app, Codex
 cask "chatgpt"
+cask "codex"
 # Anthropic's official Claude AI desktop app
 cask "claude"
 cask "claude-code"
