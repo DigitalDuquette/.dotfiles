@@ -87,8 +87,6 @@ cask "ghostty"
 cask "font-jetbrains-mono-nerd-font"  # Font for VS Code + terminals
 # JetBrains tools manager
 cask "jetbrains-toolbox"
-# Menu bar manager
-cask "jordanbaird-ice"
 # Blocks all Keyboard and TouchBar input
 cask "keyboardcleantool"
 # Create, manage and debug system and user services
