@@ -15,6 +15,7 @@ alias lls="/bin/ls"
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias external-ip="curl checkip.amazonaws.com"
 alias ff="fastfetch"
+alias batt='pmset -g batt && system_profiler SPPowerDataType | grep -E "Amperage|Voltage|Wattage"'
 
 # pyenv initialization
 export PYENV_ROOT="$HOME/.pyenv"
