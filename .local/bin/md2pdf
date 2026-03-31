@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# md2pdf — Convert markdown to PDF styled with the Border theme.
+# Uses md-to-pdf (npm) via npx. No global install required.
+# Config and CSS live in ~/.local/lib/md2pdf/
+
+set -euo pipefail
+
+CONFIG="$HOME/.local/lib/md2pdf/config.js"
+
+if [[ ! -f "$CONFIG" ]]; then
+    echo "error: config not found at $CONFIG" >&2
+    echo "       see ~/.local/lib/md2pdf/README.md" >&2
+    exit 1
+fi
+
+if [[ $# -eq 0 ]]; then
+    echo "usage: md2pdf <file.md> [file2.md ...]" >&2
+    exit 1
+fi
+
+exec npx --yes md-to-pdf --config-file "$CONFIG" "$@"
