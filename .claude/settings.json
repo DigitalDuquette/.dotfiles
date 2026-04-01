@@ -10,6 +10,8 @@
       "Bash(git diff:*)",
       "Bash(gh pr:*)",
       "Bash(gh issue:*)",
+      "Bash(op run --env-file ~/.config/padsql/.env.sq2:*)",
+      "Write(/tmp/fs-ticket-*)",
       "Read(~/obsidian-vault/**)",
       "Edit(~/obsidian-vault/**)",
       "Write(~/obsidian-vault/**)",
