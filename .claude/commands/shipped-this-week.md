@@ -46,10 +46,19 @@ with descriptions of each PR.
      One to two sentence description derived from the PR body.
    ```
 
-7. Copy the full formatted summary to the clipboard via
+7. Save the summary to the Obsidian vault at:
+   ```
+   ~/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/2-areas/reviews/dev-activity/<username>/YYYY-Www.md
+   ```
+   Use the ISO week number for the current week (e.g.
+   `2026-W14.md`). Create the username directory if it
+   doesn't exist.
+
+8. Copy the full formatted summary to the clipboard via
    `pbcopy`.
 
-8. Print the summary and confirm it is on the clipboard.
+9. Print the summary and confirm it is saved and on the
+   clipboard.
 
 ## Notes
 
