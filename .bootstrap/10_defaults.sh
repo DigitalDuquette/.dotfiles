@@ -12,6 +12,7 @@ duti -s com.colliderli.iina public.mp3 all
 duti -s com.colliderli.iina com.apple.m4a-audio all
 duti -s com.colliderli.iina public.aiff-audio all
 duti -s com.colliderli.iina public.mpeg-4-audio all
+duti -s com.colliderli.iina public.mpeg-4 all
 duti -s com.colliderli.iina com.microsoft.waveform-audio all
 duti -s com.colliderli.iina public.m3u-playlist all
 echo "[defaults] duti assignments done."
