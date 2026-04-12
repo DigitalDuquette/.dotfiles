@@ -38,6 +38,8 @@ brew "macmon"
 brew "unixodbc"
 # Feature-rich command-line audio/video downloader
 brew "yt-dlp"
+# Play, record, convert, and stream select audio and video codecs
+brew "ffmpeg"
 # Fish-like fast/unobtrusive autosuggestions for zsh
 brew "zsh-autosuggestions"
 # Additional completion definitions for zsh
