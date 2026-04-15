@@ -73,7 +73,7 @@ cask "codex"
 cask "claude"
 cask "claude-code"
 # Gemini CLI
-cask "gemini-cli"
+brew "gemini-cli"
 # Disk space visualiser
 cask "daisydisk"
 # Web browser
@@ -111,6 +111,8 @@ cask "ok-json"
 cask "parallels"
 # Collaboration platform for API development
 cask "postman"
+# OSS replacement for Postman
+cask "bruno"
 # Control your tools with a few keystrokes
 cask "raycast"
 # Team communication and collaboration software
