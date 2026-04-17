@@ -32,7 +32,7 @@ echo "[homebrew] Running brew doctor..."
 brew doctor
 
 echo "[homebrew] Running brew bundle --global (Brewfile)..."
-brew bundle --global
+brew bundle --global --verbose
 
 echo "[homebrew] Running brew cleanup..."
 brew cleanup
