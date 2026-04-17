@@ -26,6 +26,8 @@ brew "node"
 brew "pyenv"
 # Pyenv plugin to manage virtualenv
 brew "pyenv-virtualenv"
+# Ookla Speedtest tap (not in Homebrew core)
+tap "teamookla/speedtest"
 # Command-line interface for https://speedtest.net bandwidth tests
 brew "speedtest"
 # Cross-shell prompt for astronauts
