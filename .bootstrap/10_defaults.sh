@@ -100,6 +100,11 @@ defaults write com.apple.dock tilesize -int 36
 # to auto hide the dock
 defaults write com.apple.dock autohide -bool true
 
+# Mission Control: group windows by application
+defaults write com.apple.dock expose-group-apps -bool true
+# Mission Control: don't auto-rearrange Spaces based on recent use
+defaults write com.apple.dock mru-spaces -bool false
+
 echo "[defaults] Restarting Dock..."
 killall Dock || true
 
