@@ -108,4 +108,20 @@ defaults write com.apple.dock mru-spaces -bool false
 echo "[defaults] Restarting Dock..."
 killall Dock || true
 
+# ===== SPOTLIGHT / RAYCAST =====
+
+echo "[defaults] Disabling Spotlight keyboard shortcuts..."
+# Disable "Show Spotlight Search" (Cmd+Space) — hotkey ID 64
+/usr/libexec/PlistBuddy -c "Set :AppleSymbolicHotKeys:64:enabled false" \
+  ~/Library/Preferences/com.apple.symbolichotkeys.plist
+# Disable "Show Finder Search Window" — hotkey ID 65
+/usr/libexec/PlistBuddy -c "Set :AppleSymbolicHotKeys:65:enabled false" \
+  ~/Library/Preferences/com.apple.symbolichotkeys.plist
+
+echo "[defaults] Setting Raycast hotkey to Cmd+Space..."
+defaults write com.raycast.macos raycastGlobalHotkey -string "Command-49"
+
+echo "[defaults] Activating keyboard shortcut changes..."
+/System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+
 echo "[defaults] Done."
