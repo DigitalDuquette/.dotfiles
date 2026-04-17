@@ -25,10 +25,13 @@ defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag -bool t
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerDrag -bool true
 
 # Enable App Exposé (four-finger swipe down)
-defaults write com.apple.AppleMultitouchTrackpad AppExposeGestureEnabled -bool true
-defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad AppExposeGestureEnabled -bool true
+# NOTE: may still show "Off" in System Settings UI — known
+# limitation on modern macOS. The gesture itself may still work.
+defaults write com.apple.dock showAppExposeGestureEnabled -bool true
 defaults write com.apple.AppleMultitouchTrackpad TrackpadFourFingerVertSwipeGesture -int 2
+defaults write com.apple.AppleMultitouchTrackpad AppExposeGestureEnabled -bool true
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadFourFingerVertSwipeGesture -int 2
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad AppExposeGestureEnabled -bool true
 
 # Optional: disable horizontal swipe to avoid gesture conflicts
 defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerHorizSwipeGesture -int 0
@@ -97,7 +100,53 @@ defaults write com.apple.dock tilesize -int 36
 # to auto hide the dock
 defaults write com.apple.dock autohide -bool true
 
+# Mission Control: group windows by application
+defaults write com.apple.dock expose-group-apps -bool true
+# Mission Control: don't auto-rearrange Spaces based on recent use
+defaults write com.apple.dock mru-spaces -bool false
+
 echo "[defaults] Restarting Dock..."
 killall Dock || true
+
+# ===== SPOTLIGHT / RAYCAST =====
+
+echo "[defaults] Disabling Spotlight keyboard shortcuts..."
+# Disable "Show Spotlight Search" (Cmd+Space) — hotkey ID 64
+# Uses defaults write (not PlistBuddy) to go through cfprefsd
+defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 64 "
+<dict>
+  <key>enabled</key><false/>
+  <key>value</key><dict>
+    <key>type</key><string>standard</string>
+    <key>parameters</key>
+    <array>
+      <integer>32</integer>
+      <integer>49</integer>
+      <integer>1048576</integer>
+    </array>
+  </dict>
+</dict>
+"
+# Disable "Show Finder Search Window" — hotkey ID 65
+defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 65 "
+<dict>
+  <key>enabled</key><false/>
+  <key>value</key><dict>
+    <key>type</key><string>standard</string>
+    <key>parameters</key>
+    <array>
+      <integer>32</integer>
+      <integer>49</integer>
+      <integer>1572864</integer>
+    </array>
+  </dict>
+</dict>
+"
+
+echo "[defaults] Setting Raycast hotkey to Cmd+Space..."
+defaults write com.raycast.macos raycastGlobalHotkey -string "Command-49"
+
+echo "[defaults] Activating keyboard shortcut changes..."
+/System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
 
 echo "[defaults] Done."
