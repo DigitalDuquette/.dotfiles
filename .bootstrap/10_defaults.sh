@@ -27,6 +27,8 @@ defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeF
 # Enable App Exposé (four-finger swipe down)
 defaults write com.apple.AppleMultitouchTrackpad AppExposeGestureEnabled -bool true
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad AppExposeGestureEnabled -bool true
+defaults write com.apple.AppleMultitouchTrackpad TrackpadFourFingerVertSwipeGesture -int 2
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadFourFingerVertSwipeGesture -int 2
 
 # Optional: disable horizontal swipe to avoid gesture conflicts
 defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerHorizSwipeGesture -int 0
