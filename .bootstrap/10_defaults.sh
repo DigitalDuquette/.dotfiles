@@ -112,11 +112,36 @@ killall Dock || true
 
 echo "[defaults] Disabling Spotlight keyboard shortcuts..."
 # Disable "Show Spotlight Search" (Cmd+Space) — hotkey ID 64
-/usr/libexec/PlistBuddy -c "Set :AppleSymbolicHotKeys:64:enabled false" \
-  ~/Library/Preferences/com.apple.symbolichotkeys.plist
+# Uses defaults write (not PlistBuddy) to go through cfprefsd
+defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 64 "
+<dict>
+  <key>enabled</key><false/>
+  <key>value</key><dict>
+    <key>type</key><string>standard</string>
+    <key>parameters</key>
+    <array>
+      <integer>32</integer>
+      <integer>49</integer>
+      <integer>1048576</integer>
+    </array>
+  </dict>
+</dict>
+"
 # Disable "Show Finder Search Window" — hotkey ID 65
-/usr/libexec/PlistBuddy -c "Set :AppleSymbolicHotKeys:65:enabled false" \
-  ~/Library/Preferences/com.apple.symbolichotkeys.plist
+defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 65 "
+<dict>
+  <key>enabled</key><false/>
+  <key>value</key><dict>
+    <key>type</key><string>standard</string>
+    <key>parameters</key>
+    <array>
+      <integer>32</integer>
+      <integer>49</integer>
+      <integer>1572864</integer>
+    </array>
+  </dict>
+</dict>
+"
 
 echo "[defaults] Setting Raycast hotkey to Cmd+Space..."
 defaults write com.raycast.macos raycastGlobalHotkey -string "Command-49"
