@@ -77,9 +77,6 @@ defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
 # Show file extensions in Finder:
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 
-# Default to column view in all Finder windows
-defaults write com.apple.finder FXPreferredViewStyle -string "clmv"
-
 # When performing a search, search the current folder by default
 defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 
