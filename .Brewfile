@@ -12,6 +12,8 @@ brew "git"
 brew "helix"
 # Blazing fast terminal file manager written in Rust, based on async I/O
 brew "yazi"
+# Resource monitor that shows usage and stats
+brew "btop"
 # Improved top (interactive process viewer)
 brew "htop"
 # Apple Silicon Monitor Top written in Golang
