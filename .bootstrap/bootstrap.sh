@@ -2,7 +2,7 @@
 # set -euo pipefail  # disabled — failures are logged, not fatal
 
 BOOTSTRAP_DIR="$HOME/.bootstrap"
-SCRIPTS=(00_homebrew.sh 10_defaults.sh 20_symlinks.sh 30_languages.sh 90_finish.sh)
+SCRIPTS=(00_homebrew.sh 10_defaults.sh 20_symlinks.sh 30_languages.sh 31_npm.sh 90_finish.sh)
 TOTAL=${#SCRIPTS[@]}
 FAILED=()
 BOOT_START=$SECONDS

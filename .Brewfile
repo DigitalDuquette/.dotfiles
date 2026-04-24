@@ -4,6 +4,8 @@ brew "duti"
 brew "fastfetch"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
+brew "ripgrep"
+brew "fd"
 # GitHub command-line tool
 brew "gh"
 # Distributed revision control system
@@ -121,6 +123,8 @@ cask "slack"
 cask "transmit"
 # Open-source code editor
 cask "visual-studio-code"
+# Sublime Text - text editor
+cask "sublime-text"
 # Connect to Windows
 cask "windows-app"
 # markdown to quicklook
