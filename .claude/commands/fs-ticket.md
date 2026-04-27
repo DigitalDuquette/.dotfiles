@@ -69,18 +69,6 @@ warehouse. Show ticket details and conversation history.
    ORDER BY c.created_at
    ```
 
-4. **Present results:**
-   - Show ticket details as a structured summary, not a
-     raw table — pull out key fields clearly
-   - Show conversations in chronological order with
-     author, direction (incoming/outgoing), visibility
-     (public/private), and timestamp
-   - Strip HTML tags from body_text if present
-   - If no ticket found, say so
-   - If no conversations found, note that only
-     Information Solutions workspace conversations are
-     synced to the warehouse
-
 ## Execution notes
 
 - Write SQL to `/tmp/fs-ticket-details.sql` and
@@ -89,3 +77,4 @@ warehouse. Show ticket details and conversation history.
 - Use `-s "|" -W` flags for pipe-delimited, trimmed output
 - Run both queries — ticket details first, then
   conversations
+- Strip HTML tags from body_text
