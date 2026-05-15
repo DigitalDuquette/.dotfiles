@@ -57,5 +57,8 @@
     "code-review@claude-plugins-official": true,
     "github@claude-plugins-official": true
   },
-  "effortLevel": "high"
+  "effortLevel": "high",
+  "preferredNotifChannel": "ghostty",
+  "remoteControlAtStartup": true,
+  "agentPushNotifEnabled": true
 }
