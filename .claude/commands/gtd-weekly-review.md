@@ -34,7 +34,22 @@ date +%Y-W%V
 
 Create the review file as `2-areas/reviews/weekly/YYYY-WW.md` (e.g., `2026-W02.md`)
 
-### 2. Gather Daily Notes
+### 2. Process Meeting Transcripts (if any)
+
+Check `0-inbox/meeting/` and `0-inbox/meeting/1on1/` for unprocessed transcripts.
+
+- If both are empty, skip to Step 3.
+- If transcripts are present, execute the `/meeting-review` workflow first.
+  Read `~/.claude/commands/meeting-review.md` and follow it end-to-end.
+  Announce "Found N transcripts, processing via /meeting-review first" before starting.
+- After `/meeting-review` completes, the file
+  `2-areas/reviews/weekly/YYYY-WXX-meetings.md` will exist. Read it as an additional
+  input alongside daily notes in the steps that follow.
+
+This handles meeting-heavy weeks. On IC-heavy weeks with no transcripts, the chain
+falls through and daily notes remain the sole synthesis source.
+
+### 3. Gather Daily Notes
 
 Find all daily notes for the target week from `0-inbox/daily-notes/`:
 
@@ -42,7 +57,7 @@ Find all daily notes for the target week from `0-inbox/daily-notes/`:
 - Read all notes in the folder, regardless of date.
 - If a daily note doesn't exist for a day, skip it
 
-### 3. Process Daily Notes
+### 4. Process Daily Notes and Meeting Log
 
 For each daily note, extract relevant content:
 
@@ -54,7 +69,14 @@ For each daily note, extract relevant content:
 - Important context
 - Reference materials
 
-### 4. Populate the Weekly Review
+If `2-areas/reviews/weekly/YYYY-WXX-meetings.md` exists for this week (created by
+`/meeting-review` in Step 2), also read it and extract:
+
+- Meeting decisions and themes
+- 1:1 highlights worth folding into Private Notes
+- The meeting log's Action Items section (used as the seed list in Step 5)
+
+### 5. Populate the Weekly Review
 
 Create a file using the template below with these sections:
 
@@ -62,6 +84,8 @@ Create a file using the template below with these sections:
 
 - Format as a post ready to share with the team
 - Include: accomplishments, key decisions, blockers, upcoming focus
+- If a meeting log exists, pull shareable decisions, demos, and themes from it into
+  accomplishments and decisions
 - Keep it concise and action-oriented
 - Remove sensitive or non-essential details
 - Write in first person ("We shipped...", "I reviewed...")
@@ -84,13 +108,23 @@ These items belong exclusively in Private Notes.
 - Sensitive technical decisions
 - Items requiring discretion
 - Context the user needs but team doesn't
+- If a meeting log exists, fold in sensitive 1:1 themes, performance-management
+  threads, and vendor frictions surfaced there
 
 **Action Items for Fresh**
 
-- Extract uncompleted tasks from daily notes
-- New todos identified during review
-- Follow-ups and commitments
+- If a meeting log exists, start with its Action Items section as the seed list
+- Add uncompleted tasks from daily notes
+- Add new todos identified during this review
+- Add follow-ups and commitments
+- Deduplicate before writing
 - Format as checkboxes: `- [ ] Task description`
+
+**Meeting Log**
+
+- If a meeting log exists for this week, add a section with a wiki-link to it
+- Do not duplicate the meeting log content here, the link is enough
+- Format: `See [[YYYY-WXX-meetings]] for the detailed meeting log.`
 
 **Daily Note Review**
 
@@ -99,7 +133,10 @@ These items belong exclusively in Private Notes.
 - Keep this section detailed—it becomes searchable archive
 - If no daily note exists for a day, omit that day's section
 
-### 5. Archive Processed Daily Notes
+### 6. Archive Processed Daily Notes
+
+Note: meeting transcripts were already archived by `/meeting-review` in Step 2. This
+step only handles daily notes.
 
 After successfully creating the weekly review, move the processed daily notes to the archive:
 
@@ -119,7 +156,7 @@ mv 0-inbox/daily-notes/2026-01-07.md 4-archive/daily-notes/
 
 This clears the inbox after processing, following GTD principles.
 
-### 6. Guide the User
+### 7. Guide the User
 
 After creating the review and archiving notes:
 
@@ -197,6 +234,12 @@ Technical frustrations: 2 hours lost trying to get scorecard to print - waiting 
 - [ ] Review DBA scripts repo structure following BI dev guidelines
 - [ ] Turn on flow on Monday and communicate with auto team
 - [ ] Follow up on Salesforce communication/negotiation
+
+---
+
+## Meeting Log
+
+See [[2026-W03-meetings]] for the detailed meeting log.
 
 ---
 
