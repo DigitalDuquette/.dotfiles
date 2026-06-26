@@ -133,7 +133,36 @@ These items belong exclusively in Private Notes.
 - Keep this section detailed—it becomes searchable archive
 - If no daily note exists for a day, omit that day's section
 
-### 6. Archive Processed Daily Notes
+### 6. Propose Now Updates to INDEX
+
+Read `INDEX.md` at the vault root and note the current `## Now` section.
+
+Using the synthesis just produced (Team Update, Private Notes, Action Items), the meeting log if any, and the last
+2-3 weekly review files in `2-areas/reviews/weekly/`, propose 3-5 candidate items for the `## Now` section of
+`INDEX.md`.
+
+Criteria for a good Now item:
+
+- Currently hot or about to be hot
+- Worth surfacing to future-Jared in a fresh conversation as "this is on the front burner"
+- Not routine, not a one-off, has narrative weight
+- Could be a project name, decision point, person dynamic, or emerging trend
+
+Append the proposals to the bottom of the weekly review file in a section like this:
+
+```md
+## INDEX Now Suggestions
+
+Proposed updates for the Now section of `INDEX.md` based on this week's signal. Curate into `INDEX.md` manually.
+
+- <proposed item with brief reasoning>
+- <proposed item with brief reasoning>
+- <proposed item with brief reasoning>
+```
+
+Do not edit `INDEX.md` directly. Curation is manual.
+
+### 7. Archive Processed Daily Notes
 
 Note: meeting transcripts were already archived by `/meeting-review` in Step 2. This
 step only handles daily notes.
@@ -156,7 +185,7 @@ mv 0-inbox/daily-notes/2026-01-07.md 4-archive/daily-notes/
 
 This clears the inbox after processing, following GTD principles.
 
-### 7. Guide the User
+### 8. Guide the User
 
 After creating the review and archiving notes:
 
