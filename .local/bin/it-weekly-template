@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+#
+# Copy the canonical "IT Weekly Meeting" template from the OES controlled-docs
+# SharePoint library (via rclone) into the synced Meeting Notes folder, stamped
+# with today's date: YYYYMMDD_IT Weekly Meeting.docx
+#
+# The OES library is sync-ineligible (content approval / required checkout), so
+# it can't be mounted by the OneDrive client — rclone talks to Graph instead.
+#
+# Scheduled by ~/Library/LaunchAgents/com.jjduqu.it-weekly-template.plist
+# Logs to ~/Library/Logs/it-weekly-template.log
+
+set -euo pipefail
+
+RCLONE="/opt/homebrew/bin/rclone"
+REMOTE="OES:OES/Meeting Agenda Templates/BeHIVE & IT/IT Weekly Meeting.docx"
+DEST_DIR="/Users/jjduqu/Library/CloudStorage/OneDrive-SharedLibraries-PADNOS/Information Technology - Documents/General/OES/Meeting Notes"
+LOG="$HOME/Library/Logs/it-weekly-template.log"
+
+# Files are named for the Friday of the week, e.g. "20260626 IT Weekly Meeting.docx"
+# (space, no underscore). Mon-Thu -> the upcoming Friday; Fri -> today;
+# Sat/Sun -> the Friday just past (keeps it in the same Mon-Sun week).
+offset=$((5 - $(date +%u)))
+if ((offset >= 0)); then sign="+"; else sign=""; fi
+FRIDAY="$(date -v"${sign}${offset}d" +%Y%m%d)"
+DEST="$DEST_DIR/${FRIDAY} IT Weekly Meeting.docx"
+
+log() { printf '%s  %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$*" >>"$LOG"; }
+
+# Don't clobber a copy you may have already started editing this week.
+if [[ -e "$DEST" ]]; then
+  log "SKIP  already exists: $DEST"
+  exit 0
+fi
+
+# Dest is a synced OneDrive library; bail loudly if it isn't mounted.
+if [[ ! -d "$DEST_DIR" ]]; then
+  log "ERROR dest folder not found (OneDrive not mounted?): $DEST_DIR"
+  exit 1
+fi
+
+if "$RCLONE" copyto "$REMOTE" "$DEST" >>"$LOG" 2>&1; then
+  log "OK    copied template -> $DEST"
+else
+  rc=$?
+  log "ERROR rclone copyto failed (exit $rc)"
+  exit "$rc"
+fi
