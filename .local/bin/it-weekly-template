@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 #
 # Copy the canonical "IT Weekly Meeting" template from the OES controlled-docs
-# SharePoint library (via rclone) into the synced Meeting Notes folder, stamped
-# with today's date: YYYYMMDD_IT Weekly Meeting.docx
+# SharePoint library (via rclone) into the synced Meeting Notes folder, named for
+# the Friday of the week: "YYYYMMDD IT Weekly Meeting.docx" (space, no underscore).
 #
 # The OES library is sync-ineligible (content approval / required checkout), so
 # it can't be mounted by the OneDrive client — rclone talks to Graph instead.
