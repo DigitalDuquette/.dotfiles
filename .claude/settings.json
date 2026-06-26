@@ -60,5 +60,6 @@
   "effortLevel": "high",
   "preferredNotifChannel": "ghostty",
   "remoteControlAtStartup": true,
-  "agentPushNotifEnabled": true
+  "agentPushNotifEnabled": true,
+  "tui": "fullscreen"
 }
