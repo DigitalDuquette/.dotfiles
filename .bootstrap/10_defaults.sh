@@ -15,6 +15,23 @@ duti -s com.colliderli.iina public.mpeg-4-audio all
 duti -s com.colliderli.iina public.mpeg-4 all
 duti -s com.colliderli.iina com.microsoft.waveform-audio all
 duti -s com.colliderli.iina public.m3u-playlist all
+
+# JSON → OK JSON
+# Set both the UTI and the extension: JetBrains IDEs re-register their
+# file claims on update and steal these back, so re-running this script
+# restores them.
+duti -s net.shinystone.OKJSON public.json all
+duti -s net.shinystone.OKJSON .json all
+
+# Markdown → MarkEdit
+duti -s app.cyan.markedit net.daringfireball.markdown all
+duti -s app.cyan.markedit .md all
+duti -s app.cyan.markedit .markdown all
+
+# Config / data files → VS Code (reclaimed from PyCharm)
+duti -s com.microsoft.VSCode .yaml all
+duti -s com.microsoft.VSCode .yml all
+duti -s com.microsoft.VSCode .xml all
 echo "[defaults] duti assignments done."
 
 # ====== TRACKPAD =====
