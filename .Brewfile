@@ -101,6 +101,8 @@ cask "loom"
 cask "maccy"
 # Speech-to-text transcription application
 cask "macwhisper"
+# Markdown editor — default handler for .md (see .bootstrap/10_defaults.sh)
+cask "markedit"
 # Background Audio Removal
 cask "krisp"
 # Multi-platform web browser
