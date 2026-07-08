@@ -2,81 +2,85 @@
 
 This example demonstrates the structure and tone of the weekly review
 output. Adapt the content and length based on the actual daily notes.
-Note the Team Update: one-line preamble, bullets capped at two sentences,
-shipped work summarized at theme level with a link to the dev-activity
-note.
+
+The Team Update models the leadership-requested style: one-line
+preamble, short fragment bullets (not sentences), theme-level
+summaries. Bullet count is flexible; density per bullet is not.
+Decisions, blockers, and upcoming focus are single bullets. Detail
+lives in the linked notes and the Daily Note Review, not the update.
 
 ```md
-# Week 03, 2026
+# Week 27, 2026
 
 ## Team Update
 
-This week was focused on infrastructure improvements and project planning.
+Short holiday week, almost all of it on the inspection app image outage
+— from "nobody can quantify it" to a shipped fix and numbers trending
+down.
 
-- Shipped fixes to the contact center grouping transformation and the
-  rename pattern with Jeff G, so future additions won't break dashboards.
-  See [[2-areas/reviews/dev-activity/DigitalDuquette/2026-W03|full PR list]].
-- Made significant progress on Auto Pricing Calculator with user stories
-  and project planning revisions.
-- Reviewed AISC work and built out January scorecard, including sprint
-  planning for January and February.
-
-Upcoming focus: Connor out next week with new baby. Completed knowledge
-transfer sessions on flow toggles.
-
-Blockers:
-
-- Still no communication from Salesforce as of Jan 16, risking our
-  ability to negotiate a good deal.
+- 8 PRs merged across 4 repos, mostly inspection image outage
+  ([[2-areas/reviews/dev-activity/DigitalDuquette/2026-W27|full PR list]])
+- Audit dashboard now quantifies missing app images
+- App fix 2.15.4 live Thursday — miss rate already dropping
+- Production-tracking data drops fixed (orchestration moved to SQL
+  Agent job)
+- Scale touch screen API: stubs up, TCP weights reading, MVP endpoints
+  on track for end of July
+- Scheduled receiver rewrite staged — deploy next week
+- AG5 vendor call: Advanced Analytics API confirmed deprecated, vendor
+  committed to data fix + transition meeting
+- Inspection reporting reconciliation started with Nate — greenfielding
+  the queue business rules
+- Decision: Container Vision AI is the Q3 AI project (Ernie + Bob)
+- Next week: monitor image fix, scale API stubs, receiver rewrite
+  deploy
 
 ---
 
 ## Private Notes
 
-Recruiting: Processed large batch of resumes through LinkedIn. Created
-separate email workflow for Devon to handle phone screens. Several top
-candidates already replied.
+Vendor friction: documented two more SLG failures (scale config
+mismatch, dead in-motion flag); the accountability file keeps growing
+and feeds the larger vendor conversation.
 
-Performance management: Created capture log for Arnaud following TG
-example. Enough of a trend for structured intervention.
-
-Technical frustrations: 2 hours lost trying to get scorecard to print -
-waiting on Tony for Mac drivers and Jim for MG1.
+Team: new hire ramping impressively fast; another team member got the
+project-list-hygiene feedback again — watch whether it sticks. Unlike
+the Team Update, this section stays as detailed as it needs to be.
 
 ---
 
 ## Action Items for Fresh
 
-- [ ] Jared to convert ticket 111239 or check if already converted
-- [ ] Review DBA scripts repo structure following BI dev guidelines
-- [ ] Turn on flow on Monday and communicate with auto team
-- [ ] Follow up on Salesforce communication/negotiation
+- [ ] Monitor missing-image count post-2.15.4; confirm inspectors are on
+      the latest app version
+- [ ] Deliver scale API stubs to Post Industria; core MVP endpoints by
+      end of July
+- [ ] Final testing + deploy of the scheduled receiver rewrite next week
+- [ ] Review queued PRs (incl. the 18-file warehouse pipeline PR)
 
 ---
 
 ## Meeting Log
 
-See [[2026-W03-meetings]] for the detailed meeting log.
+See [[2026-W27-meetings]] for the detailed meeting log.
 
 ---
 
 ## Daily Note Review
 
-### Thursday, January 9
+### Tuesday, June 30
 
-Discovered Claude Code internal tool simplification process. Worth
-reviewing source and testing for code review workflows.
+- Worked the SR pipeline: making the vehicle-to-RIMAS record 1-to-1.
+- Set up the inspection image audit dashboard showing missing images
+  since the new inspection table started.
 
-### Friday, January 10
+### Thursday, July 2
 
-Researched conferences to book review dates. Notes on agents and skills
-architecture.
+- Dashboarding to support the inspection outage; waiting to see whether
+  the new app version fixes the issue.
+- Completed more scheduled receiver rewrite work; staged and ready for
+  final testing and deploy next week.
 
-### Sunday, January 12
-
-**Sprint Planning:** Discussed outbound inspection in RIMAS with Jeff.
-Scoping decisions on VIN title issues (111040).
-
-**Technical Frustrations:** Nearly 2 hours trying to get scorecard to
-print.
+This section stays detailed — it is the searchable archive; only the
+Team Update is length-capped.
 ```

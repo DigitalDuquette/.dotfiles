@@ -102,23 +102,34 @@ to the actual week.
 
 **Team Update**
 
-Length constraints — the update must stay scannable:
+Length constraints — feedback from leadership (July 2026): past updates
+read as prose reports ("a Tolstoy Novel"). The fix is scannability and
+summarization, not a hard bullet cap. The audience skims this every
+week.
 
-- At most a one-line preamble summarizing the week's focus
-- Maximum 10 bullets total; each bullet at most two sentences
-- Blockers and upcoming focus only when they actually exist — omit empty
-  sections rather than padding them
+- At most a one-line preamble naming the week's theme
+- Bullets are short fragments, not sentences — one line each where
+  possible, never multi-clause prose with sub-details packed in
+- Bullet count is flexible (up to ~20 when the week earns it) — cut
+  the detail inside each bullet, not the list of things that happened
+- Summarize at theme level: each bullet names the outcome, not the
+  implementation story behind it
+- No separate Decisions / Blockers / Upcoming subsections — a key
+  decision, a real blocker, or next week's focus is one bullet each
+- Everything cut from the Team Update still has a home: shipped detail
+  in the dev-activity note, meeting detail in the meeting log, daily
+  detail in the Daily Note Review section below
 
 Content:
 
 - Format as a post ready to share with the team
-- Include: accomplishments, key decisions, blockers, upcoming focus
-- Summarize shipped PRs from Step 3 at theme level in 1-2 bullets (e.g.,
-  "Shipped improvements to X and Y"). Do not list individual PRs. End the
-  shipped bullet with a wiki-link to the dev-activity note:
+- Summarize shipped PRs from Step 3 as one theme-level bullet (e.g.,
+  "Shipped 8 PRs across 4 repos, nearly all for the inspection image
+  outage"). Do not list individual PRs. End the bullet with a wiki-link
+  to the dev-activity note:
   `[[2-areas/reviews/dev-activity/DigitalDuquette/YYYY-Www|full PR list]]`
-- If a meeting log exists, pull shareable decisions, demos, and themes
-  from it into accomplishments and decisions
+- If a meeting log exists, pull only the most shareable decision or
+  theme from it
 - Remove sensitive or non-essential details
 - Write in first person ("We shipped...", "I reviewed...")
 - Keep items in bullet list
