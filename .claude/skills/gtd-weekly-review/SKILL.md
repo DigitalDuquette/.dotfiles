@@ -90,8 +90,10 @@ messages entirely):
   This uses the Graph full-text path, which covers channel posts AND
   chats, newest first.
 - Paginate with `offset` (25 per page) until `createdDateTime` crosses
-  the week start. Discard anything outside the target week — including
-  messages from the current day if the review runs early the next week.
+  the window start. The review runs Friday before closing the week, so
+  the window is **last Friday through now** (same convention as
+  `/shipped-this-week`) — this catches late-Friday and weekend messages
+  the previous run couldn't have seen. Discard anything older.
 - Results are ~250-char summaries. Adjacent messages usually quote the
   thread context; when a load-bearing thread needs more, run 1-3
   targeted keyword searches (project name, person, incident term).
