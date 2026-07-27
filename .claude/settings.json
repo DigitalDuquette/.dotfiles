@@ -11,6 +11,12 @@
       "Bash(gh pr:*)",
       "Bash(gh issue:*)",
       "Bash(op run --env-file ~/.config/padsql/.env.sq2:*)",
+      "Bash(padsql-exec --server mssql-dev-01 *)",
+      "Bash(padsql-exec --server mssql-dev-02 *)",
+      "Bash(padsql-exec --help)",
+      "Bash(ssh rhel-dev-local01 *)",
+      "Bash(ssh -o BatchMode=yes rhel-dev-local01 *)",
+      "Bash(ssh -o BatchMode=yes -o ConnectTimeout=5 rhel-dev-local01 *)",
       "Write(/tmp/fs-ticket-*)",
       "Read(~/obsidian-vault/**)",
       "Edit(~/obsidian-vault/**)",
@@ -26,7 +32,7 @@
       "Edit(~/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/.obsidian/**)"
     ]
   },
-  "model": "opus[1m]",
+  "model": "claude-fable-5[1m]",
   "hooks": {
     "Notification": [
       {
@@ -58,8 +64,8 @@
     "github@claude-plugins-official": true
   },
   "effortLevel": "high",
+  "tui": "fullscreen",
   "preferredNotifChannel": "ghostty",
   "remoteControlAtStartup": true,
-  "agentPushNotifEnabled": true,
-  "tui": "fullscreen"
+  "agentPushNotifEnabled": true
 }
