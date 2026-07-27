@@ -1,14 +1,14 @@
 ---
 name: gtd-weekly-review
-description: Performs GTD weekly review by consolidating daily notes, meeting logs, and shipped PRs into structured review with team update, private notes, and action items. Use when conducting weekly review, processing daily notes, or preparing team updates.
-allowed-tools: Read, Glob, Write, Bash
+description: Performs GTD weekly review by consolidating daily notes, meeting logs, shipped PRs, and Teams messages into structured review with team update, private notes, and action items. Use when conducting weekly review, processing daily notes, or preparing team updates.
+allowed-tools: Read, Glob, Write, Bash, mcp__claude_ai_Microsoft_365__chat_message_search
 ---
 
 # GTD Weekly Review
 
 This skill automates the GTD weekly review process by consolidating daily
-notes from `0-inbox/daily-notes/`, the weekly meeting log, and merged PRs
-into a structured review.
+notes from `0-inbox/daily-notes/`, the weekly meeting log, merged PRs, and
+the week's Teams messages into a structured review.
 
 ---
 
@@ -63,7 +63,7 @@ follow it end-to-end, unmodified — it creates the dev-activity note at
 `2-areas/reviews/dev-activity/DigitalDuquette/YYYY-Www.md`, which is the
 detailed archive the Team Update links to.
 
-After it completes, use the PR summary as an input for Step 6. If no PRs
+After it completes, use the PR summary as an input for Step 7. If no PRs
 were merged this week, skip this input and omit shipped-work bullets from
 the Team Update.
 
@@ -75,7 +75,42 @@ Find all daily notes for the target week from `0-inbox/daily-notes/`:
 - Read all notes in the folder, regardless of date.
 - If a daily note doesn't exist for a day, skip it
 
-### 5. Process Daily Notes and Meeting Log
+### 5. Mine Teams Messages
+
+Requires the Microsoft 365 MCP tool
+`mcp__claude_ai_Microsoft_365__chat_message_search`. If it is not
+connected, announce that Teams mining is skipped and continue — the
+review still works from the other sources.
+
+Search recipe (validated 2026-07-27 — do NOT use `afterDateTime`/
+`beforeDateTime`; that path rate-limits instantly and skips channel
+messages entirely):
+
+- Search `query: "from:jared@padnos.com"` with no date parameters.
+  This uses the Graph full-text path, which covers channel posts AND
+  chats, newest first.
+- Paginate with `offset` (25 per page) until `createdDateTime` crosses
+  the week start. Discard anything outside the target week — including
+  messages from the current day if the review runs early the next week.
+- Results are ~250-char summaries. Adjacent messages usually quote the
+  thread context; when a load-bearing thread needs more, run 1-3
+  targeted keyword searches (project name, person, incident term).
+
+Extract for Step 7:
+
+- Decisions made in chat — these often resolve or supersede items the
+  meeting log left open; prefer the latest state
+- Public commitments: dates and deadlines announced in channels
+- Open loops: questions asked with no visible resolution by week's end
+- Wins posted by the team in channels (e.g. weekly-update posts) that
+  transcripts and PRs miss
+- Coaching or feedback delivered in writing (routes to Private Notes)
+
+Cross-check the mined signal against the meeting log and PR list before
+writing: chat frequently closes action items the other sources would
+carry forward as open.
+
+### 6. Process Daily Notes and Meeting Log
 
 For each daily note, extract relevant content:
 
@@ -92,9 +127,9 @@ If `2-areas/reviews/weekly/YYYY-WXX-meetings.md` exists for this week
 
 - Meeting decisions and themes
 - 1:1 highlights worth folding into Private Notes
-- The meeting log's Action Items section (used as the seed list in Step 6)
+- The meeting log's Action Items section (used as the seed list in Step 7)
 
-### 6. Populate the Weekly Review
+### 7. Populate the Weekly Review
 
 Create a file with the sections below. Read `example.md` in this skill's
 directory for the expected structure and tone — adapt content and length
@@ -130,6 +165,8 @@ Content:
   `[[2-areas/reviews/dev-activity/DigitalDuquette/YYYY-Www|full PR list]]`
 - If a meeting log exists, pull only the most shareable decision or
   theme from it
+- Fold in Teams-mined wins and public commitments from Step 5 (a team
+  milestone posted in a channel is Team Update material)
 - Remove sensitive or non-essential details
 - Write in first person ("We shipped...", "I reviewed...")
 - Keep items in bullet list
@@ -154,12 +191,16 @@ These items belong exclusively in Private Notes.
 - Context the user needs but team doesn't
 - If a meeting log exists, fold in sensitive 1:1 themes,
   performance-management threads, and vendor frictions surfaced there
+- Coaching or feedback delivered in Teams chat goes here, with the
+  balance it deserves (pair a correction with the same week's praise)
 
 **Action Items for Fresh**
 
 - If a meeting log exists, start with its Action Items section as the
   seed list
 - Add uncompleted tasks from daily notes
+- Add Teams open loops and commitments from Step 5; drop or mark
+  resolved any item that chat shows was already closed during the week
 - Add new todos identified during this review
 - Add follow-ups and commitments
 - Deduplicate before writing
@@ -172,6 +213,15 @@ These items belong exclusively in Private Notes.
 - Do not duplicate the meeting log content here, the link is enough
 - Format: `See [[YYYY-WXX-meetings]] for the detailed meeting log.`
 
+**Teams Review**
+
+- Only include this section when Step 5 ran and produced signal
+- Place it between Meeting Log and Daily Note Review
+- Organize by day like the Daily Note Review; short bullets
+- This is the searchable archive of chat signal — curated wins,
+  decisions, and action items already live in the sections above; do
+  not duplicate them at length here
+
 **Daily Note Review**
 
 - Organize content by day (Monday through Sunday)
@@ -179,7 +229,7 @@ These items belong exclusively in Private Notes.
 - Keep this section detailed—it becomes searchable archive
 - If no daily note exists for a day, omit that day's section
 
-### 7. Propose Now Updates to INDEX
+### 8. Propose Now Updates to INDEX
 
 Read `INDEX.md` at the vault root and note the current `## Now` section.
 
@@ -213,7 +263,7 @@ signal. Curate into `INDEX.md` manually.
 
 Do not edit `INDEX.md` directly. Curation is manual.
 
-### 8. Archive Processed Daily Notes
+### 9. Archive Processed Daily Notes
 
 Note: meeting transcripts were already archived by `/meeting-review` in
 Step 2. This step only handles daily notes.
@@ -239,7 +289,7 @@ mv 0-inbox/daily-notes/2026-01-07.md 4-archive/daily-notes/
 
 This clears the inbox after processing, following GTD principles.
 
-### 9. Guide the User
+### 10. Guide the User
 
 After creating the review and archiving notes:
 
