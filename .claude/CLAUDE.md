@@ -16,6 +16,32 @@
 
 ---
 
+## Before You Write Code
+
+For anything beyond a one-line edit, before your first edit tell me in under
+10 lines:
+
+1. The files you will change. If you later need one not on that list, stop
+   and ask.
+2. Assumptions you are making about the environment that you have not
+   verified.
+3. What you are tempted to add beyond what I literally asked for, and why I
+   should say no to each.
+
+Then stop and wait for me.
+
+---
+
+## Stop Conditions
+
+Stop and report rather than continue if any of these become true:
+
+- The change grows past ~150 lines, or touches a file not on your list
+- You are about to add a dependency, a new file, or a new abstraction
+- An assumption you stated turns out to be false
+
+---
+
 ## Development Environment
 
 - IDE: JetBrains (use JetBrains-specific terminology and tooling references
