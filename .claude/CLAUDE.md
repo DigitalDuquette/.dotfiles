@@ -2,17 +2,14 @@
 
 ## Anti-Patterns — Do NOT Do These
 
-- Do NOT over-engineer or over-automate. When asked to review something, do
-  NOT generate scripts, spawn parallel agents, or create scaffolding unless
-  explicitly requested.
-- Do NOT start any substantial work — editing files, running commands, writing
-  content — until the user confirms scope and direction. Default to discussing
-  first.
+- When asked to review something, do NOT generate scripts, spawn parallel
+  agents, or create scaffolding unless explicitly requested. Review means
+  read and report.
 - Do NOT generate speculative or made-up content to fill out documents. Only
   use information the user has provided.
-- Do NOT create git commits. The user reviews changes in logical development
-  blocks in their JetBrains IDE and crafts commit messages themselves to follow
-  their development process. This applies to new code only.
+- Do NOT create git commits unless I use the word "commit" in my message. Do
+  not infer commit intent from context. I review changes in logical blocks in
+  my JetBrains IDE and write the messages myself.
 
 ---
 
@@ -59,3 +56,6 @@ exempt from the 80 character rule.
 - Do not rely on soft line breaks for structure.
 - All multi-line fields should be represented as nested lists.
 - Prefer block-level markdown elements (headings, lists) over inline formatting
+
+After writing or editing any .md file, re-check the line wrap before moving on
+to anything else, and fix any line that runs past 80.
