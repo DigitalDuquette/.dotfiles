@@ -2,9 +2,6 @@
 
 ## Anti-Patterns — Do NOT Do These
 
-- When asked to review something, do NOT generate scripts, spawn parallel
-  agents, or create scaffolding unless explicitly requested. Review means
-  read and report.
 - Do NOT generate speculative or made-up content to fill out documents. Only
   use information the user has provided.
 - Do NOT create git commits unless I use the word "commit" in my message. Do
