@@ -1,0 +1,25 @@
+# 1. Stage the merged repo to each host (run from your Mac)
+cd ~/Developer/GitHub/dev-guidelines
+git checkout main && git pull --ff-only
+
+for h in is-dev-01 is-dev-02 is-prod-01 rhel-dev-local01; do
+  echo "=== $h ==="
+  rsync -a --delete --exclude .git ./ "$h":/tmp/dev-guidelines/
+done
+
+# 2. Bootstrap, one host at a time (-t so sudo can prompt)
+ssh -t is-dev-01 'sudo bash /tmp/dev-guidelines/infrastructure/rhel/bootstrap.sh'
+ssh -t is-dev-02 'sudo bash /tmp/dev-guidelines/infrastructure/rhel/bootstrap.sh'
+ssh -t is-prod-01 'sudo bash /tmp/dev-guidelines/infrastructure/rhel/bootstrap.sh'
+ssh -t rhel-dev-local01 'sudo bash /tmp/dev-guidelines/infrastructure/rhel/bootstrap.sh'
+
+# 3. Verify the fix landed, then clean up staging
+for h in is-dev-01 is-dev-02 is-prod-01 rhel-dev-local01; do
+  printf '%-12s ' "$h"
+  ssh "$h" 'grep -c "date +\"%Y-%m-%dT%H:%M:%S%:z\"" /opt/pipeline/deploy-runner.sh'
+done
+
+for h in is-dev-01 is-dev-02 is-prod-01 rhel-dev-local01; do
+  ssh "$h" 'rm -rf /tmp/dev-guidelines'
+done
+
