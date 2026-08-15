@@ -10,6 +10,8 @@ brew "fd"
 brew "gh"
 # Distributed revision control system
 brew "git"
+# Syntax-highlighting pager for git and diff output
+brew "git-delta"
 # Post-modern modal text editor
 brew "helix"
 # Blazing fast terminal file manager written in Rust, based on async I/O
@@ -52,6 +54,16 @@ brew "zsh-fast-syntax-highlighting"
 brew "tmux"
 # Tailscale
 cask "tailscale-app"
+# Create, run, and share large language models (LLMs)
+brew "ollama"
+# Tool for managing OCI containers and pods
+brew "podman"
+# Rsync for cloud storage
+brew "rclone"
+# Static analysis and lint tool, for (ba)sh scripts
+brew "shellcheck"
+# Process YAML, JSON, XML, CSV and properties documents from the CLI
+brew "yq"
 # DuckDB local file database
 brew "duckdb"
 # SQL Server CLI written in GO
@@ -129,6 +141,16 @@ cask "visual-studio-code"
 cask "sublime-text"
 # Connect to Windows
 cask "windows-app"
+# E-books management software
+cask "calibre"
+# Developer platform
+cask "dotnet-sdk"
+# Developer platform
+cask "dotnet-sdk@8"
+# Native desktop AI assistant from Google
+cask "google-gemini"
+# Discover, download, and run local LLMs
+cask "lm-studio"
 # markdown to quicklook
 cask "qlmarkdown"
 mas "Amphetamine", id: 937984704
