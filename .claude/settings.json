@@ -63,7 +63,7 @@
       "Edit(~/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/.obsidian/**)"
     ]
   },
-  "model": "sonnet",
+  "model": "opus[1m]",
   "hooks": {
     "Notification": [
       {
@@ -96,6 +96,7 @@
   },
   "effortLevel": "high",
   "tui": "fullscreen",
+  "skipWorkflowUsageWarning": true,
   "preferredNotifChannel": "ghostty",
   "remoteControlAtStartup": true,
   "agentPushNotifEnabled": true
