@@ -16,6 +16,8 @@
       "Bash(git rev-parse:*)",
       "Bash(git rev-list:*)",
       "Bash(git merge-base:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
       "Bash(gh pr:*)",
       "Bash(gh issue:*)",
       "Bash(gh api:*)",
@@ -64,7 +66,8 @@
       "Read(~/obsidian-vault/.obsidian/**)",
       "Edit(~/obsidian-vault/.obsidian/**)",
       "Read(~/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/.obsidian/**)",
-      "Edit(~/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/.obsidian/**)"
+      "Edit(~/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/.obsidian/**)",
+      "Bash(git commit --amend:*)"
     ]
   },
   "model": "sonnet",
