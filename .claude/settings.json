@@ -39,6 +39,10 @@
       "Bash(padsql-exec --server mssql-dev-01 *)",
       "Bash(padsql-exec --server mssql-dev-02 *)",
       "Bash(padsql-exec --help)",
+      "Bash(padsql-deploy --help:*)",
+      "mcp__claude_ai_Tableau__search-content",
+      "mcp__claude_ai_Tableau__get-workbook",
+      "mcp__claude_ai_Tableau__get-datasource-metadata",
       "Bash(ssh rhel-dev-local01 *)",
       "Bash(ssh -o BatchMode=yes rhel-dev-local01 *)",
       "Bash(ssh -o BatchMode=yes -o ConnectTimeout=5 rhel-dev-local01 *)",
@@ -63,8 +67,20 @@
       "Edit(~/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos/.obsidian/**)"
     ]
   },
-  "model": "opus[1m]",
+  "model": "sonnet",
   "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/auto_allow_readonly_bash.py",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
     "Notification": [
       {
         "matcher": "permission_prompt",
