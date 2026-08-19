@@ -70,7 +70,7 @@
       "Bash(git commit --amend:*)"
     ]
   },
-  "model": "sonnet",
+  "model": "opus[1m]",
   "hooks": {
     "PreToolUse": [
       {
