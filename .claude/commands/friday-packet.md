@@ -108,7 +108,7 @@ Move the PDF to the shared folder:
 
 ```bash
 mv /tmp/aisc-packet-YYYY-MM-DD.pdf \
-  "/Users/jjduqu/Library/CloudStorage/OneDrive-PADNOS/Information Solutions-Artificial Intelligence - Documents/Artificial Intelligence/Meeting Notes/AISC Notes YYYY-MM-DD.pdf"
+  "/Users/jjduqu/Library/CloudStorage/OneDrive-SharedLibraries-PADNOS/Information Solutions-aisc - Documents/Artificial Intelligence/Meeting Notes/AISC Notes YYYY-MM-DD.pdf"
 ```
 
 ### 7. Clean Up
@@ -131,7 +131,7 @@ rm -f /tmp/aisc-packet-YYYY-MM-DD.md
 **PDF filename:** `AISC Notes YYYY-MM-DD.pdf` (date is the Monday meeting date)
 
 **Destination:**
-`/Users/jjduqu/Library/CloudStorage/OneDrive-PADNOS/Information Solutions-Artificial Intelligence - Documents/Artificial Intelligence/Meeting Notes/`
+`/Users/jjduqu/Library/CloudStorage/OneDrive-SharedLibraries-PADNOS/Information Solutions-aisc - Documents/Artificial Intelligence/Meeting Notes/`
 
 ---
 
