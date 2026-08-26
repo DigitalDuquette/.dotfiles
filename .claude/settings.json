@@ -70,7 +70,7 @@
       "Bash(git commit --amend:*)"
     ]
   },
-  "model": "opus[1m]",
+  "model": "sonnet",
   "hooks": {
     "PreToolUse": [
       {
@@ -80,6 +80,18 @@
             "type": "command",
             "command": "python3 ~/.claude/hooks/auto_allow_readonly_bash.py",
             "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/check_md_line_wrap.sh",
+            "timeout": 10
           }
         ]
       }
@@ -111,12 +123,62 @@
   },
   "enabledPlugins": {
     "code-review@claude-plugins-official": true,
-    "github@claude-plugins-official": true
+    "github@claude-plugins-official": true,
+    "ponytail@ponytail": true
+  },
+  "extraKnownMarketplaces": {
+    "ponytail": {
+      "source": {
+        "source": "github",
+        "repo": "DietrichGebert/ponytail"
+      }
+    }
   },
   "effortLevel": "high",
   "tui": "fullscreen",
   "skipWorkflowUsageWarning": true,
+  "verbose": false,
   "preferredNotifChannel": "ghostty",
   "remoteControlAtStartup": true,
-  "agentPushNotifEnabled": true
+  "agentPushNotifEnabled": true,
+  "autoMode": {
+    "allow": [
+      "$defaults",
+      "Bash(padsql-exec:*) read-only queries against the non-production SQL profiles mssql-dev-01, mssql-dev-02, sq1 and sq2 — routine in this repo, never against mssql-prod-02",
+      "Bash(op:*) read operations that resolve 1Password references for local development (op read / op item get); credential values still must not be echoed into transcripts or files",
+      "Bash(gh:*) read-only queries against the private PADNOS org (gh repo view, gh pr list, gh api GET) from the dev-guidelines checkout"
+    ],
+    "soft_deny": [
+      "$defaults",
+      "Bash(padsql-exec:*) and Bash(padsql-deploy:*) against the mssql-prod-02 profile or any profile whose name carries prod as a name segment",
+      "Bash(padsql-deploy:*) any schema or stored-procedure deploy — treat every deploy as a change requiring confirmation, including to dev profiles",
+      "Writes to the RHEL pipeline hosts via ssh or scp, including infrastructure/rhel sudoers, deploy-runner and bootstrap scripts targeting is-prod-01"
+    ],
+    "environment": [
+      "### Org-wide",
+      "**Organization**: PADNOS (GitHub org `PADNOS`)",
+      "**Cloud provider(s)**: None configured",
+      "**Repository visibility**: `PADNOS/dev-guidelines` is private (confirmed via gh). All 20 org repos listed by the gh org-repo split are private (`Meridian-Scale`, `Dozuki-extensibility`, `dev-guidelines`, `Meridian-Planning`, `RIMAS-extensibility`, `Inspection-App`, `PADNOS-data-warehouse`, `SQL-Query-Library`, `DBA-scripts`, `Inspection-API`, `PADNOS-Salesforce-Org`, `eMaint-extensibility`, `Flowcue`, `PADNOS-Connect`, `BI-tools`, `PADNOS-Applications`, `Meridian-API`, `Salesforce-extensibility`, `HCM-extensibility`, `Dialpad-extensibility`, plus 30 more not enumerated); no PUBLIC repo was observed. Treat any repo not on this list as private unless a visibility check shows otherwise.",
+      "**Internal sharing / snippet hosting**: None configured — treat public paste/gist services as outside the trust boundary",
+      "**Secrets management**: 1Password (`op` CLI used in this project and across projects; `OP_SERVICE_ACCOUNT_TOKEN` referenced in CI). .NET user-secrets and `.env` files for local credentials; CI secret names seen: ANTHROPIC_API_KEY, GITHUB_TOKEN, GIT_TO_IIS__TOKEN, GIT_TO_IIS__USERNAME, NUGET_FEED_TOKEN, NUGET_FEED_USERNAME, OP_SERVICE_ACCOUNT_TOKEN (names only — no values gathered)",
+      "**Default / protected branches**: default branch `main`; `main` is a protected branch on `PADNOS/dev-guidelines` (gh reports no rulesets)",
+      "**CI/CD deploy targets**: GitHub Actions (`.github/workflows` present in this repo); RHEL pipeline servers deployed to via the `infrastructure/rhel/` bootstrap, runbook and deploy scripts; a git-to-IIS publish path is implied by the `GIT_TO_IIS__*` CI secret names",
+      "**Network posture**: SSH-reachable internal hosts (e.g. `rhel-dev-local01`) used from this workstation; no VPN or zero-trust configuration was gathered",
+      "**Source control**: GitHub org `PADNOS` — the trusted repo `https://github.com/PADNOS/dev-guidelines.git` and other `PADNOS/*` repos, all observed private",
+      "**Trusted internal domains**: None configured — no internal domain names were corroborated by usage",
+      "**Trusted cloud buckets**: None configured",
+      "**Key internal services**: SQL Server instances reached through the in-house `padsql-exec` / `padsql-deploy` CLIs and `sqlcmd` (credential profiles named `mssql-dev-01`, `mssql-dev-02`, `mssql-prod-02`, `sq1`, `sq2`); RHEL pipeline servers over SSH (`rhel-dev-local01`); Cronitor heartbeat monitoring (`is-prod-01`); 1Password",
+      "**Internal package registry**: A private NuGet feed (referenced by the `NUGET_FEED_USERNAME` / `NUGET_FEED_TOKEN` CI secret names); feed URL not gathered",
+      "**Sensitive data locations & audiences**: `.env` and `.env.*` credential files under `tools/padsql/credentials/` (only `.example` templates are tracked), `languages/python/.env.example`, `languages/dotnet/user-secrets.md`, the unusual-name pattern in `.gitignore`, and anything in the SQL Server databases reached via `padsql-exec` / `sqlcmd`; plus any file or store holding personal data, confidential business data, credentials, regulated data, or similarly sensitive material; preserve exact handles when known and share only with audiences cleared at the [named+specifics] bar",
+      "**Data retention / declassification**: None configured",
+      "**Sensitive remote targets**: any namespace, host, or container whose name carries `prod` or `production` as a whole word or name segment (hyphen/underscore/dot-delimited — e.g. matches `prod-db`, not `producer`); this explicitly covers the `mssql-prod-02` SQL credential profile and the `is-prod-01` pipeline host",
+      "**Protected deployment namespaces / environments**: None configured — fall back to the Sensitive remote targets heuristic",
+      "**Protected IaC scopes**: IAM, RBAC, networking, quota, and node-pool resources; anything whose name or tag carries `prod` or `production` as a whole word or name segment; also the RHEL server bootstrap, sudoers and deploy-runner setup scripts under `infrastructure/rhel/`",
+      "### User-specific",
+      "**Primary use of Claude Code**: software development — writing and maintaining team standards docs (markdown, 80-column), T-SQL and Python conventions, and RHEL deploy/runbook automation",
+      "**Trusted repo**: `/Users/jjduqu/Developer/GitHub/dev-guidelines` and its remote `https://github.com/PADNOS/dev-guidelines.git` (private, default branch `main`, `main` protected). Confidential material is fine in this private repo; secrets and sensitive data (personal & entrusted) are never cleared into any repo by its visibility (see Definitions). Content ported, repointed, or first read from outside this session's repo is not its own work.",
+      "**Org-specific CLIs**: `padsql-exec` and `padsql-deploy` (in-house SQL Server wrappers, heavily used: 373x and 7x across projects, 12x and 15x locally), `op` (1Password), `sqlcmd`, `podman`, `gh`",
+      "**Routine under user prefix**: SSH with `-o BatchMode=yes` to `rhel-dev-local01` is a routine read/administer pattern for this user (already present in permissions.allow as classifier-bypassing entries)"
+    ]
+  }
 }
