@@ -1,53 +1,71 @@
 ---
 name: meeting-review
-description: Processes meeting transcripts from the meeting inbox into a personal weekly meeting log. Summarizes each meeting, extracts action items, and archives the transcripts. Use when processing Krisp meeting transcripts for the week.
-allowed-tools: Read, Glob, Write, Bash, Edit
+description: Pulls the week's meetings from the Krisp MCP into a personal weekly meeting log. Summarizes each meeting, extracts action items, and routes 1:1s to person folders. Use when conducting the weekly review or checking meetings for the week.
+allowed-tools: Read, Write, Bash, Edit, mcp__krisp__search_meetings, mcp__krisp__get_multiple_documents
 ---
 
 # Meeting Review
 
-This command processes raw Krisp meeting transcripts into a personal weekly meeting log.
-It is private and separate from the GTD weekly review.
+This command pulls the week's meetings straight from Krisp (via MCP) into a
+personal weekly meeting log. It is private and separate from the GTD weekly
+review.
 
 ---
 
 ## What This Command Does
 
-1. Reads general transcripts from `0-inbox/meeting/` and 1:1 transcripts from `0-inbox/meeting/1on1/`
+1. Queries Krisp for meetings since last Friday
 2. Writes a personal meeting log to `2-areas/reviews/weekly/`
-3. For each 1:1, appends an entry to the person's `1on1-log.md` in `2-areas/management/team/`
-4. Archives all transcripts to `4-archive/meeting/` with a week prefix
+3. For each 1:1, appends an entry to the person's `1on1-log.md` in
+   `2-areas/management/team/`
 
 ---
 
 ## Instructions for Claude
 
-### 1. Determine the Week
+### 1. Determine the Week and Query Window
 
 ```bash
 date +%Y-W%V
 ```
 
-The output file will be `2-areas/reviews/weekly/YYYY-WXX-meetings.md` (e.g., `2026-W09-meetings.md`).
+Output file: `2-areas/reviews/weekly/YYYY-WXX-meetings.md` (e.g.
+`2026-W09-meetings.md`).
 
-### 2. Find Transcript Files
+Find the most recent Friday before today (same convention as
+`/shipped-this-week`) and use it as the query window start, formatted
+`YYYY-MM-DD`.
 
-```bash
-ls 0-inbox/meeting/
-ls 0-inbox/meeting/1on1/
+### 2. Pull Meetings from Krisp
+
+Call `mcp__krisp__search_meetings` with `after: <friday_date>`, `limit: 50`,
+and:
+
+```
+fields: ["name", "date", "attendees", "detailed_summary", "key_points",
+         "action_items", "has_summary"]
 ```
 
-Process everything present — there is no date filter. Use file creation date as the meeting
-date proxy when it is not obvious from the filename or content.
+If no meetings are returned, stop here and report "No meetings found since
+<friday_date>" — do not create a log file.
 
-Treat the two folders as separate streams:
-- `0-inbox/meeting/` → general meetings
-- `0-inbox/meeting/1on1/` → 1:1s (routed to person folders in addition to the weekly log)
+### 3. Classify Each Meeting
 
-### 3. Read and Summarize Each Transcript
+A meeting is a **1:1** if its title starts with `1:1` (case-insensitive,
+allowing separators like `1:1 |`, `1:1:`, `1-on-1`), or it has exactly two
+named attendees. Everything else is a **general meeting**.
 
-**Speaker context:** The user is always `Jared Duquette` in the transcripts. Focus on what
-he said, decided, and committed to. Other speakers may be named or labeled `Speaker N`.
+### 4. Summarize Each Meeting
+
+**Speaker context:** The user is always `Jared Duquette`. Focus on what he
+said, decided, and committed to. Other attendees may be named or labeled
+`Speaker N`.
+
+Use the `detailed_summary`, `key_points`, and `action_items` Krisp already
+returned. If `has_summary` is false, or the notes are too thin to say
+anything useful, fetch the full transcript for that one meeting via
+`mcp__krisp__get_multiple_documents` (`include: ["transcript"]`) and
+summarize from it directly.
 
 **Per meeting, capture:**
 - What the meeting was actually about (not incidental side conversations)
@@ -55,13 +73,16 @@ he said, decided, and committed to. Other speakers may be named or labeled `Spea
 - Anything Jared committed to following up on
 - Anything surprising or worth remembering
 
-**Tone:** Honest, personal, informal. This is a private memory aid, not a team document.
+**Tone:** Honest, personal, informal. This is a private memory aid, not a
+team document.
 
-**Length:** 2–5 lines per meeting. If nothing happened worth noting, one line is fine.
+**Length:** 2–5 lines per meeting. If nothing happened worth noting, one
+line is fine.
 
-**Collapse:** Multiple short sessions with the same person on the same topic → one entry.
+**Collapse:** Multiple short sessions with the same person on the same
+topic → one entry.
 
-### 4. Write the Meeting Log
+### 5. Write the Meeting Log
 
 Output: `2-areas/reviews/weekly/YYYY-WXX-meetings.md`
 
@@ -72,7 +93,6 @@ Output: `2-areas/reviews/weekly/YYYY-WXX-meetings.md`
 
 ### [Meeting Name] ([Day, Mon DD])
 [2-5 lines of honest notes — what happened, decisions, anything worth remembering]
-`YYYY-WXX-[original-filename]`
 
 ---
 
@@ -89,17 +109,19 @@ Output: `2-areas/reviews/weekly/YYYY-WXX-meetings.md`
 
 **Rules:**
 - `---` separator between each meeting entry
-- Filename reference as inline code at the bottom of each entry
-- Action items consolidated at the bottom only — not repeated inside meeting notes
+- Action items consolidated at the bottom only — not repeated inside
+  meeting notes
 - 120 character line length maximum
-- 1:1s appear in the weekly log like any other meeting — no special section needed
+- 1:1s appear in the weekly log like any other meeting — no special
+  section needed
 
-### 5. Route 1:1s to Person Folders
+### 6. Route 1:1s to Person Folders
 
-For each transcript from `0-inbox/meeting/1on1/`:
+For each meeting classified as a 1:1:
 
-**Identify the other participant** from the transcript content. Ignore generic labels like
-`Speaker 1` — look for a real name.
+**Identify the other participant** from the `attendees` field, excluding
+Jared Duquette. If attendees is ambiguous (bot names, generic labels), fall
+back to the summary/transcript text to find a real name.
 
 **Find their team folder:**
 
@@ -107,8 +129,9 @@ For each transcript from `0-inbox/meeting/1on1/`:
 ls 2-areas/management/team/
 ```
 
-Match the participant's full name to the closest folder name (e.g., `Connor Jabin` →
-`connor-j`, `Jeff Wood` → `jeff-w`). Folder names follow `firstname-lastinitial` convention.
+Match the participant's full name to the closest folder name (e.g.,
+`Connor Jabin` → `connor-j`, `Jeff Wood` → `jeff-w`). Folder names follow
+`firstname-lastinitial` convention.
 
 **Append to their 1:1 log:**
 
@@ -132,34 +155,16 @@ Append a new entry:
 - [any follow-up or commitment]
 ```
 
-3–5 bullets max. Topics only — no narrative, no filler. If Jared committed to something,
-note it as "Follow-up: [item]".
+3–5 bullets max. Topics only — no narrative, no filler. If Jared committed
+to something, note it as "Follow-up: [item]".
 
-**If no folder match is found:** still include the 1:1 in the weekly meeting log, and add a
-note at the end of the report: "Could not route [Name] — no matching team folder."
-
-### 6. Archive Transcripts
-
-```bash
-mkdir -p 4-archive/meeting
-mkdir -p 4-archive/meeting/1on1
-```
-
-Move each file with the week prefix. Check for conflicts first:
-
-```bash
-# if 4-archive/meeting/YYYY-WXX-filename.txt already exists,
-# append datetime: YYYY-WXX-filename-YYYYMMDD-HHMMSS.txt
-mv 0-inbox/meeting/filename.txt 4-archive/meeting/YYYY-WXX-filename.txt
-mv 0-inbox/meeting/1on1/filename.txt 4-archive/meeting/1on1/YYYY-WXX-filename.txt
-```
-
-Confirm all moves completed successfully.
+**If no folder match is found:** still include the 1:1 in the weekly
+meeting log, and add a note at the end of the report: "Could not route
+[Name] — no matching team folder."
 
 ### 7. Report Back
 
 - File location of the meeting log
-- How many general transcripts were processed
-- How many 1:1 transcripts were processed and where they were routed
-- Any transcripts that could not be routed (name not matched)
+- How many general meetings and how many 1:1s were processed
+- Any 1:1s that could not be routed (name not matched)
 - Remind the user to transfer action items to Fresh

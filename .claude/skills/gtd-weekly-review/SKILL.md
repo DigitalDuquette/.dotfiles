@@ -40,20 +40,19 @@ Create the review file as `2-areas/reviews/weekly/YYYY-WW.md` (e.g.,
 
 ### 2. Process Meeting Transcripts (if any)
 
-Check `0-inbox/meeting/` and `0-inbox/meeting/1on1/` for unprocessed
-transcripts.
+Always execute the `/meeting-review` workflow first — it pulls the week's
+meetings straight from the Krisp MCP, so there is no filesystem inbox to
+check. Read `~/.claude/commands/meeting-review.md` and follow it
+end-to-end.
 
-- If both are empty, skip to Step 3.
-- If transcripts are present, execute the `/meeting-review` workflow first.
-  Read `~/.claude/commands/meeting-review.md` and follow it end-to-end.
-  Announce "Found N transcripts, processing via /meeting-review first"
-  before starting.
-- After `/meeting-review` completes, the file
+- If `/meeting-review` reports no meetings found for the window, skip to
+  Step 3.
+- Otherwise, after it completes, the file
   `2-areas/reviews/weekly/YYYY-WXX-meetings.md` will exist. Read it as an
   additional input alongside daily notes in the steps that follow.
 
-This handles meeting-heavy weeks. On IC-heavy weeks with no transcripts,
-the chain falls through and daily notes remain the sole synthesis source.
+This handles meeting-heavy weeks. On IC-heavy weeks with no meetings, the
+chain falls through and daily notes remain the sole synthesis source.
 
 ### 3. Gather Shipped PRs
 
