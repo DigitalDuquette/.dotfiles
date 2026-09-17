@@ -1,5 +1,5 @@
 #!/bin/zsh
-# set -euo pipefail  # disabled — failures are logged, not fatal
+set -euo pipefail  # Stop this step on failure; bootstrap continues with the next step.
 
 echo ""
 echo "[homebrew] ── Homebrew + Brewfile ──"
@@ -18,7 +18,8 @@ fi
 echo "[homebrew] Checking for Homebrew..."
 if ! command -v brew &> /dev/null; then
   echo "[homebrew] Homebrew is not installed. Installing..."
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  installer=$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)
+  /bin/bash -c "$installer"
   echo "[homebrew] Loading Homebrew into current session..."
   eval "$(/opt/homebrew/bin/brew shellenv)"
 else
@@ -29,7 +30,7 @@ echo "[homebrew] Running brew update..."
 brew update
 
 echo "[homebrew] Running brew doctor..."
-brew doctor
+brew doctor || echo "[homebrew] WARNING: brew doctor reported issues; continuing."
 
 echo "[homebrew] Running brew bundle --global (Brewfile)..."
 brew bundle --global --verbose

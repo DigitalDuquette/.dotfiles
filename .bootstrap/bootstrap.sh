@@ -1,5 +1,5 @@
 #!/bin/zsh
-# set -euo pipefail  # disabled — failures are logged, not fatal
+# Run every step and collect failures before returning a nonzero status.
 
 BOOTSTRAP_DIR="$HOME/.bootstrap"
 SCRIPTS=(00_homebrew.sh 10_defaults.sh 20_symlinks.sh 30_languages.sh 31_npm.sh 90_finish.sh)
@@ -23,8 +23,9 @@ for script in "${SCRIPTS[@]}"; do
   SCRIPT_PATH="$BOOTSTRAP_DIR/$script"
 
   if [ ! -f "$SCRIPT_PATH" ]; then
-    echo "[BOOTSTRAP] [$STEP/$TOTAL] SKIP $script (not found)"
+    echo "[BOOTSTRAP] [$STEP/$TOTAL] FAIL $script (not found)"
     echo ""
+    FAILED+=("$script")
     continue
   fi
 
@@ -60,3 +61,5 @@ else
 fi
 echo "========================================"
 echo ""
+
+(( ${#FAILED[@]} == 0 ))

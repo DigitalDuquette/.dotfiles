@@ -1,5 +1,5 @@
 #!/bin/zsh
-# set -euo pipefail  # disabled — failures are logged, not fatal
+set -euo pipefail  # Stop this step on failure; bootstrap continues with the next step.
 
 echo ""
 echo "[npm] ── npm Global Packages ──"
@@ -23,7 +23,8 @@ if command -v npm >/dev/null 2>&1; then
     fi
   done
 else
-  echo "[npm] WARNING: npm not found — ensure Brewfile includes node before running this script."
+  echo "[npm] ERROR: npm not found — ensure Brewfile includes node before running this script."
+  exit 1
 fi
 
 echo "[npm] Done."

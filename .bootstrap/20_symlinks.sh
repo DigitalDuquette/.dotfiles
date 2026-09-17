@@ -1,5 +1,5 @@
 #!/bin/zsh
-# set -euo pipefail  # disabled — failures are logged, not fatal
+set -euo pipefail  # Stop this step on failure; bootstrap continues with the next step.
 
 echo ""
 echo "[symlinks] ── Symlinks ──"

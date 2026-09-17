@@ -10,6 +10,10 @@ export PATH="$HOME/.local/bin:$PATH"
 # newest match only. Numeric sort matters -- lexically 4.9.0 > 4.10.0.
 gembin=(/opt/homebrew/lib/ruby/gems/*/bin(Nn[-1]))
 (( $#gembin )) && export PATH="$gembin[1]:$PATH"
+# User-installed gems take precedence over the legacy Homebrew installation.
+# Match RubyGems' XDG location without launching Ruby on every shell startup.
+gembin=("${XDG_DATA_HOME:-$HOME/.local/share}"/gem/ruby/*/bin(Nn[-1]))
+(( $#gembin )) && export PATH="$gembin[1]:$PATH"
 unset gembin
 
 eval "$(starship init zsh)"

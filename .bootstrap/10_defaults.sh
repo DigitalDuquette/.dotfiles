@@ -1,5 +1,5 @@
 #!/bin/zsh
-# set -euo pipefail  # disabled — failures are logged, not fatal
+set -euo pipefail  # Stop this step on failure; bootstrap continues with the next step.
 
 echo ""
 echo "[defaults] ── macOS Defaults ──"
@@ -60,7 +60,7 @@ echo "[defaults] Activating trackpad settings..."
 # leaving it enabled but beware: https://apple.stackexchange.com/questions/456623/macos-command-line-for-track-pad-settings
 
 echo "[defaults] Restarting cfprefsd to apply trackpad changes..."
-killall cfprefsd
+killall cfprefsd || echo "[defaults] WARNING: could not restart cfprefsd; continuing."
 
 # ===== MENU BAR =====
 
