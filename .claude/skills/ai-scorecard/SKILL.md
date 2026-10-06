@@ -20,9 +20,9 @@ for nothing.
 ## Files
 
 - **Deck:**
-  `/Users/jjduqu/Library/CloudStorage/OneDrive-PADNOS/Information Solutions-Artificial Intelligence - Documents/Artificial Intelligence/scorecard/AI Scorecard.pptx`
+  `/Users/jjduqu/Library/CloudStorage/OneDrive-SharedLibraries-PADNOS/Information Solutions-aisc - Documents/Artificial Intelligence/scorecard/AI Scorecard.pptx`
 - **Source workbook:**
-  `/Users/jjduqu/Library/CloudStorage/OneDrive-PADNOS/Information Solutions-Artificial Intelligence - Documents/Artificial Intelligence/AI @ PADNOS.xlsx`
+  `/Users/jjduqu/Library/CloudStorage/OneDrive-SharedLibraries-PADNOS/Information Solutions-aisc - Documents/Artificial Intelligence/AI @ PADNOS.xlsx`
   (sheet `rpa_ai`, table `tbl_rpa_ai`)
 - **Scripts:** `/Users/jjduqu/.claude/skills/ai-scorecard/scripts/`
 - **Dashboard (reference only):**

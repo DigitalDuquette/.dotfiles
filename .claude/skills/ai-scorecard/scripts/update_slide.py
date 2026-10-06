@@ -34,8 +34,8 @@ from pptx import Presentation
 from pptx.oxml.ns import qn
 from pptx.util import Pt
 
-DECK = ("/Users/jjduqu/Library/CloudStorage/OneDrive-PADNOS/"
-        "Information Solutions-Artificial Intelligence - Documents/"
+DECK = ("/Users/jjduqu/Library/CloudStorage/OneDrive-SharedLibraries-PADNOS/"
+        "Information Solutions-aisc - Documents/"
         "Artificial Intelligence/scorecard/AI Scorecard.pptx")
 NBSP = "\xa0"
 SECTION_SHAPES = {"recently_completed": 28, "current_priorities": 29, "up_next": 30}

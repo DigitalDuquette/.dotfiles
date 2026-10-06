@@ -20,8 +20,8 @@ warnings.filterwarnings("ignore")
 import openpyxl
 from pptx import Presentation
 
-BASE = ("/Users/jjduqu/Library/CloudStorage/OneDrive-PADNOS/"
-        "Information Solutions-Artificial Intelligence - Documents/"
+BASE = ("/Users/jjduqu/Library/CloudStorage/OneDrive-SharedLibraries-PADNOS/"
+        "Information Solutions-aisc - Documents/"
         "Artificial Intelligence")
 WORKBOOK = f"{BASE}/AI @ PADNOS.xlsx"
 DECK = f"{BASE}/scorecard/AI Scorecard.pptx"

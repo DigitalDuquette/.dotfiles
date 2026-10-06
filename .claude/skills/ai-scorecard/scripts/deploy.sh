@@ -15,7 +15,7 @@ set -euo pipefail
 WORKDIR="${1:?usage: deploy.sh <workdir> [validate]}"
 MODE="${2:-deploy}"
 WORK="$WORKDIR/scorecard-work.pptx"
-DECK="/Users/jjduqu/Library/CloudStorage/OneDrive-PADNOS/Information Solutions-Artificial Intelligence - Documents/Artificial Intelligence/scorecard/AI Scorecard.pptx"
+DECK="/Users/jjduqu/Library/CloudStorage/OneDrive-SharedLibraries-PADNOS/Information Solutions-aisc - Documents/Artificial Intelligence/scorecard/AI Scorecard.pptx"
 
 [ -f "$WORK" ] || { echo "no working copy at $WORK" >&2; exit 1; }
 
