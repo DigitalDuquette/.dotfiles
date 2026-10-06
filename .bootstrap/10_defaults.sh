@@ -101,6 +101,14 @@ defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 
+# ===== SCREENSHOTS =====
+
+# Desktop syncs to iCloud Drive (Desktop & Documents), so screenshots get a copy
+echo "[defaults] Setting screenshot location to ~/Desktop/screenshots..."
+mkdir -p "$HOME/Desktop/screenshots"
+defaults write com.apple.screencapture location -string "$HOME/Desktop/screenshots"
+killall SystemUIServer || true
+
 echo "[defaults] Restarting Finder..."
 killall finder || true
 
