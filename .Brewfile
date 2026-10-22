@@ -68,6 +68,8 @@ brew "yq"
 brew "duckdb"
 # SQL Server CLI written in GO
 brew "sqlcmd"
+# Microsoft Azure CLI 2.0
+brew "azure-cli"
 # Powerful, clean, object-oriented scripting language
 brew "ruby"
 # macOS notification from the command line

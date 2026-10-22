@@ -1,4 +1,9 @@
 {
+  "attribution": {
+    "commit": "",
+    "pr": "",
+    "sessionUrl": false
+  },
   "permissions": {
     "allow": [
       "Bash(ls:*)",
@@ -77,7 +82,7 @@
       "Bash(git commit --amend:*)"
     ]
   },
-  "model": "sonnet",
+  "model": "opus[1m]",
   "hooks": {
     "PreToolUse": [
       {
@@ -138,11 +143,16 @@
       "source": {
         "source": "github",
         "repo": "DietrichGebert/ponytail"
-      }
+      },
+      "autoUpdate": true
     }
   },
   "effortLevel": "high",
   "tui": "fullscreen",
+  "voice": {
+    "enabled": true,
+    "mode": "hold"
+  },
   "skipWorkflowUsageWarning": true,
   "verbose": false,
   "preferredNotifChannel": "ghostty",
@@ -187,5 +197,6 @@
       "**Org-specific CLIs**: `padsql-exec` and `padsql-deploy` (in-house SQL Server wrappers, heavily used: 373x and 7x across projects, 12x and 15x locally), `op` (1Password), `sqlcmd`, `podman`, `gh`",
       "**Routine under user prefix**: SSH with `-o BatchMode=yes` to `rhel-dev-local01` is a routine read/administer pattern for this user (already present in permissions.allow as classifier-bypassing entries)"
     ]
-  }
+  },
+  "voiceEnabled": true
 }
