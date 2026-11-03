@@ -54,3 +54,8 @@ fi
 source "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 # Syntax highlighting
 source "$HOMEBREW_PREFIX/opt/zsh-fast-syntax-highlighting/share/zsh-fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/jjduqu/.lmstudio/bin"
+# End of LM Studio CLI section
+

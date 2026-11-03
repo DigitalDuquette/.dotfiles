@@ -87,9 +87,7 @@ cask "chatgpt"
 cask "codex"
 # Anthropic's official Claude AI desktop app
 cask "claude"
-cask "claude-code"
-# Gemini CLI
-brew "gemini-cli"
+cask "claude-code@latest"
 # Disk space visualiser
 cask "daisydisk"
 # Web browser
@@ -149,12 +147,18 @@ cask "calibre"
 cask "dotnet-sdk"
 # Developer platform
 cask "dotnet-sdk@8"
-# Native desktop AI assistant from Google
-cask "google-gemini"
 # Discover, download, and run local LLMs
 cask "lm-studio"
 # markdown to quicklook
 cask "qlmarkdown"
+# opencode
+tap "anomalyco/tap"
+brew "anomalyco/tap/opencode-v2"
+# Microsoft ODBC driver for SQL Server
+tap "microsoft/mssql-release"
+brew "microsoft/mssql-release/msodbcsql18"
+# pi coding agent
+brew "pi-coding-agent"
 mas "Amphetamine", id: 937984704
 mas "Gifski", id: 1351639930
 mas "Mela", id: 1568924476
