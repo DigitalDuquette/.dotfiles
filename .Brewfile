@@ -151,6 +151,10 @@ cask "dotnet-sdk@8"
 cask "lm-studio"
 # markdown to quicklook
 cask "qlmarkdown"
+# Voice and text chat
+cask "discord"
+# Messaging app
+cask "telegram"
 # opencode
 tap "anomalyco/tap"
 brew "anomalyco/tap/opencode-v2"
