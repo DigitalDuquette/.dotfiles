@@ -155,6 +155,8 @@ cask "qlmarkdown"
 cask "discord"
 # Messaging app
 cask "telegram"
+# Local AI image generation
+cask "draw-things"
 # opencode
 tap "anomalyco/tap"
 brew "anomalyco/tap/opencode-v2"
