@@ -290,7 +290,25 @@ mv 0-inbox/daily-notes/2026-01-07.md 4-archive/daily-notes/
 
 This clears the inbox after processing, following GTD principles.
 
-### 10. Guide the User
+### 10. File AI Captures
+
+`/write-that-down` writes capture notes to `0-inbox/captures/` from Claude
+Desktop, the phone, and ChatGPT. For each capture file (skip `.gitkeep`):
+
+1. Read its `project` and `types` frontmatter.
+2. Propose a destination, one line per file:
+    - Has a project: that project folder in `1-projects/`, or its folder in
+      `4-archive/` if the project is archived
+    - Learning only, no project: `3-resources/`
+    - Nothing worth keeping: delete
+3. Wait for the user to approve or change the list. Then `mv` the files.
+4. In each destination project's main file, add a wiki-link to the moved
+   capture under its decisions or notes section.
+
+Open action items from captures go into "Action Items for Fresh" in the
+weekly review.
+
+### 11. Guide the User
 
 After creating the review and archiving notes:
 
