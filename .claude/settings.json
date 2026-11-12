@@ -82,7 +82,7 @@
       "Bash(git commit --amend:*)"
     ]
   },
-  "model": "opus[1m]",
+  "model": "claude-fable-5-2",
   "hooks": {
     "PreToolUse": [
       {
@@ -156,6 +156,7 @@
   "skipWorkflowUsageWarning": true,
   "verbose": false,
   "preferredNotifChannel": "ghostty",
+  "switchModelsOnFlag": true,
   "remoteControlAtStartup": true,
   "agentPushNotifEnabled": true,
   "autoMode": {
