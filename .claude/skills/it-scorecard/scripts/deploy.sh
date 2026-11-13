@@ -15,7 +15,7 @@ set -euo pipefail
 WORKDIR="${1:?usage: deploy.sh <workdir> [validate]}"
 MODE="${2:-deploy}"
 WORK="$WORKDIR/it-scorecard-work.pptx"
-DECK="/Users/jjduqu/Library/CloudStorage/OneDrive-SharedLibraries-PADNOS/Information Solutions - General/IT Planning Scorecard.pptx"
+DECK="/Users/jjduqu/Library/CloudStorage/OneDrive-PADNOS-InformationSolutions-General/IT Planning Scorecard.pptx"
 
 [ -f "$WORK" ] || { echo "no working copy at $WORK" >&2; exit 1; }
 # the deck changed after build_slide.py copied it: deploying would drop those edits

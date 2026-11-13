@@ -28,7 +28,7 @@ plain commands, never chained (compound operators trigger permission prompts).
 ## Files
 
 - **Deck:**
-  `/Users/jjduqu/Library/CloudStorage/OneDrive-SharedLibraries-PADNOS/Information Solutions - General/IT Planning Scorecard.pptx`
+  `/Users/jjduqu/Library/CloudStorage/OneDrive-PADNOS-InformationSolutions-General/IT Planning Scorecard.pptx`
   (public: Information Solutions General channel)
 - **Roadmap view:** Tableau `Freshservice Project Dashboard` / `Roadmap`,
   view id `31ed9b35-85a6-48a8-8fbb-c98eecd30ee0`

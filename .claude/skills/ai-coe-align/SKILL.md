@@ -17,14 +17,13 @@ Excel edits the live workbook.
 
 ## Files
 
-Both paths are under
-`~/Library/CloudStorage/OneDrive-SharedLibraries-PADNOS/` and are hard-coded
-in `recon.py`.
+Both paths are under `~/Library/CloudStorage/` and are hard-coded in
+`recon.py`.
 
 - **Department trackers (read only):**
-  `Information Solutions - ai-coe/AI@PADNOS/AI@PADNOS - <Dept>.xlsx`
+  `OneDrive-PADNOS-InformationSolutions-ai-coe/AI@PADNOS/AI@PADNOS - <Dept>.xlsx`
 - **Master (read only here):**
-  `Information Solutions-aisc - Documents/Artificial Intelligence/`
+  `OneDrive-PADNOS-InformationSolutions-aisc/Artificial Intelligence/`
   `AI @ PADNOS.xlsx`, sheet `rpa_ai`, table `tbl_rpa_ai`
 - **Scripts:** `~/.claude/skills/ai-coe-align/scripts/`
 - **Venv:** reuses `~/.venvs/ai-scorecard` (openpyxl). Create it with

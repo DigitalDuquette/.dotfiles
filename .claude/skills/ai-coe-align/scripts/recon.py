@@ -6,9 +6,9 @@ Everything else (status drift, backlog ideas, master-only rows) is ignored by de
 Prints a prompt for Claude in Excel (open the master workbook, paste it).\nUsage: python recon.py [dept folder] [master.xlsx] [out.md]   (copies the prompt to the clipboard)"""
 import os, sys, glob, re, subprocess, openpyxl
 
-CLOUD = os.path.expanduser("~/Library/CloudStorage/OneDrive-SharedLibraries-PADNOS")
-DEPT_DIR = f"{CLOUD}/Information Solutions - ai-coe/AI@PADNOS"
-MASTER = f"{CLOUD}/Information Solutions-aisc - Documents/Artificial Intelligence/AI @ PADNOS.xlsx"
+CLOUD = os.path.expanduser("~/Library/CloudStorage")
+DEPT_DIR = f"{CLOUD}/OneDrive-PADNOS-InformationSolutions-ai-coe/AI@PADNOS"
+MASTER = f"{CLOUD}/OneDrive-PADNOS-InformationSolutions-aisc/Artificial Intelligence/AI @ PADNOS.xlsx"
 
 DONE = {"Production", "Production - Recent"}
 

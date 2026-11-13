@@ -32,8 +32,8 @@ warnings.filterwarnings("ignore")
 from pptx import Presentation
 from pptx.oxml.ns import qn
 
-DECK = ("/Users/jjduqu/Library/CloudStorage/OneDrive-SharedLibraries-PADNOS/"
-        "Information Solutions - General/IT Planning Scorecard.pptx")
+DECK = ("/Users/jjduqu/Library/CloudStorage/OneDrive-PADNOS-InformationSolutions-General/"
+        "IT Planning Scorecard.pptx")
 TITLE_ID, LABEL_ID, BULLETS_ID, ROADMAP_ID = 4, 5, 3, 10
 # shortcut: fixed crop of the 2200x2500 dashboard render down to the chart area
 # (drops title + filter panel), redo if the dashboard size or layout changes
