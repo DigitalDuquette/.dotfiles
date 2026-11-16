@@ -82,7 +82,7 @@
       "Bash(git commit --amend:*)"
     ]
   },
-  "model": "claude-fable-5-2",
+  "model": "opus",
   "hooks": {
     "PreToolUse": [
       {
