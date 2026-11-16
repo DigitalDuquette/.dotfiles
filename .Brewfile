@@ -168,5 +168,4 @@ brew "pi-coding-agent"
 mas "Amphetamine", id: 937984704
 mas "Gifski", id: 1351639930
 mas "Mela", id: 1568924476
-cask "perplexity"
 mas "Presentify", id: 1507246666
