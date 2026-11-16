@@ -1,7 +1,13 @@
 ---
 name: gtd-weekly-review
-description: Performs GTD weekly review by consolidating daily notes, meeting logs, shipped PRs, and Teams messages into structured review with team update, private notes, and action items. Use when conducting weekly review, processing daily notes, or preparing team updates.
-allowed-tools: Read, Glob, Write, Bash, mcp__claude_ai_Microsoft_365__chat_message_search
+description: >-
+  Performs GTD weekly review by consolidating daily notes, meeting logs,
+  shipped PRs, and Teams messages into structured review with team
+  update, private notes, and action items. Use when conducting weekly
+  review, processing daily notes, or preparing team updates.
+allowed-tools: >-
+  Read, Glob, Write, Bash,
+  mcp__claude_ai_Microsoft_365__chat_message_search
 ---
 
 # GTD Weekly Review
@@ -72,7 +78,13 @@ Find all daily notes for the target week from `0-inbox/daily-notes/`:
 
 - Daily notes use format: `YYYY-MM-DD.md`
 - Read all notes in the folder, regardless of date.
-- If a daily note doesn't exist for a day, skip it
+- If a weekday in the window has no daily note, `/today` was not run
+  that day. Steps 3 and 5 already cover its GitHub and Teams activity.
+  Run `~/.claude/skills/today/scripts/fs-tasks-day.sh YYYY-MM-DD` for
+  that day to add its Freshservice project tasks (rows marked `mine`
+  only). Treat the result as a daily note with no context: the what,
+  not the why. In the Daily Note Review, mark that day
+  `(no daily note; pulled from sources)`.
 
 ### 5. Mine Teams Messages
 
@@ -81,18 +93,19 @@ Requires the Microsoft 365 MCP tool
 connected, announce that Teams mining is skipped and continue — the
 review still works from the other sources.
 
-Search recipe (validated 2026-07-27 — do NOT use `afterDateTime`/
-`beforeDateTime`; that path rate-limits instantly and skips channel
-messages entirely):
+Search recipe (revalidated 2026-11-16; the 2026-07-27 no-date
+`from:` recipe now misses messages: it returned 2 of Jared's 7 that
+day and skipped a whole channel thread):
 
-- Search `query: "from:jared@padnos.com"` with no date parameters.
-  This uses the Graph full-text path, which covers channel posts AND
-  chats, newest first.
-- Paginate with `offset` (25 per page) until `createdDateTime` crosses
-  the window start. The review runs Friday before closing the week, so
-  the window is **last Friday through now** (same convention as
-  `/shipped-this-week`) — this catches late-Friday and weekend messages
-  the previous run couldn't have seen. Discard anything older.
+- Search `query: "*"`, `sender: "Jared Duquette"`, with
+  `afterDateTime` and `beforeDateTime` set to the window. This covers
+  channel posts and chats. If it rate-limits, run one day at a time.
+- Paginate with `offset` (25 per page). Stop when a page returns only
+  message ids already seen; past the end, the API repeats the last
+  result. The review runs Friday before closing the week, so the
+  window is **last Friday through now** (same convention as
+  `/shipped-this-week`). This catches late-Friday and weekend messages
+  the previous run couldn't have seen.
 - Results are ~250-char summaries. Adjacent messages usually quote the
   thread context; when a load-bearing thread needs more, run 1-3
   targeted keyword searches (project name, person, incident term).
