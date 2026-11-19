@@ -66,6 +66,8 @@ brew "shellcheck"
 brew "yq"
 # DuckDB local file database
 brew "duckdb"
+# Static site generator for digitalduquette.com (local preview)
+brew "hugo"
 # SQL Server CLI written in GO
 brew "sqlcmd"
 # Microsoft Azure CLI 2.0
