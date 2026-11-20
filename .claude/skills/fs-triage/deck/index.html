@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ticket Review</title>
+<style>
+:root{
+  --bg:#fbfbfa;--panel:#ffffff;--text:#1d1d1b;--muted:#6b6b66;--faint:#9a9a93;
+  --line:#e6e5e0;--accent:#2f6fdb;--accent-ink:#ffffff;--hot:#c4372b;--ok:#2f8a4e;
+  --hover:color-mix(in srgb,var(--accent) 7%,transparent);
+  --sel:color-mix(in srgb,var(--accent) 14%,transparent);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#161615;--panel:#1e1e1c;--text:#ecebe6;--muted:#a3a29b;--faint:#77766f;
+  --line:#33332f;--accent:#6c9cf0;--accent-ink:#0f1115;--hot:#ef6a5e;--ok:#5cbf7d;
+}}
+:root[data-theme="dark"]{
+  --bg:#161615;--panel:#1e1e1c;--text:#ecebe6;--muted:#a3a29b;--faint:#77766f;
+  --line:#33332f;--accent:#6c9cf0;--accent-ink:#0f1115;--hot:#ef6a5e;--ok:#5cbf7d;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--text);font:13px/1.45 -apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif;display:flex;flex-direction:column}
+button{font:inherit;color:inherit}
+.head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--panel)}
+.head h1{margin:0;font-size:15px;font-weight:600}
+.muted{color:var(--muted);font-size:12px}
+.filters{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
+.filter{border:1px solid var(--line);background:none;border-radius:12px;padding:2px 10px;cursor:pointer;font-size:12px}
+.filter[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.body{display:grid;grid-template-columns:minmax(240px,320px) minmax(0,1fr);flex:1;min-height:0}
+.list{overflow:auto;border-right:1px solid var(--line);background:var(--panel)}
+.row{padding:9px 14px;border-bottom:1px solid var(--line);cursor:pointer}
+.row:hover{background:var(--hover)}
+.row[aria-selected=true]{background:var(--sel)}
+.row-t{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chip{display:inline-block;font-size:11px;padding:0 6px;border-radius:8px;margin:3px 4px 0 0;border:1px solid var(--line);color:var(--muted)}
+.chip.hot{border-color:var(--hot);color:var(--hot)}
+.chip.done{border-color:var(--ok);color:var(--ok)}
+.detail{overflow:auto;padding:16px 22px;max-width:1100px}
+.title{display:flex;gap:12px;align-items:flex-start;justify-content:space-between}
+.title h2{margin:0;font-size:16px}
+.facts{display:grid;grid-template-columns:auto 1fr auto 1fr;gap:3px 14px;margin:12px 0;font-size:12px}
+.facts>:nth-child(odd){color:var(--faint)}
+.h{margin:16px 0 4px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--faint)}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0 24px}
+ul{margin:0;padding-left:18px}
+.read{border-left:3px solid var(--accent);padding-left:10px}
+.resps{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:8px}
+.resp{border:1px solid var(--line);border-radius:8px;padding:9px 11px;display:flex;flex-direction:column;gap:4px;background:var(--panel)}
+.resp-l{font-weight:600;font-size:12px}
+.resp p{margin:0;flex:1}
+.btn{border:1px solid var(--line);background:var(--panel);border-radius:6px;padding:4px 11px;cursor:pointer;font-size:12px;text-decoration:none;display:inline-block;color:var(--text)}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn:focus-visible,.filter:focus-visible,.row:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+textarea{width:100%;min-height:64px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:inherit;font:inherit;padding:7px 9px;resize:vertical}
+.empty{padding:24px;color:var(--muted)}
+.toast{position:fixed;right:16px;bottom:16px;max-width:420px;background:var(--text);color:var(--bg);padding:9px 13px;border-radius:8px;font-size:12px;opacity:0;transform:translateY(6px);transition:.15s;pointer-events:none}
+.toast.on{opacity:1;transform:none}
+@media (max-width:760px){
+  .body{grid-template-columns:1fr;grid-template-rows:40vh 1fr}
+  .list{border-right:0;border-bottom:1px solid var(--line)}
+  .detail{padding:14px 16px}
+  .facts{grid-template-columns:auto 1fr}
+}
+</style>
+</head>
+<body>
+<div class="head">
+  <h1 id="h1">Ticket review</h1>
+  <span class="muted" id="totals"></span>
+  <div class="filters" id="filters" role="group" aria-label="Filter"></div>
+</div>
+<div class="body">
+  <div class="list" id="list" role="listbox" aria-label="Tickets"></div>
+  <div class="detail" id="detail"></div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<script>
+const TOKEN = "__TOKEN__";
+const POLL_MS = 5000;
+const SIGNALS = {OVERDUE:["overdue",1],FR_OVERDUE:["no first reply",1],REQUESTER_WAITING:["requester waiting",1],
+  IDLE:["idle",0],PARKED_BUT_OURS:["parked",0],UNASSIGNED:["unassigned",0],FR_DUE_SOON:["reply due",0]};
+const FILTERS = [
+  ["needs","Needs you", r => r.prep && r.prep.ask && !r.prep.decided],
+  ["decided","Decided", r => (r.prep && r.prep.decided) || r.last_call],
+  ["flagged","Flagged", r => r.flags.length > 0],
+  ["all","All open", () => true],
+];
+let doc = null, stamp = "", filter = "needs", sel = null;
+const drafts = {};   // per-ticket text in "Your call", kept across refreshes
+
+// Tiny DOM helper: every string goes in as text, never as HTML (ticket text is user content).
+function el(tag, attrs, ...kids){
+  const n = document.createElement(tag);
+  for (const [k,v] of Object.entries(attrs || {})){
+    if (v == null || v === false) continue;
+    if (k.startsWith("on")) n.addEventListener(k.slice(2), v); else n.setAttribute(k, v === true ? "" : v);
+  }
+  for (const k of kids.flat()) if (k != null && k !== false) n.append(k.nodeType ? k : String(k));
+  return n;
+}
+const ago = d => d == null ? "never" : `${Math.round(d)}d ago`;
+
+function toast(msg){
+  const t = document.getElementById("toast");
+  t.textContent = msg; t.classList.add("on");
+  clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("on"), 3500);
+}
+
+async function send(text){
+  try {
+    const r = await fetch("/send", {method:"POST", headers:{"X-Token":TOKEN,"Content-Type":"text/plain"}, body:text});
+    if (!r.ok) throw new Error(r.status === 403 ? "stale page" : `HTTP ${r.status}`);
+    toast("Sent to Claude. Answer the dry run in the terminal.");
+    return true;
+  } catch (e) {
+    try { await navigator.clipboard.writeText(text); } catch {}
+    toast(e.message === "stale page"
+      ? "This page is from an old deck run. Reload it. (The message is on your clipboard.)"
+      : "Couldn't reach the deck server. Paste into Claude instead. (The message is on your clipboard.)");
+    return false;
+  }
+}
+
+function chips(r){
+  const out = r.flags.map(f => el("span", {class: "chip" + (SIGNALS[f] && SIGNALS[f][1] ? " hot" : "")}, SIGNALS[f] ? SIGNALS[f][0] : f));
+  if (r.prep && r.prep.decided) out.push(el("span", {class:"chip done"}, "decided"));
+  return out;
+}
+
+function render(){
+  const rows = doc ? doc.rows : [];
+  const pass = FILTERS.find(f => f[0] === filter)[2];
+  const shown = rows.filter(pass);
+  if (shown.length && !shown.some(r => r.id === sel)) sel = shown[0].id;
+
+  document.getElementById("h1").textContent = doc ? `Ticket review · ${doc.date}` : "Ticket review";
+  const t = doc && doc.totals;
+  document.getElementById("totals").textContent = doc
+    ? `${rows.length} open · ${t.overdue} overdue · ${t.fr_overdue} no first reply · sweep ${doc.sweep_at.slice(11,16)}Z` : "";
+
+  document.getElementById("filters").replaceChildren(...FILTERS.map(([k,label,fn]) =>
+    el("button", {class:"filter", "aria-pressed": String(k === filter), onclick: () => { filter = k; render(); }},
+       `${label} (${rows.filter(fn).length})`)));
+
+  const list = document.getElementById("list");
+  list.replaceChildren(...(shown.length ? shown.map(r => el("div", {
+      class:"row", role:"option", tabindex:"0", "aria-selected": String(r.id === sel),
+      onclick: () => { sel = r.id; render(); },
+      onkeydown: e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); sel = r.id; render(); } }
+    },
+    el("div", {class:"row-t"}, `SR-${r.id} · ${r.subject}`),
+    el("div", {class:"muted"}, [r.prep && r.prep.requester, r.agent, `${r.age}d old`].filter(Boolean).join(" · ")),
+    el("div", {}, chips(r))))
+    : [el("div", {class:"empty"}, doc ? "Nothing here." : "No review yet. Ask Claude to run /fs-triage.")]));
+
+  const row = rows.find(r => r.id === sel);
+  document.getElementById("detail").replaceChildren(...(row ? detail(row) : []));
+}
+
+function detail(row){
+  const p = row.prep || {};
+  const left = [], right = [];
+  if (p.ask) left.push(el("div",{class:"h"},"The ask"), el("div",{},p.ask));
+  if (p.discussion) left.push(el("div",{class:"h"},"What's been discussed"), el("ul",{}, p.discussion.map(x => el("li",{},x))));
+  if (p.blocker) right.push(el("div",{class:"h"},"Claude's read: blocker / delay"), el("div",{class:"read"},p.blocker));
+  if (p.decided || row.last_call) right.push(el("div",{class:"h"},"Your last call"), el("div",{}, p.decided || row.last_call));
+
+  const facts = [
+    ["Requester", p.requester ? `${p.requester}${p.requester_title ? ` · ${p.requester_title}` : ""}${p.senior ? " · senior" : ""}` : "(not drilled yet)"],
+    ["Agent", row.agent], ["Status", `${row.status} · ${row.age}d old`], ["Due", row.due || "none"],
+    ["Last public reply", ago(row.pub)], ["Agent last touched", ago(row.touch)], ["Holds the ball", p.holder || "—"],
+  ];
+  const sr = `Review deck, SR-${row.id}:`;
+  const ta = el("textarea", {placeholder:`Tell Claude what to do on SR-${row.id}…`, "aria-label":"Your call",
+    oninput: e => { drafts[row.id] = e.target.value; sendBtn.disabled = !e.target.value.trim(); }});
+  ta.value = drafts[row.id] || "";
+  const sendBtn = el("button", {class:"btn primary", disabled: !ta.value.trim(),
+    onclick: async () => { if (await send(`${sr} ${ta.value.trim()}`)) { drafts[row.id] = ""; ta.value = ""; sendBtn.disabled = true; } }}, "Send");
+
+  const out = [
+    el("div",{class:"title"},
+      el("div",{}, el("h2",{},`SR-${row.id}`), el("div",{},row.subject)),
+      el("a",{class:"btn primary", href:row.url, target:"_blank", rel:"noopener"},"Open in Freshservice ↗")),
+    el("div",{class:"facts"}, facts.flatMap(([k,v]) => [el("div",{},k), el("div",{},v)])),
+    el("div",{}, chips(row)),
+  ];
+  if (left.length || right.length) out.push(el("div",{class:"cols"}, el("div",{},left), el("div",{},right)));
+  if (p.responses && p.responses.length){
+    out.push(el("div",{class:"h"},"Possible responses"), el("div",{class:"resps"}, p.responses.map(x => el("div",{class:"resp"},
+      el("div",{class:"resp-l"}, x.label),
+      el("div",{class:"muted"}, x.channel === "reply" ? "Public reply to requester, as you" : "Private note to agent"),
+      el("p",{}, x.text),
+      el("div",{}, el("button",{class:"btn", onclick: () => send(`${sr} draft this ${x.channel === "reply" ? "public reply to the requester (as me)" : "private note to the agent"} and show me the dry run: "${x.text}"`)}, "Draft this"))))));
+  }
+  if (!p.ask) out.push(el("div",{class:"actions"}, el("button",{class:"btn", onclick: () => send(`${sr} drill this ticket and add it to today's review.`)}, "Drill this ticket")));
+  out.push(el("div",{class:"h"},"Your call"), ta, el("div",{class:"actions"},
+    sendBtn,
+    el("button",{class:"btn", onclick: () => send(`${sr} No action, it's moving. Log it.`)}, "No action"),
+    el("button",{class:"btn", onclick: () => send(`${sr} I already handled it. Log it.`)}, "I handled it"),
+    el("button",{class:"btn", onclick: () => send(`${sr} I'll follow up myself later. Log it.`)}, "I'll follow up")));
+  return out;
+}
+
+async function poll(){
+  try {
+    const r = await fetch("/review.json", {cache:"no-store"});
+    if (r.ok) {
+      const text = await r.text();
+      if (text !== stamp) {
+        stamp = text; doc = JSON.parse(text);
+        // keep focus in the textarea when a refresh lands mid-typing
+        const typing = document.activeElement && document.activeElement.tagName === "TEXTAREA";
+        if (!typing) render();
+        else stamp = "";  // re-render on the next poll instead
+      }
+    } else if (!doc) render();
+  } catch { /* server gone; keep what's on screen */ }
+  setTimeout(poll, POLL_MS);
+}
+render(); poll();
+</script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+{
+  "_doc": "Repos git-watcher keeps committed and pushed. Read by scripts/repo_watch.py. Per-repo keys override defaults.",
+  "defaults": {
+    "remote": "origin",
+    "branch": "main",
+    "quiet_minutes": 10,
+    "force_after_hours": 24,
+    "max_deletions": 25,
+    "alert_repeat_hours": 6,
+    "area_depth": 2,
+    "subject_prefix": "auto"
+  },
+  "repos": [
+    {
+      "name": "padnos-obsidian-vault",
+      "path": "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos",
+      "subject_prefix": "vault backup",
+      "area_depth": 2
+    },
+    {
+      "name": "hermes-bot--manage-freshservice",
+      "path": "~/.hermes/profiles/manage-freshservice",
+      "subject_prefix": "auto",
+      "area_depth": 3
+    },
+    {
+      "name": "hermes-bot--git-watcher",
+      "path": "~/.hermes/profiles/git-watcher",
+      "subject_prefix": "auto",
+      "area_depth": 3
+    }
+  ],
+  "secret_path_patterns": [
+    "(^|/)\\.env$",
+    "(^|/)\\.env\\.(?!EXAMPLE$)[^/]+$",
+    "\\.pem$",
+    "\\.p12$",
+    "\\.pfx$",
+    "(^|/)id_(rsa|ed25519|ecdsa)$"
+  ],
+  "secret_content_patterns": [
+    "-----BEGIN [A-Z ]*PRIVATE KEY-----",
+    "\\bgh[pousr]_[A-Za-z0-9]{30,}",
+    "\\bgithub_pat_[A-Za-z0-9_]{40,}",
+    "\\bsk-ant-[A-Za-z0-9_-]{30,}",
+    "\\bsk-[A-Za-z0-9]{40,}",
+    "\\bxox[abpr]-[A-Za-z0-9-]{20,}",
+    "\\bAKIA[0-9A-Z]{16}\\b"
+  ]
+}
