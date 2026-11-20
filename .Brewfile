@@ -168,6 +168,7 @@ brew "microsoft/mssql-release/msodbcsql18"
 # pi coding agent
 brew "pi-coding-agent"
 mas "Amphetamine", id: 937984704
+mas "eero wifi system", id: 1023499075
 mas "Gifski", id: 1351639930
 mas "Mela", id: 1568924476
 mas "Presentify", id: 1507246666
