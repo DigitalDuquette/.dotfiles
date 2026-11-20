@@ -1,8 +1,9 @@
 ---
 name: today
 description: >-
-  End-of-day capture. Pulls what Jared did from Teams, GitHub, and
-  Freshservice project tasks, asks him for the why, and writes one
+  End-of-day capture. Pulls what Jared did from Krisp meetings, Outlook,
+  Teams, GitHub, vault commits, and Freshservice project tasks, asks him
+  for the why, and writes one
   daily note per day to 0-inbox/daily-notes/. Catches up on every day
   since the last note, so a missed day is not lost. Use when Jared
   says /today, "log my day", "what did I do today", or "catch up my
@@ -13,7 +14,12 @@ allowed-tools: >-
   Bash(~/.claude/skills/today/scripts/day-bounds.sh:*),
   Bash(~/.claude/skills/today/scripts/github-day.sh:*),
   Bash(~/.claude/skills/today/scripts/fs-tasks-day.sh:*),
-  mcp__claude_ai_Microsoft_365__chat_message_search
+  Bash(git -C * log:*), Bash(git -C * show:*),
+  mcp__claude_ai_Microsoft_365__chat_message_search,
+  mcp__claude_ai_Microsoft_365__outlook_calendar_search,
+  mcp__claude_ai_Microsoft_365__read_resource,
+  mcp__claude_ai_Krisp__search_meetings,
+  mcp__claude_ai_Krisp__get_multiple_documents
 ---
 
 # Today
@@ -39,7 +45,7 @@ All paths are relative to the vault root:
   - Newest note is today: capture today only, and merge (Step 4).
   - Otherwise: start the day after the newest note.
 - End on today. Cap at 7 days. Tell Jared which days you will cover.
-- Skip a Saturday or Sunday if all three sources are empty for it.
+- Skip a Saturday or Sunday if all sources are empty for it.
 
 ## 2. Pull each day
 
@@ -59,6 +65,27 @@ Run the sources for all days in parallel.
   only if they look like Jared's work; otherwise drop them.
 - Runs under `op run`, so 1Password may ask for Touch ID.
 
+**Krisp meetings:** `search_meetings` with `after` and `before` set to
+the day, fields `name`, `date`, `attendees`, `key_points`,
+`action_items`.
+
+- This is the main source. Most of Jared's day is meetings, and Krisp
+  holds the decisions, owners, and the why. Never ask Jared what a
+  meeting was about; read it.
+
+**Outlook calendar:** `outlook_calendar_search`, `query: "*"`, the day,
+`order: "oldest"`.
+
+- Names every meeting and its attendees. Use it to name the meeting
+  behind a Teams message or Krisp record. Skip personal, focus, and
+  commute blocks.
+
+**Vault commits:** `git -C <vault root> log --since=<day> --until=<day+1>
+--stat`
+
+- Shows what Jared built or wrote in the vault. Read a new project
+  note's decisions section for the why.
+
 **Teams:** `chat_message_search`
 
 - Jared's messages: `query: "*"`, `sender: "Jared Duquette"`,
@@ -70,7 +97,9 @@ Run the sources for all days in parallel.
   messages in a `chatId` where Jared posted that day. These hold the
   answers (a bot's findings, a pushback reply).
 - Asks of Jared: `query: "Jared"` with the same dates. Keep messages
-  that ask him for something.
+  that ask him for something. This run also returns some of Jared's own
+  posts that the `sender` run misses (2026-11-20: a channel post). Keep
+  them.
 - Do not use the no-date `from:` recipe. On 2026-11-16 it missed 5
   of Jared's 7 messages.
 - `createdDateTime` can be wrong in group chats. When a time looks
@@ -85,9 +114,13 @@ Group each day's activity into threads of work, not one line per
 event. Example: 4 merged PRs, a Teams session, and a task move to UAT
 on the same bot are one thread.
 
-Show the draft for all days at once. Then ask Jared one question:
+Show the draft for all days at once. The sources above should answer
+most of the why. Ask only about specific gaps they cannot fill, by
+name: "PR #12 on X: what was it for?" Never ask about a meeting that
+Krisp or Outlook covers, or for something a source already shows. If
+there are no real gaps, ask only:
 
-> What was behind these, and what did you do that I can't see?
+> Anything I missed?
 
 Fold his answer into the threads. Work he names with no trace in the
 sources goes in as he said it. Do not invent a why he did not give.
