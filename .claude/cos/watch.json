@@ -16,18 +16,6 @@
       "path": "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/padnos",
       "subject_prefix": "vault backup",
       "area_depth": 2
-    },
-    {
-      "name": "hermes-bot--manage-freshservice",
-      "path": "~/.hermes/profiles/manage-freshservice",
-      "subject_prefix": "auto",
-      "area_depth": 3
-    },
-    {
-      "name": "hermes-bot--git-watcher",
-      "path": "~/.hermes/profiles/git-watcher",
-      "subject_prefix": "auto",
-      "area_depth": 3
     }
   ],
   "secret_path_patterns": [
