@@ -58,6 +58,10 @@ ul{margin:0;padding-left:18px}
 .btn:focus-visible,.filter:focus-visible,.row:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 .actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 textarea{width:100%;min-height:64px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:inherit;font:inherit;padding:7px 9px;resize:vertical}
+.convo{display:flex;flex-direction:column;gap:6px}
+.msg{border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:var(--panel);white-space:pre-wrap;overflow-wrap:anywhere}
+.msg.duq{border-color:var(--accent);align-self:flex-end;max-width:85%}
+.msg-h{font-size:11px;color:var(--faint);margin-bottom:2px}
 .empty{padding:24px;color:var(--muted)}
 .toast{position:fixed;right:16px;bottom:16px;max-width:420px;background:var(--text);color:var(--bg);padding:9px 13px;border-radius:8px;font-size:12px;opacity:0;transform:translateY(6px);transition:.15s;pointer-events:none}
 .toast.on{opacity:1;transform:none}
@@ -91,6 +95,8 @@ const FILTERS = [
   ["flagged","Flagged", r => r.flags.length > 0],
   ["all","All open", () => true],
 ];
+let convo = [], convoStamp = "";
+const thread = id => convo.filter(m => m.id === String(id));
 let doc = null, stamp = "", filter = "needs", sel = null;
 const drafts = {};   // per-ticket text in "Your call", kept across refreshes
 
@@ -116,7 +122,7 @@ async function send(text){
   try {
     const r = await fetch("/send", {method:"POST", headers:{"X-Token":TOKEN,"Content-Type":"text/plain"}, body:text});
     if (!r.ok) throw new Error(r.status === 403 ? "stale page" : `HTTP ${r.status}`);
-    toast("Sent to Claude. Answer the dry run in the terminal.");
+    toast("Sent to Claude. The answer shows on the card; type \"post\" in the terminal to send a note.");
     return true;
   } catch (e) {
     try { await navigator.clipboard.writeText(text); } catch {}
@@ -130,6 +136,8 @@ async function send(text){
 function chips(r){
   const out = r.flags.map(f => el("span", {class: "chip" + (SIGNALS[f] && SIGNALS[f][1] ? " hot" : "")}, SIGNALS[f] ? SIGNALS[f][0] : f));
   if (r.prep && r.prep.decided) out.push(el("span", {class:"chip done"}, "decided"));
+  const t = thread(r.id);
+  if (t.length && t[t.length - 1].from === "claude") out.push(el("span", {class:"chip hot"}, "Claude replied"));
   return out;
 }
 
@@ -199,6 +207,9 @@ function detail(row){
       el("div",{}, el("button",{class:"btn", onclick: () => send(`${sr} draft this ${x.channel === "reply" ? "public reply to the requester (as me)" : "private note to the agent"} and show me the dry run: "${x.text}"`)}, "Draft this"))))));
   }
   if (!p.ask) out.push(el("div",{class:"actions"}, el("button",{class:"btn", onclick: () => send(`${sr} drill this ticket and add it to today's review.`)}, "Drill this ticket")));
+  const msgs = thread(row.id);
+  if (msgs.length) out.push(el("div",{class:"h"},"Conversation"), el("div",{class:"convo"}, msgs.map(m =>
+    el("div",{class:"msg " + m.from}, el("div",{class:"msg-h"}, `${m.from === "duq" ? "You" : "Claude"} · ${m.at.slice(11,16)}`), m.text))));
   out.push(el("div",{class:"h"},"Your call"), ta, el("div",{class:"actions"},
     sendBtn,
     el("button",{class:"btn", onclick: () => send(`${sr} No action, it's moving. Log it.`)}, "No action"),
@@ -208,6 +219,13 @@ function detail(row){
 }
 
 async function poll(){
+  try {
+    const o = await fetch("/outbox.json", {cache:"no-store"});
+    if (o.ok) {
+      const text = await o.text();
+      if (text !== convoStamp) { convoStamp = text; convo = JSON.parse(text); stamp = ""; }
+    }
+  } catch { /* older server without /outbox.json */ }
   try {
     const r = await fetch("/review.json", {cache:"no-store"});
     if (r.ok) {

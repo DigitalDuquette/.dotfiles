@@ -115,6 +115,10 @@ step 1.** Do not start the deck or Monitor.
 5. Handle each deck message (`Review deck, SR-<id>: …`) as Duq's reply on
    that ticket, one at a time. Typed messages in the terminal count the
    same.
+6. Answer on the card, not only in the terminal: `say.py <id> "<text>"`
+   (or pipe a dry run: `post_note.py … | say.py <id> -`). Duq reads the
+   deck; the terminal gets the same text, short. `serve.py` logs his deck
+   messages to the same `outbox.jsonl`, so the card shows both sides.
 
 ### Handling a call
 
@@ -122,7 +126,8 @@ step 1.** Do not start the deck or Monitor.
   "request first response"): `post_note.py <id> "<text>"` dry run
   (`--reply` for a public reply as Duq). Text: his wording, else the
   prepared `responses[].text`, else the standard short forms in
-  `preferences.md`. Show the recipient and text. Post with `--post` only
+  `preferences.md`. Show the recipient and text on the card (`say.py`).
+  Post with `--post` only
   after he types "post" in the terminal. A deck click is never a "post".
 - **No-write calls** ("No action", "I handled it", "I'll follow up"): no
   dry run.
@@ -133,7 +138,8 @@ step 1.** Do not start the deck or Monitor.
   `--decided "<short>"`.
   It appends to `decisions.jsonl`, marks the ticket Decided and refreshes
   the deck.
-- Reply in one or two lines: what landed, and how many still need him.
+- Reply in one or two lines (card via `say.py`, and terminal): what
+  landed, and how many still need him.
   When three or fewer remain, list them.
 - Add one clause, never a second draft, when: his call differs from the
   usual call (a new pattern, record it); the call leaves a senior

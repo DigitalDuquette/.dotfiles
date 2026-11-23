@@ -3,10 +3,11 @@
 
   GET  /             the deck (index.html, with this run's token)
   GET  /review.json  triage/review-latest.json (written by review_deck.py)
+  GET  /outbox.json  today's card conversation (triage/outbox.jsonl, see say.py)
   POST /send         append one "Review deck, SR-<id>: ..." line to triage/inbox.log
 
 The Claude session tails inbox.log with its Monitor tool, so each button click
-arrives in the session the way the Hermes pane's composer.submit did. Nothing
+arrives in the session as Duq's reply on that ticket. Nothing
 here writes to Freshservice; posting still waits for "post" in the terminal.
 
 Guards: the Host header must be this server (blocks DNS rebinding), and POST
@@ -24,7 +25,12 @@ import sys
 import webbrowser
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / "scripts"))
+import datetime  # noqa: E402
+import json  # noqa: E402
+import re  # noqa: E402
+
 import paths  # noqa: E402
+import say  # noqa: E402
 
 PORT = int(os.environ.get("FS_DECK_PORT", "8765"))
 HOSTS = {f"127.0.0.1:{PORT}", f"localhost:{PORT}"}
@@ -32,6 +38,20 @@ TOKEN = secrets.token_urlsafe(18)
 PAGE = (pathlib.Path(__file__).resolve().parent / "index.html").read_text().replace("__TOKEN__", TOKEN)
 INBOX = paths.TRIAGE / "inbox.log"
 REVIEW = paths.TRIAGE / "review-latest.json"
+
+
+def outbox_today():
+    today = datetime.date.today().isoformat()
+    rows = []
+    if say.OUTBOX.exists():
+        for line in say.OUTBOX.read_text(encoding="utf-8").splitlines():
+            try:
+                row = json.loads(line)
+            except ValueError:
+                continue
+            if row.get("at", "").startswith(today):
+                rows.append(row)
+    return json.dumps(rows)
 
 
 class Handler(http.server.BaseHTTPRequestHandler):
@@ -53,6 +73,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
             if not REVIEW.exists():
                 return self.reply(404, "no review yet")
             return self.reply(200, REVIEW.read_text(), "application/json")
+        if self.path == "/outbox.json":
+            return self.reply(200, outbox_today(), "application/json")
         self.reply(404, "not found")
 
     def do_POST(self):
@@ -67,6 +89,9 @@ class Handler(http.server.BaseHTTPRequestHandler):
             return self.reply(400, "bad message")
         with open(INBOX, "a", encoding="utf-8") as fh:
             fh.write(text + "\n")
+        m = re.match(r"Review deck, SR-(\d+):\s*(.*)", text)
+        if m:
+            say.append(m[1], "duq", m[2])
         self.reply(200, "ok")
 
     def log_message(self, *args):
