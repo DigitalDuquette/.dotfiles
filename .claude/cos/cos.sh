@@ -39,11 +39,10 @@ notify() {
   log "notified [$1] $3"
 }
 
-# Lid open, screen unlocked, keyboard or mouse used in the last 5 min.
+# Screen unlocked, keyboard or mouse used in the last 5 min. No lid check:
+# docked in clamshell mode the lid is closed while Duq works.
 present() {
-  local lid root idle
-  lid=$(ioreg -r -k AppleClamshellState -d 4)
-  grep -q '"AppleClamshellState" = Yes' <<<"$lid" && return 1
+  local root idle
   root=$(ioreg -n Root -d1)
   grep -Eq '"CGSSessionScreenIsLocked" *= *Yes' <<<"$root" && return 1
   idle=$(ioreg -c IOHIDSystem | awk '/HIDIdleTime/ {print int($NF/1e9); exit}')
@@ -73,7 +72,7 @@ morning() {
   (( h >= 6 && h < 13 )) || return 0
   in_flow || return 0
   today
-  local started="$STATE/stamps/triage-$TODAY"
+  local started="$STATE/stamps/triage-started-$TODAY"
   [[ -e $started ]] && return 0
   # Any HTTP answer means Freshservice is reachable; 000 means no network yet.
   [[ $(curl -s -o /dev/null -m 8 -w '%{http_code}' https://padnos.freshservice.com/api/v2/tickets) != 000 ]] || return 0
