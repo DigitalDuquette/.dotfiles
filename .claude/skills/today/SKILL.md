@@ -1,9 +1,9 @@
 ---
 name: today
 description: >-
-  End-of-day capture. Pulls what Jared did from Krisp meetings, Outlook,
-  Teams, GitHub, vault commits, and Freshservice project tasks, asks him
-  for the why, and writes one
+  End-of-day capture. Pulls what Jared did from Krisp meetings, Outlook
+  mail and calendar, Teams, GitHub, vault commits, and Freshservice
+  tickets and project tasks, asks him for the why, and writes one
   daily note per day to 0-inbox/daily-notes/. Catches up on every day
   since the last note, so a missed day is not lost. Use when Jared
   says /today, "log my day", "what did I do today", or "catch up my
@@ -14,9 +14,11 @@ allowed-tools: >-
   Bash(~/.claude/skills/today/scripts/day-bounds.sh:*),
   Bash(~/.claude/skills/today/scripts/github-day.sh:*),
   Bash(~/.claude/skills/today/scripts/fs-tasks-day.sh:*),
+  Bash(~/.claude/skills/today/scripts/fs-tickets-day.sh:*),
   Bash(git -C * log:*), Bash(git -C * show:*),
   mcp__claude_ai_Microsoft_365__chat_message_search,
   mcp__claude_ai_Microsoft_365__outlook_calendar_search,
+  mcp__claude_ai_Microsoft_365__outlook_email_search,
   mcp__claude_ai_Microsoft_365__read_resource,
   mcp__claude_ai_Krisp__search_meetings,
   mcp__claude_ai_Krisp__get_multiple_documents
@@ -27,6 +29,11 @@ allowed-tools: >-
 The sources hold the *what*. Only Jared holds the *why*: which sweep,
 which 1:1, which follow-up a piece of work came from. This skill pulls
 the what, then asks for the why, while he still remembers it.
+
+Use every platform Jared communicates on that has an API: Krisp, Outlook
+mail and calendar, Teams, and Freshservice. Missing one means asking
+him for something a source already holds. Platforms with no API
+(iMessage) are covered only by what he tells you.
 
 `gtd-weekly-review` reads and archives every note in
 `0-inbox/daily-notes/`, so this skill only writes there.
@@ -44,7 +51,8 @@ All paths are relative to the vault root:
     recent Friday before today (the review's window starts on Friday).
   - Newest note is today: capture today only, and merge (Step 4).
   - Otherwise: start the day after the newest note.
-- End on today. Cap at 7 days. Tell Jared which days you will cover.
+- End on today, unless it is before noon: then end on yesterday (the
+  day has not started). Cap at 7 days. Tell Jared which days you will cover.
 - Skip a Saturday or Sunday if all sources are empty for it.
 
 ## 2. Pull each day
@@ -61,9 +69,24 @@ Run the sources for all days in parallel.
 
 - Tasks created or updated that day. `mine` rows (assignee or
   reporter) include the description, which often holds the decision.
-- The API does not record who made an update. Ask about `other` rows
-  only if they look like Jared's work; otherwise drop them.
+- The API does not record who made an update. Drop `other` rows unless
+  another source links them to Jared. Do not ask about them.
 - Runs under `op run`, so 1Password may ask for Touch ID.
+
+**Freshservice tickets:**
+`~/.claude/skills/today/scripts/fs-tickets-day.sh YYYY-MM-DD`
+
+- Tickets Jared opened that day, and every reply and private note he
+  wrote, with the text. One warehouse query (SQ2), all workspaces.
+- Write the theme, not the tickets. Jared is the manager; most notes
+  are follow-ups that keep his team's work moving. Summarize them in one
+  bullet: what the notes were about as a group (a sweep of stale
+  tickets, a push on one system, a pattern he is chasing). One line
+  saying he did the follow-ups is enough. Cite ticket ids only where a
+  ticket is its own thread of work (an incident he opened, a decision).
+- The warehouse loads on a schedule and can lag a few hours. For today
+  before the evening load, also trust Teams and `decisions.jsonl` for
+  recent ticket work.
 
 **Krisp meetings:** `search_meetings` with `after` and `before` set to
 the day, fields `name`, `date`, `attendees`, `key_points`,
@@ -79,6 +102,23 @@ the day, fields `name`, `date`, `attendees`, `key_points`,
 - Names every meeting and its attendees. Use it to name the meeting
   behind a Teams message or Krisp record. Skip personal, focus, and
   commute blocks.
+- Krisp names a record after the calendar block it overlaps. A "Focus
+  time" record can be a real call (2026-11-24: a GLG expert call). Go
+  by the key points, not the name.
+
+**Outlook mail:** `outlook_email_search`
+
+- Jared's sent mail: `sender: "jared@padnos.com"`, `afterDateTime` and
+  `beforeDateTime` set to the day. Each sent email marks a thread he
+  worked. Page with `offset`.
+- Group by `conversationId`. Read only Jared's newest message in each
+  thread with `read_resource`; the quoted history holds the whole
+  thread (2026-11-24: one read gave the full Visia consent thread).
+- Asks of Jared: mail from people sent to him that day. Keep mail
+  where he is on To, or where the body names him, and that asks him
+  for something. These go in Open loops.
+- Skip notifications and automated mail: Freshservice, ServiceBot,
+  Teams "added you" mail, calendar responses, newsletters.
 
 **Vault commits:** `git -C <vault root> log --since=<day> --until=<day+1>
 --stat`
@@ -117,8 +157,14 @@ on the same bot are one thread.
 Show the draft for all days at once. The sources above should answer
 most of the why. Ask only about specific gaps they cannot fill, by
 name: "PR #12 on X: what was it for?" Never ask about a meeting that
-Krisp or Outlook covers, or for something a source already shows. If
-there are no real gaps, ask only:
+Krisp or Outlook covers, or for something a source already shows.
+
+Before you ask about a gap, search for its topic keyword in Outlook
+mail, Teams, and Krisp, with no sender filter. Ask only if all three
+come up empty. (2026-11-24: asked about the Visia IXL talk; the answer
+was in an email thread and a Teams post.)
+
+If there are no real gaps, ask only:
 
 > Anything I missed?
 
